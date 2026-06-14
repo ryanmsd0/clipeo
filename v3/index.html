@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0C0A5E">
+  <title>Clipeo — Agence de Clipping Vidéo | V3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #0C0A5E;
+      --blue-dark: #07063A;
+      --blue-mid: #151275;
+      --blue-light: #1a1580;
+      --white: #FFFFFF;
+      --white-90: rgba(255,255,255,0.90);
+      --white-60: rgba(255,255,255,0.60);
+      --white-30: rgba(255,255,255,0.30);
+      --white-15: rgba(255,255,255,0.15);
+      --white-08: rgba(255,255,255,0.08);
+      --white-04: rgba(255,255,255,0.04);
+      --font-h: 'Space Grotesk', sans-serif;
+      --font-b: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-b);
+      background: var(--blue-dark);
+      color: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1,h2,h3,h4 { font-family: var(--font-h); font-weight: 700; line-height: 1.1; }
+    a { text-decoration: none; color: inherit; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── GRAIN ── */
+    .grain { position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: 0.025; mix-blend-mode: overlay; }
+
+    /* ── SCROLL PROGRESS ── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 3px; width: 0%;
+      background: var(--white);
+      z-index: 1001;
+      transition: width 0.1s linear;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 20px 0;
+      background: rgba(7,6,58,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--white-08);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+    }
+    .nav-logo { font-family: var(--font-h); font-size: 1.4rem; font-weight: 700; letter-spacing: -0.5px; }
+    .nav-logo span { opacity: 0.5; }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { font-size: 0.85rem; color: var(--white-60); transition: color 0.3s; font-weight: 500; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      font-family: var(--font-h); font-size: 0.85rem; font-weight: 600;
+      padding: 10px 24px; border-radius: 8px;
+      background: var(--white); color: var(--blue);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,255,255,0.15); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center;
+      padding-top: 100px; padding-bottom: 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center; width: 100%;
+    }
+    .hero-text h1 {
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      letter-spacing: -1.5px; margin-bottom: 24px;
+    }
+    .hero-text h1 .line { display: block; overflow: hidden; }
+    .hero-text h1 .line span {
+      display: inline-block;
+      transform: translateY(110%);
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .hero-text h1 .line:nth-child(2) span { animation-delay: 0.15s; }
+    .hero-text h1 .line:nth-child(3) span { animation-delay: 0.3s; }
+    .hero-text h1 .highlight {
+      position: relative;
+      color: var(--white);
+    }
+    .hero-text h1 .highlight::after {
+      content: '';
+      position: absolute; bottom: 2px; left: -4px; right: -4px;
+      height: 35%; background: var(--white-15);
+      border-radius: 4px;
+      transform: scaleX(0); transform-origin: left;
+      animation: expandLine 0.6s 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes slideUp {
+      to { transform: translateY(0); }
+    }
+    @keyframes expandLine {
+      to { transform: scaleX(1); }
+    }
+    .hero-sub {
+      font-size: 1.1rem; line-height: 1.7; color: var(--white-60);
+      max-width: 480px; margin-bottom: 36px;
+      opacity: 0; animation: fadeIn 0.8s 0.5s ease forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    .hero-buttons {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      opacity: 0; animation: fadeIn 0.8s 0.7s ease forwards;
+    }
+    .btn-primary {
+      font-family: var(--font-h); font-size: 1rem; font-weight: 600;
+      padding: 16px 36px; border-radius: 12px;
+      background: var(--white); color: var(--blue);
+      transition: all 0.3s; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(255,255,255,0.15); }
+    .btn-outline {
+      font-family: var(--font-h); font-size: 1rem; font-weight: 600;
+      padding: 16px 36px; border-radius: 12px;
+      background: transparent; color: var(--white);
+      border: 1.5px solid var(--white-30);
+      transition: all 0.3s; cursor: pointer;
+    }
+    .btn-outline:hover { border-color: var(--white); background: var(--white-08); }
+
+    /* ── EDITING TIMELINE (Hero right) ── */
+    .timeline-visual {
+      position: relative; padding: 20px;
+      background: var(--white-04);
+      border: 1px solid var(--white-08);
+      border-radius: 16px;
+      opacity: 0; animation: fadeIn 0.8s 0.4s ease forwards;
+      overflow: hidden;
+    }
+    .timeline-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--white-08);
+    }
+    .timeline-header .timecode {
+      font-family: var(--font-h); font-size: 0.75rem;
+      color: var(--white-60); letter-spacing: 1px;
+    }
+    .timeline-controls { display: flex; gap: 8px; }
+    .timeline-controls span {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--white-15);
+    }
+    .timeline-controls span:nth-child(2) { background: var(--white-30); }
+    .timeline-controls span:nth-child(3) { background: var(--white); }
+    .timeline-tracks { display: flex; flex-direction: column; gap: 8px; }
+    .track {
+      display: flex; align-items: center; gap: 8px;
+      height: 40px; position: relative;
+    }
+    .track-label {
+      font-family: var(--font-h); font-size: 0.65rem; font-weight: 600;
+      color: var(--white-30); width: 50px; text-align: right; flex-shrink: 0;
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .track-bar {
+      flex: 1; height: 100%; border-radius: 6px; overflow: hidden;
+      position: relative; background: var(--white-04);
+    }
+    .track-clips {
+      display: flex; gap: 4px; position: absolute; top: 3px; bottom: 3px;
+      animation: scrollClips 20s linear infinite;
+      will-change: transform;
+    }
+    .track:nth-child(2) .track-clips { animation-duration: 25s; animation-direction: reverse; }
+    .track:nth-child(3) .track-clips { animation-duration: 18s; }
+    .track:nth-child(4) .track-clips { animation-duration: 22s; animation-direction: reverse; }
+    @keyframes scrollClips {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .clip {
+      height: 100%; border-radius: 4px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h); font-size: 0.6rem; font-weight: 600;
+      color: var(--white-90); letter-spacing: 0.5px;
+    }
+    .clip-a { background: var(--blue-mid); width: 120px; }
+    .clip-b { background: var(--white-15); width: 80px; }
+    .clip-c { background: rgba(21,18,117,0.7); width: 100px; }
+    .clip-d { background: var(--white-08); width: 60px; }
+    .clip-e { background: var(--blue-light); width: 140px; }
+    .clip-f { background: var(--white-15); width: 90px; }
+    .timeline-playhead {
+      position: absolute; top: 70px; bottom: 12px;
+      left: 45%; width: 2px; background: var(--white);
+      z-index: 2; opacity: 0.6;
+    }
+    .timeline-playhead::before {
+      content: ''; position: absolute; top: -6px; left: -5px;
+      width: 12px; height: 12px; background: var(--white);
+      border-radius: 2px; transform: rotate(45deg);
+    }
+
+    /* ── FILM STRIP STATS ── */
+    .stats {
+      padding: 0; position: relative;
+    }
+    .stats-inner {
+      background: var(--blue);
+      border-top: 3px solid var(--white-15);
+      border-bottom: 3px solid var(--white-15);
+      padding: 48px 0;
+      position: relative;
+    }
+    .film-perf {
+      position: absolute; left: 0; right: 0; height: 12px;
+      display: flex; justify-content: center; gap: 48px;
+    }
+    .film-perf.top { top: -1px; }
+    .film-perf.bottom { bottom: -1px; }
+    .film-perf span {
+      width: 18px; height: 12px; border-radius: 2px;
+      background: var(--blue-dark);
+      border: 1px solid var(--white-15);
+    }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 40px; text-align: center;
+    }
+    .stat-item { position: relative; }
+    .stat-item::after {
+      content: ''; position: absolute; right: -20px; top: 10%; bottom: 10%;
+      width: 1px; background: var(--white-15);
+    }
+    .stat-item:last-child::after { display: none; }
+    .stat-number {
+      font-family: var(--font-h); font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 700; letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+    .stat-label {
+      font-size: 0.85rem; color: var(--white-60); font-weight: 500;
+    }
+
+    /* ── SECTION TITLES ── */
+    .section-tag {
+      font-family: var(--font-h); font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--white-30); margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      letter-spacing: -1px; margin-bottom: 20px;
+    }
+    .section-sub {
+      font-size: 1.05rem; color: var(--white-60);
+      line-height: 1.7; max-width: 560px;
+    }
+    .section-header-center {
+      text-align: center; margin-bottom: 60px;
+    }
+    .section-header-center .section-sub { margin: 0 auto; }
+
+    /* ── PROCESS (SCENES) ── */
+    .process { padding: 120px 0; }
+    .scenes-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+    }
+    .scene {
+      padding: 36px 28px;
+      border: 1px solid var(--white-08);
+      position: relative;
+      transition: background 0.4s;
+      margin-top: -1px; margin-left: -1px;
+    }
+    .scene:hover { background: var(--white-04); }
+    .scene-number {
+      font-family: var(--font-h); font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--white-30); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .scene-number::after {
+      content: ''; flex: 1; height: 1px; background: var(--white-08);
+    }
+    .scene-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: var(--white-08); display: flex;
+      align-items: center; justify-content: center;
+      margin-bottom: 20px; font-size: 1.3rem;
+    }
+    .scene h3 {
+      font-size: 1.15rem; margin-bottom: 12px; letter-spacing: -0.3px;
+    }
+    .scene p {
+      font-size: 0.88rem; color: var(--white-60); line-height: 1.6;
+    }
+
+    /* ── BENTO GRID (Formats) ── */
+    .formats { padding: 120px 0; }
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+    .bento-card {
+      background: var(--white-04);
+      border: 1px solid var(--white-08);
+      border-radius: 16px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s;
+    }
+    .bento-card:hover {
+      background: var(--white-08);
+      border-color: var(--white-15);
+      transform: translateY(-4px);
+    }
+    .bento-card.large {
+      grid-row: span 2;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 40px;
+    }
+    .bento-card .format-tag {
+      display: inline-block;
+      font-family: var(--font-h); font-size: 0.7rem; font-weight: 600;
+      padding: 6px 14px; border-radius: 20px;
+      background: var(--white-08); color: var(--white-60);
+      letter-spacing: 1px; margin-bottom: 20px;
+    }
+    .bento-card h3 {
+      font-size: 1.2rem; margin-bottom: 10px; letter-spacing: -0.3px;
+    }
+    .bento-card.large h3 { font-size: 1.6rem; }
+    .bento-card p {
+      font-size: 0.88rem; color: var(--white-60); line-height: 1.6;
+    }
+    .bento-card .format-visual {
+      margin-top: 24px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .format-frame {
+      border: 2px solid var(--white-15);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h); font-size: 0.7rem; font-weight: 600;
+      color: var(--white-30);
+    }
+    .frame-vertical { width: 48px; height: 85px; }
+    .frame-square { width: 64px; height: 64px; }
+    .frame-wide { width: 96px; height: 54px; }
+    .bento-card .format-icon {
+      font-size: 2rem; margin-bottom: 16px;
+      display: block;
+    }
+
+    /* ── DASHBOARD ── */
+    .dashboard { padding: 120px 0; }
+    .browser-frame {
+      background: var(--blue);
+      border: 1px solid var(--white-15);
+      border-radius: 16px;
+      overflow: hidden;
+      max-width: 1000px; margin: 0 auto;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+      transition: transform 0.5s;
+    }
+    .browser-frame:hover { transform: perspective(1000px) rotateX(2deg) scale(1.01); }
+    .browser-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding: 14px 20px;
+      background: var(--white-04);
+      border-bottom: 1px solid var(--white-08);
+    }
+    .browser-dot {
+      width: 10px; height: 10px; border-radius: 50%; background: var(--white-15);
+    }
+    .browser-url {
+      flex: 1; text-align: center;
+      font-family: var(--font-h); font-size: 0.75rem;
+      color: var(--white-30); letter-spacing: 0.5px;
+    }
+    .browser-content {
+      display: grid; grid-template-columns: 200px 1fr;
+      min-height: 400px;
+    }
+    .dash-sidebar {
+      padding: 24px 16px;
+      border-right: 1px solid var(--white-08);
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .dash-nav-item {
+      font-family: var(--font-h); font-size: 0.78rem;
+      padding: 10px 14px; border-radius: 8px;
+      color: var(--white-60); transition: all 0.3s;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .dash-nav-item.active {
+      background: var(--white-08); color: var(--white);
+    }
+    .dash-nav-item svg { width: 16px; height: 16px; opacity: 0.5; }
+    .dash-main { padding: 24px; }
+    .dash-top {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px;
+    }
+    .dash-top h4 { font-size: 1.1rem; }
+    .dash-top .dash-badge {
+      font-family: var(--font-h); font-size: 0.7rem; font-weight: 600;
+      padding: 6px 14px; border-radius: 20px;
+      background: var(--white-08); color: var(--white-60);
+    }
+    .dash-clips {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+    .dash-clip {
+      background: var(--white-04); border-radius: 10px;
+      overflow: hidden; border: 1px solid var(--white-08);
+    }
+    .dash-clip-thumb {
+      height: 120px; background: var(--white-08);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .dash-clip-thumb .play-icon {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--white-15); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .dash-clip-thumb .play-icon::after {
+      content: ''; width: 0; height: 0;
+      border-left: 8px solid var(--white); border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent; margin-left: 2px;
+    }
+    .dash-clip-thumb .duration {
+      position: absolute; bottom: 6px; right: 6px;
+      font-family: var(--font-h); font-size: 0.6rem; font-weight: 600;
+      padding: 2px 6px; border-radius: 4px;
+      background: rgba(0,0,0,0.6); color: var(--white);
+    }
+    .dash-clip-info { padding: 10px; }
+    .dash-clip-info h5 {
+      font-family: var(--font-h); font-size: 0.78rem;
+      margin-bottom: 4px; font-weight: 600;
+    }
+    .dash-clip-info .views {
+      font-size: 0.7rem; color: var(--white-30);
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { padding: 120px 0; }
+    .testi-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; position: relative;
+    }
+    .testi-card {
+      background: var(--white-04);
+      border: 1px solid var(--white-08);
+      border-radius: 16px;
+      padding: 36px;
+      position: relative;
+      transition: all 0.4s;
+    }
+    .testi-card:hover {
+      background: var(--white-08);
+      transform: translateY(-6px);
+    }
+    .testi-card:nth-child(2) { margin-top: 40px; }
+    .testi-quote-mark {
+      font-family: var(--font-h); font-size: 4rem; font-weight: 700;
+      color: var(--white-08); line-height: 1;
+      position: absolute; top: 16px; left: 28px;
+    }
+    .testi-text {
+      font-size: 0.95rem; line-height: 1.7; color: var(--white-90);
+      margin-bottom: 24px; position: relative; z-index: 1;
+    }
+    .testi-author {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .testi-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--white-08); border: 1px solid var(--white-15);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h); font-size: 0.8rem; font-weight: 700;
+      color: var(--white-30);
+    }
+    .testi-name {
+      font-family: var(--font-h); font-size: 0.88rem; font-weight: 600;
+    }
+    .testi-role {
+      font-size: 0.78rem; color: var(--white-30);
+    }
+
+    /* ── CTA FINAL ── */
+    .cta-final {
+      padding: 140px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-final::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 50%, var(--blue-mid), transparent);
+      opacity: 0.5;
+    }
+    .cta-final .container { position: relative; z-index: 1; }
+    .cta-final h2 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      letter-spacing: -1.5px; margin-bottom: 20px;
+    }
+    .cta-final p {
+      font-size: 1.1rem; color: var(--white-60);
+      max-width: 500px; margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+    .cta-final .btn-primary {
+      font-size: 1.1rem; padding: 18px 48px;
+    }
+    .cta-floating-elements {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .float-el {
+      position: absolute;
+      width: 40px; height: 40px; border-radius: 8px;
+      border: 1px solid var(--white-08);
+      display: flex; align-items: center; justify-content: center;
+      animation: floatSlow 6s ease-in-out infinite;
+    }
+    .float-el::after {
+      content: ''; width: 0; height: 0;
+      border-left: 7px solid var(--white-15);
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      margin-left: 2px;
+    }
+    .float-el:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+    .float-el:nth-child(2) { top: 25%; right: 12%; animation-delay: 1.5s; }
+    .float-el:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 3s; }
+    .float-el:nth-child(4) { bottom: 30%; right: 8%; animation-delay: 4.5s; }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; }
+      50% { transform: translateY(-15px) rotate(5deg); opacity: 0.6; }
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--white-08);
+    }
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo { font-family: var(--font-h); font-size: 1.1rem; font-weight: 700; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 0.82rem; color: var(--white-30);
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-copy { font-size: 0.78rem; color: var(--white-30); }
+
+    /* ── REVEAL ANIMATIONS ── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible {
+      opacity: 1; transform: translateY(0);
+    }
+    .reveal-stagger .reveal-child {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-stagger.visible .reveal-child {
+      opacity: 1; transform: translateY(0);
+    }
+
+    /* ── MOBILE NAV ── */
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+    .nav-toggle span {
+      display: block; width: 22px; height: 2px; background: var(--white);
+      margin: 5px 0; transition: all 0.3s;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .scenes-grid { grid-template-columns: repeat(2, 1fr); }
+      .bento { grid-template-columns: 1fr 1fr; }
+      .bento-card.large { grid-row: span 1; }
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-cta { display: none; }
+      .nav-toggle { display: block; }
+
+      .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+      .hero { min-height: auto; padding-top: 120px; padding-bottom: 80px; }
+      .hero-text h1 { font-size: 2.2rem; }
+      .hero-sub { font-size: 1rem; }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+      .stat-item::after { display: none; }
+      .stat-number { font-size: 2rem; }
+
+      .scenes-grid { grid-template-columns: 1fr; }
+
+      .bento { grid-template-columns: 1fr; }
+      .bento-card.large { grid-row: span 1; }
+
+      .browser-content { grid-template-columns: 1fr; }
+      .dash-sidebar { display: none; }
+      .dash-clips { grid-template-columns: repeat(2, 1fr); }
+
+      .testi-grid { grid-template-columns: 1fr; }
+      .testi-card:nth-child(2) { margin-top: 0; }
+
+      .footer-inner { flex-direction: column; gap: 16px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .hero-text h1 { font-size: 1.8rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .dash-clips { grid-template-columns: 1fr; }
+      .hero-buttons { flex-direction: column; }
+      .btn-primary, .btn-outline { width: 100%; text-align: center; }
+    }
+
+    /* ── REDUCED MOTION ── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal { opacity: 1; transform: none; }
+      .reveal-stagger .reveal-child { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Grain overlay -->
+<svg class="grain" xmlns="http://www.w3.org/2000/svg"><filter id="g"><feTurbulence baseFrequency=".75" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(#g)"/></svg>
+
+<!-- Scroll progress bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">clipeo<span>.</span></a>
+    <div class="nav-links">
+      <a href="#process">Processus</a>
+      <a href="#formats">Formats</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#temoignages">Avis</a>
+    </div>
+    <a href="#cta" class="nav-cta">Commencer</a>
+    <button class="nav-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <h1>
+          <span class="line"><span>Vos contenus longs</span></span>
+          <span class="line"><span>deviennent des</span></span>
+          <span class="line"><span>clips <span class="highlight">viraux</span></span></span>
+        </h1>
+        <p class="hero-sub">
+          Nos clippers transforment vos podcasts, lives et interviews en clips courts verticaux optimisés pour TikTok, Reels et Shorts.
+        </p>
+        <div class="hero-buttons">
+          <a href="#cta" class="btn-primary">Démarrer un projet</a>
+          <a href="#process" class="btn-outline">Voir le processus</a>
+        </div>
+      </div>
+
+      <div class="timeline-visual">
+        <div class="timeline-header">
+          <div class="timeline-controls">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="timecode">00:42:17 / 01:23:05</div>
+        </div>
+        <div class="timeline-tracks">
+          <div class="track">
+            <span class="track-label">Video</span>
+            <div class="track-bar">
+              <div class="track-clips">
+                <div class="clip clip-a">Podcast</div>
+                <div class="clip clip-b">Cut</div>
+                <div class="clip clip-e">Interview</div>
+                <div class="clip clip-d"></div>
+                <div class="clip clip-c">Live</div>
+                <div class="clip clip-f">Clip</div>
+                <div class="clip clip-a">Podcast</div>
+                <div class="clip clip-b">Cut</div>
+                <div class="clip clip-e">Interview</div>
+                <div class="clip clip-d"></div>
+                <div class="clip clip-c">Live</div>
+                <div class="clip clip-f">Clip</div>
+              </div>
+            </div>
+          </div>
+          <div class="track">
+            <span class="track-label">Audio</span>
+            <div class="track-bar">
+              <div class="track-clips">
+                <div class="clip clip-c" style="width:90px">Voice</div>
+                <div class="clip clip-a" style="width:130px">Music</div>
+                <div class="clip clip-d" style="width:70px">SFX</div>
+                <div class="clip clip-b" style="width:110px">Voice</div>
+                <div class="clip clip-e" style="width:80px"></div>
+                <div class="clip clip-c" style="width:90px">Voice</div>
+                <div class="clip clip-a" style="width:130px">Music</div>
+                <div class="clip clip-d" style="width:70px">SFX</div>
+                <div class="clip clip-b" style="width:110px">Voice</div>
+                <div class="clip clip-e" style="width:80px"></div>
+              </div>
+            </div>
+          </div>
+          <div class="track">
+            <span class="track-label">Text</span>
+            <div class="track-bar">
+              <div class="track-clips">
+                <div class="clip clip-b" style="width:100px">Sous-titre</div>
+                <div class="clip clip-d" style="width:60px"></div>
+                <div class="clip clip-a" style="width:140px">Caption</div>
+                <div class="clip clip-c" style="width:75px">CTA</div>
+                <div class="clip clip-f" style="width:110px">Hook</div>
+                <div class="clip clip-b" style="width:100px">Sous-titre</div>
+                <div class="clip clip-d" style="width:60px"></div>
+                <div class="clip clip-a" style="width:140px">Caption</div>
+                <div class="clip clip-c" style="width:75px">CTA</div>
+                <div class="clip clip-f" style="width:110px">Hook</div>
+              </div>
+            </div>
+          </div>
+          <div class="track">
+            <span class="track-label">FX</span>
+            <div class="track-bar">
+              <div class="track-clips">
+                <div class="clip clip-e" style="width:85px">Zoom</div>
+                <div class="clip clip-d" style="width:50px"></div>
+                <div class="clip clip-c" style="width:120px">Transition</div>
+                <div class="clip clip-b" style="width:70px">Cut</div>
+                <div class="clip clip-a" style="width:95px">Motion</div>
+                <div class="clip clip-e" style="width:85px">Zoom</div>
+                <div class="clip clip-d" style="width:50px"></div>
+                <div class="clip clip-c" style="width:120px">Transition</div>
+                <div class="clip clip-b" style="width:70px">Cut</div>
+                <div class="clip clip-a" style="width:95px">Motion</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-playhead"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="stats-inner">
+    <div class="film-perf top">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span>
+    </div>
+    <div class="container">
+      <div class="stats-grid reveal-stagger" id="statsGrid">
+        <div class="stat-item reveal-child">
+          <div class="stat-number" data-target="150">0</div>
+          <div class="stat-label">Créateurs accompagnés</div>
+        </div>
+        <div class="stat-item reveal-child">
+          <div class="stat-number" data-target="12000">0</div>
+          <div class="stat-label">Clips livrés</div>
+        </div>
+        <div class="stat-item reveal-child">
+          <div class="stat-number" data-target="500">0</div>
+          <div class="stat-label">Millions de vues générées</div>
+        </div>
+        <div class="stat-item reveal-child">
+          <div class="stat-number" data-target="48">0</div>
+          <div class="stat-label">Heures de délai moyen</div>
+        </div>
+      </div>
+    </div>
+    <div class="film-perf bottom">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="container">
+    <div class="section-header-center reveal">
+      <div class="section-tag">Processus</div>
+      <h2 class="section-title">Du contenu brut au clip viral</h2>
+      <p class="section-sub">Un workflow rodé en 4 étapes pour maximiser l'impact de chaque clip.</p>
+    </div>
+    <div class="scenes-grid reveal-stagger">
+      <div class="scene reveal-child">
+        <div class="scene-number">Scène 01</div>
+        <div class="scene-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <h3>Envoi du contenu</h3>
+        <p>Uploadez votre podcast, live ou interview longue via notre plateforme sécurisée.</p>
+      </div>
+      <div class="scene reveal-child">
+        <div class="scene-number">Scène 02</div>
+        <div class="scene-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </div>
+        <h3>Détection des moments</h3>
+        <p>Nos clippers identifient les passages à fort potentiel viral et émotionnel.</p>
+      </div>
+      <div class="scene reveal-child">
+        <div class="scene-number">Scène 03</div>
+        <div class="scene-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <h3>Montage & Optimisation</h3>
+        <p>Sous-titres dynamiques, recadrage 9:16, effets visuels et hooks percutants.</p>
+      </div>
+      <div class="scene reveal-child">
+        <div class="scene-number">Scène 04</div>
+        <div class="scene-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </div>
+        <h3>Livraison & Publication</h3>
+        <p>Recevez vos clips prêts à poster sous 48h avec les légendes et hashtags optimisés.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMATS (Bento Grid) -->
+<section class="formats" id="formats">
+  <div class="container">
+    <div class="section-header-center reveal">
+      <div class="section-tag">Formats</div>
+      <h2 class="section-title">Chaque plateforme, son format</h2>
+      <p class="section-sub">Des clips adaptés aux spécificités de chaque réseau pour un impact maximal.</p>
+    </div>
+    <div class="bento reveal-stagger">
+      <div class="bento-card large reveal-child">
+        <div>
+          <span class="format-tag">9:16 VERTICAL</span>
+          <h3>TikTok & Reels</h3>
+          <p>Clips verticaux percutants de 30 à 90 secondes avec hooks visuels, sous-titres animés et transitions dynamiques.</p>
+        </div>
+        <div class="format-visual">
+          <div class="format-frame frame-vertical">9:16</div>
+          <div style="font-size:0.82rem; color:var(--white-60); line-height:1.5;">
+            <div style="font-family:var(--font-h); font-weight:600; color:var(--white); margin-bottom:4px;">Format star</div>
+            Le format qui génère le plus d'engagement sur les réseaux.
+          </div>
+        </div>
+      </div>
+      <div class="bento-card reveal-child">
+        <span class="format-tag">YOUTUBE SHORTS</span>
+        <h3>Shorts optimisés</h3>
+        <p>Extraits calibrés pour l'algorithme YouTube avec miniatures et titres accrocheurs.</p>
+        <div class="format-visual">
+          <div class="format-frame frame-vertical">9:16</div>
+        </div>
+      </div>
+      <div class="bento-card reveal-child">
+        <span class="format-tag">CARROUSEL</span>
+        <h3>Clips Carrousel</h3>
+        <p>Séries de clips thématiques pour maintenir votre audience engagée sur la durée.</p>
+        <div class="format-visual">
+          <div class="format-frame frame-square">1:1</div>
+        </div>
+      </div>
+      <div class="bento-card reveal-child">
+        <span class="format-tag">AUDIO → VIDÉO</span>
+        <h3>Podcast en vidéo</h3>
+        <p>Transformez vos épisodes audio en clips visuels avec waveforms et visuels dynamiques.</p>
+      </div>
+      <div class="bento-card reveal-child">
+        <span class="format-tag">TEASER</span>
+        <h3>Bandes-annonces</h3>
+        <p>Teasers de 15 secondes pour annoncer vos prochains épisodes et créer l'attente.</p>
+        <div class="format-visual">
+          <div class="format-frame frame-wide">16:9</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="dashboard" id="dashboard">
+  <div class="container">
+    <div class="section-header-center reveal">
+      <div class="section-tag">Plateforme</div>
+      <h2 class="section-title">Votre espace client</h2>
+      <p class="section-sub">Suivez vos clips, validez les livrables et analysez les performances en temps réel.</p>
+    </div>
+    <div class="browser-frame reveal">
+      <div class="browser-bar">
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+        <div class="browser-url">app.clipeo.fr/dashboard</div>
+      </div>
+      <div class="browser-content">
+        <div class="dash-sidebar">
+          <div class="dash-nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Mes clips
+          </div>
+          <div class="dash-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Uploads
+          </div>
+          <div class="dash-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Analytics
+          </div>
+          <div class="dash-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            Paramètres
+          </div>
+        </div>
+        <div class="dash-main">
+          <div class="dash-top">
+            <h4>Clips récents</h4>
+            <span class="dash-badge">8 clips ce mois</span>
+          </div>
+          <div class="dash-clips">
+            <div class="dash-clip">
+              <div class="dash-clip-thumb">
+                <div class="play-icon"></div>
+                <span class="duration">0:47</span>
+              </div>
+              <div class="dash-clip-info">
+                <h5>L'erreur n°1 des entrepreneurs</h5>
+                <span class="views">1.2M vues · TikTok</span>
+              </div>
+            </div>
+            <div class="dash-clip">
+              <div class="dash-clip-thumb">
+                <div class="play-icon"></div>
+                <span class="duration">0:58</span>
+              </div>
+              <div class="dash-clip-info">
+                <h5>Comment j'ai scalé à 7 chiffres</h5>
+                <span class="views">845K vues · Reels</span>
+              </div>
+            </div>
+            <div class="dash-clip">
+              <div class="dash-clip-thumb">
+                <div class="play-icon"></div>
+                <span class="duration">0:33</span>
+              </div>
+              <div class="dash-clip-info">
+                <h5>La méthode que personne...</h5>
+                <span class="views">2.1M vues · Shorts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="temoignages">
+  <div class="container">
+    <div class="section-header-center reveal">
+      <div class="section-tag">Témoignages</div>
+      <h2 class="section-title">Ils nous font confiance</h2>
+      <p class="section-sub">Les créateurs qui ont boosté leur visibilité avec Clipeo.</p>
+    </div>
+    <div class="testi-grid reveal-stagger">
+      <div class="testi-card reveal-child">
+        <div class="testi-quote-mark">"</div>
+        <p class="testi-text">En 3 mois, mes clips TikTok ont généré plus de 10M de vues. L'équipe Clipeo comprend parfaitement les codes des réseaux sociaux.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">ML</div>
+          <div>
+            <div class="testi-name">Marc Leroy</div>
+            <div class="testi-role">Podcasteur · Tech & Business</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal-child">
+        <div class="testi-quote-mark">"</div>
+        <p class="testi-text">La qualité des clips est exceptionnelle. Les sous-titres, le rythme, les hooks — tout est pensé pour la viralité. Mon audience a triplé.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SD</div>
+          <div>
+            <div class="testi-name">Sarah Dumont</div>
+            <div class="testi-role">Coach · Développement personnel</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card reveal-child">
+        <div class="testi-quote-mark">"</div>
+        <p class="testi-text">Je faisais des lives de 2h sans clips. Maintenant chaque live génère 8 à 12 clips viraux. Le ROI est délirant.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">KB</div>
+          <div>
+            <div class="testi-name">Karim Benali</div>
+            <div class="testi-role">Entrepreneur · E-commerce</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final" id="cta">
+  <div class="cta-floating-elements">
+    <div class="float-el"></div>
+    <div class="float-el"></div>
+    <div class="float-el"></div>
+    <div class="float-el"></div>
+  </div>
+  <div class="container">
+    <div class="reveal">
+      <h2>Prêt à devenir viral ?</h2>
+      <p>Rejoignez +150 créateurs qui transforment déjà leurs contenus longs en clips qui explosent les compteurs.</p>
+      <a href="#" class="btn-primary">Démarrer maintenant</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo">clipeo.</div>
+      <div class="footer-links">
+        <a href="#">Processus</a>
+        <a href="#">Formats</a>
+        <a href="#">Tarifs</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="footer-copy">&copy; 2025 Clipeo. Tous droits réservés.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── Scroll progress bar ──
+  const progressBar = document.getElementById('scrollProgress');
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = progress + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // ── Intersection Observer for reveals ──
+  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+
+        // Stagger children
+        if (entry.target.classList.contains('reveal-stagger')) {
+          const children = entry.target.querySelectorAll('.reveal-child');
+          children.forEach((child, i) => {
+            child.style.transitionDelay = (i * 0.1) + 's';
+          });
+          // Small delay then add visible class to trigger stagger
+          requestAnimationFrame(() => {
+            entry.target.classList.add('visible');
+          });
+        }
+
+        // Counter animation for stats
+        if (entry.target.id === 'statsGrid') {
+          animateCounters();
+        }
+
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  // ── Counter animation ──
+  let countersAnimated = false;
+  function animateCounters() {
+    if (countersAnimated) return;
+    countersAnimated = true;
+
+    document.querySelectorAll('.stat-number[data-target]').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      const duration = 2000;
+      const start = performance.now();
+
+      function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(eased * target);
+
+        if (target >= 1000) {
+          el.textContent = current.toLocaleString('fr-FR') + '+';
+        } else {
+          el.textContent = current + (target === 48 ? 'h' : '+');
+        }
+
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    });
+  }
+
+  // ── Mobile nav toggle ──
+  const navToggle = document.querySelector('.nav-toggle');
+  const navLinks = document.querySelector('.nav-links');
+  if (navToggle) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = navLinks.style.display === 'flex';
+      navLinks.style.display = isOpen ? 'none' : 'flex';
+      navLinks.style.flexDirection = 'column';
+      navLinks.style.position = 'absolute';
+      navLinks.style.top = '100%';
+      navLinks.style.left = '0';
+      navLinks.style.right = '0';
+      navLinks.style.background = 'rgba(7,6,58,0.95)';
+      navLinks.style.padding = '20px 24px';
+      navLinks.style.gap = '16px';
+      navLinks.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+    });
+  }
+
+})();
+</script>
+</body>
+</html>

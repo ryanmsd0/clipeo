@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0C0A5E">
+  <meta name="description" content="Clipeo — Agence de clipping vidéo. On transforme vos contenus longs en shorts viraux pour TikTok, Reels et YouTube Shorts. Des clippers experts au service de votre visibilité.">
+  <title>Clipeo — Agence de Clipping Vidéo | TikTok, Reels, Shorts</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- AOS -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    /* ========================================
+       CSS VARIABLES
+    ======================================== */
+    :root {
+      --blue: #0C0A5E;
+      --blue-dark: #07063A;
+      --blue-mid: #151275;
+      --white: #FFFFFF;
+      --white-60: rgba(255, 255, 255, 0.60);
+      --white-15: rgba(255, 255, 255, 0.15);
+      --white-08: rgba(255, 255, 255, 0.08);
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    /* ========================================
+       RESET & BASE
+    ======================================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--blue);
+      background: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      line-height: 1.15;
+      font-weight: 700;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* ========================================
+       UTILITIES
+    ======================================== */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    @media (min-width: 768px) {
+      .container { padding: 0 40px; }
+    }
+
+    .section-blue {
+      background: var(--blue);
+      color: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-white {
+      background: var(--white);
+      color: var(--blue);
+      position: relative;
+    }
+
+    .section-padding {
+      padding: 80px 0;
+    }
+
+    @media (min-width: 768px) {
+      .section-padding { padding: 120px 0; }
+    }
+
+    /* Noise overlay for blue sections */
+    .grain-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.035;
+      z-index: 1;
+    }
+
+    .section-blue > .container,
+    .section-blue > .hero-inner,
+    .section-blue > *:not(.grain-overlay):not(.hero-circles):not(.cta-watermark) {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ========================================
+       NAVBAR
+    ======================================== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 16px 0;
+      transition: background 0.4s ease, padding 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      background: rgba(12, 10, 94, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 10px 0;
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--white);
+    }
+
+    .nav-logo svg {
+      width: 36px;
+      height: 36px;
+    }
+
+    .nav-links {
+      display: none;
+      list-style: none;
+      gap: 32px;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .nav-links { display: flex; }
+    }
+
+    .nav-links a {
+      color: var(--white-60);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-links a:hover {
+      color: var(--white);
+    }
+
+    .nav-cta {
+      display: none;
+      padding: 10px 24px;
+      background: var(--white);
+      color: var(--blue);
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-family: var(--font-body);
+    }
+
+    @media (min-width: 768px) {
+      .nav-cta { display: inline-block; }
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Mobile hamburger */
+    .nav-hamburger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+
+    @media (min-width: 768px) {
+      .nav-hamburger { display: none; }
+    }
+
+    .nav-hamburger span {
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .nav-hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .nav-hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(7, 6, 58, 0.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    .mobile-menu.active {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      color: var(--white);
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    .mobile-menu a:hover { opacity: 0.7; }
+
+    /* ========================================
+       HERO
+    ======================================== */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 100px;
+      padding-bottom: 60px;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-content {
+      max-width: 680px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--white-08);
+      border: 1px solid var(--white-15);
+      border-radius: 100px;
+      font-size: 0.8rem;
+      color: var(--white-60);
+      margin-bottom: 32px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4AE68A;
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes dotPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 5.5vw, 4rem);
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--white-60);
+      line-height: 1.7;
+      max-width: 560px;
+      margin-bottom: 40px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .btn-primary {
+      padding: 16px 32px;
+      background: var(--white);
+      color: var(--blue);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary {
+      padding: 16px 32px;
+      background: transparent;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-weight: 500;
+      font-size: 1rem;
+      border: 1px solid var(--white-15);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--white-08);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Hero logo */
+    .hero-logo-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+
+    .hero-logo-text {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    /* Logo SVG */
+    .logo-c {
+      animation: drawC 1.4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+    }
+
+    @keyframes drawC {
+      to { stroke-dashoffset: 0; }
+    }
+
+    .eye-container {
+      opacity: 0;
+      animation: revealEye 0.5s 1s ease-out forwards;
+    }
+
+    @keyframes revealEye {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .eyelid-top {
+      transform-box: fill-box;
+      transform-origin: center bottom;
+      animation: eyelidOpenTop 0.6s 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .eyelid-bottom {
+      transform-box: fill-box;
+      transform-origin: center top;
+      animation: eyelidOpenBottom 0.6s 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes eyelidOpenTop {
+      to { transform: scaleY(0); }
+    }
+
+    @keyframes eyelidOpenBottom {
+      to { transform: scaleY(0); }
+    }
+
+    /* Concentric circles */
+    .hero-circles {
+      position: absolute;
+      top: 50%;
+      right: -15%;
+      transform: translateY(-50%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @media (max-width: 767px) {
+      .hero-circles {
+        right: -40%;
+        opacity: 0.5;
+      }
+    }
+
+    .concentric-circle {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, var(--opacity));
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: var(--size);
+      height: var(--size);
+      animation: circlePulse 10s ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    @keyframes circlePulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.02); }
+    }
+
+    /* ========================================
+       STATS
+    ======================================== */
+    #stats {
+      border-bottom: 1px solid rgba(12, 10, 94, 0.06);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+      }
+    }
+
+    .stat-item {
+      position: relative;
+    }
+
+    @media (min-width: 768px) {
+      .stat-item:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 10%;
+        height: 80%;
+        width: 1px;
+        background: rgba(12, 10, 94, 0.1);
+      }
+    }
+
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .stat-label {
+      margin-top: 12px;
+      font-size: 0.95rem;
+      color: rgba(12, 10, 94, 0.5);
+      font-weight: 500;
+    }
+
+    /* ========================================
+       HOW IT WORKS
+    ======================================== */
+    .process-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 64px;
+    }
+
+    @media (min-width: 768px) {
+      .process-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+      }
+    }
+
+    .section-eyebrow {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-weight: 600;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      letter-spacing: -0.02em;
+    }
+
+    .section-blue .section-title { color: var(--white); }
+    .section-white .section-title { color: var(--blue); }
+
+    .process-card {
+      background: var(--white-08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--white-15);
+      border-radius: 20px;
+      padding: 40px 32px;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .process-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .process-step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--white-15);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .process-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+
+    .process-card p {
+      font-size: 0.95rem;
+      color: var(--white-60);
+      line-height: 1.65;
+    }
+
+    /* ========================================
+       SERVICES
+    ======================================== */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 64px;
+    }
+
+    @media (min-width: 600px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .service-card {
+      background: var(--white);
+      border: 1px solid rgba(12, 10, 94, 0.08);
+      border-radius: 20px;
+      padding: 36px 28px;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      cursor: default;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(12, 10, 94, 0.15);
+    }
+
+    .service-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(12, 10, 94, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      transition: background 0.3s ease;
+    }
+
+    .service-card:hover .service-icon {
+      background: rgba(12, 10, 94, 0.08);
+    }
+
+    .service-icon svg {
+      width: 28px;
+      height: 28px;
+      stroke: var(--blue);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .service-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 10px;
+      color: var(--blue);
+    }
+
+    .service-card p {
+      font-size: 0.9rem;
+      color: rgba(12, 10, 94, 0.55);
+      line-height: 1.6;
+    }
+
+    /* ========================================
+       DASHBOARD PREVIEW
+    ======================================== */
+    #dashboard {
+      overflow: hidden;
+    }
+
+    .dashboard-wrapper {
+      margin-top: 64px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .browser-mockup {
+      width: 100%;
+      max-width: 900px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--white);
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      transition: transform 0.1s linear;
+    }
+
+    .browser-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .browser-dots span {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .browser-url {
+      flex: 1;
+      padding: 7px 14px;
+      background: rgba(12, 10, 94, 0.04);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: rgba(12, 10, 94, 0.4);
+      font-family: var(--font-body);
+    }
+
+    .dash-layout {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      min-height: 380px;
+    }
+
+    @media (max-width: 600px) {
+      .dash-layout { grid-template-columns: 1fr; }
+      .dash-sidebar { display: none; }
+    }
+
+    .dash-sidebar {
+      background: var(--blue-dark);
+      padding: 16px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .dash-sidebar-logo {
+      width: 32px;
+      height: 32px;
+      background: var(--blue-mid);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .dash-nav-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      margin: 2px 0;
+      transition: background 0.2s;
+    }
+
+    .dash-nav-dot.active {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .dash-nav-dot::after {
+      content: '';
+      display: block;
+      width: 14px;
+      height: 14px;
+      margin: 7px auto;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .dash-nav-dot.active::after {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .dash-main {
+      padding: 20px;
+      background: #F7F7FB;
+    }
+
+    .dash-header {
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--blue);
+      margin-bottom: 16px;
+    }
+
+    .dash-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .dash-metrics { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .dash-metric {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 14px 12px;
+      border: 1px solid rgba(12, 10, 94, 0.05);
+    }
+
+    .dash-metric-value {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--blue);
+    }
+
+    .dash-metric-label {
+      font-size: 0.65rem;
+      color: rgba(12, 10, 94, 0.4);
+      margin-top: 2px;
+    }
+
+    .dash-chart-area {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .dash-chart-area { grid-template-columns: 1fr; }
+    }
+
+    .dash-chart-card {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 16px;
+      border: 1px solid rgba(12, 10, 94, 0.05);
+    }
+
+    .dash-chart-title {
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+
+    .dash-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      height: 100px;
+    }
+
+    .dash-bar {
+      flex: 1;
+      background: var(--blue);
+      border-radius: 4px 4px 0 0;
+      height: var(--h);
+      opacity: 0.7;
+      position: relative;
+    }
+
+    .dash-bar:nth-child(4) { opacity: 1; }
+
+    .dash-bar span {
+      position: absolute;
+      bottom: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.55rem;
+      color: rgba(12, 10, 94, 0.35);
+    }
+
+    .dash-mentions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .dash-mention-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(12, 10, 94, 0.04);
+    }
+
+    .dash-mention-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .dash-mention-text {
+      flex: 1;
+      font-size: 0.7rem;
+      color: rgba(12, 10, 94, 0.6);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dash-mention-source {
+      font-weight: 600;
+      color: var(--blue);
+    }
+
+    .dash-mention-time {
+      font-size: 0.6rem;
+      color: rgba(12, 10, 94, 0.3);
+      flex-shrink: 0;
+    }
+
+    /* ========================================
+       TESTIMONIALS
+    ======================================== */
+    #testimonials {
+      overflow: hidden;
+    }
+
+    .testimonial-wrapper {
+      margin-top: 64px;
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+    }
+
+    .testimonial-track {
+      display: flex;
+      gap: 24px;
+      animation: marquee 40s linear infinite;
+      width: max-content;
+    }
+
+    .testimonial-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .testimonial-card {
+      flex-shrink: 0;
+      width: 380px;
+      background: var(--white);
+      border: 1px solid rgba(12, 10, 94, 0.06);
+      border-radius: 20px;
+      padding: 32px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    @media (max-width: 480px) {
+      .testimonial-card { width: 300px; padding: 24px; }
+    }
+
+    .testimonial-card:hover {
+      box-shadow: 0 10px 40px rgba(12, 10, 94, 0.08);
+    }
+
+    .testimonial-quote {
+      font-size: 0.95rem;
+      color: rgba(12, 10, 94, 0.7);
+      line-height: 1.65;
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+
+    .testimonial-quote::before {
+      content: '\201C';
+      font-size: 2rem;
+      font-style: normal;
+      font-family: var(--font-heading);
+      color: var(--blue);
+      opacity: 0.2;
+      line-height: 0;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .testimonial-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(12, 10, 94, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--blue);
+      flex-shrink: 0;
+    }
+
+    .testimonial-name {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--blue);
+    }
+
+    .testimonial-role {
+      font-size: 0.78rem;
+      color: rgba(12, 10, 94, 0.45);
+      margin-top: 2px;
+    }
+
+    /* ========================================
+       CTA FINAL
+    ======================================== */
+    #cta-final {
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .cta-title {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: -0.02em;
+      max-width: 700px;
+      margin: 0 auto 16px;
+    }
+
+    .cta-subtitle {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--white-60);
+      max-width: 500px;
+      margin: 0 auto 48px;
+      line-height: 1.6;
+    }
+
+    .btn-glow {
+      padding: 18px 48px;
+      background: var(--white);
+      color: var(--blue);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.2s ease;
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+
+    .btn-glow:hover {
+      transform: translateY(-2px);
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), 0 0 60px rgba(255, 255, 255, 0.05); }
+      50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.3), 0 0 80px rgba(255, 255, 255, 0.1); }
+    }
+
+    .cta-watermark {
+      position: absolute;
+      bottom: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cta-watermark svg {
+      width: 400px;
+      height: 400px;
+    }
+
+    @media (max-width: 600px) {
+      .cta-watermark svg { width: 250px; height: 250px; }
+    }
+
+    /* ========================================
+       FOOTER
+    ======================================== */
+    footer {
+      background: var(--blue-dark);
+      color: var(--white);
+      padding: 48px 0 32px;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      align-items: center;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+      }
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .footer-logo svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--white-60);
+      font-size: 0.85rem;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover { color: var(--white); }
+
+    .footer-bottom {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: center;
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* ========================================
+       ANIMATIONS & REDUCED MOTION
+    ======================================== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .testimonial-track {
+        animation: none !important;
+      }
+    }
+
+    /* AOS overrides for custom timing */
+    [data-aos] {
+      transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1) !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================
+       SVG DEFINITIONS (Noise filter)
+  ======================================== -->
+  <svg style="position:fixed;width:0;height:0;pointer-events:none;" aria-hidden="true">
+    <defs>
+      <filter id="grain">
+        <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ========================================
+       NAVBAR
+  ======================================== -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#hero" class="nav-logo">
+        <svg viewBox="0 0 100 100" width="36" height="36" aria-hidden="true">
+          <path class="logo-c" d="M 75 22 C 60 5, 20 5, 14 45 C 8 85, 35 96, 65 96 C 75 96, 82 90, 85 82" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+          <g class="eye-container" transform="translate(50, 50)">
+            <path d="M -17 0 C -11 -13, 11 -13, 17 0 C 11 13, -11 13, -17 0 Z" fill="white"/>
+            <circle cx="0" cy="0" r="7" fill="#151275"/>
+            <circle class="eye-pupil" cx="0" cy="0" r="3.5" fill="#07063A"/>
+            <circle cx="2.5" cy="-2.5" r="1.5" fill="white" opacity="0.85"/>
+            <path class="eyelid-top" d="M -17 0 C -11 -13, 11 -13, 17 0 Z" fill="#0C0A5E"/>
+            <path class="eyelid-bottom" d="M -17 0 C -11 13, 11 13, 17 0 Z" fill="#0C0A5E"/>
+          </g>
+        </svg>
+        Clipeo
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#process">Comment ça marche</a></li>
+        <li><a href="#services">Nos formats</a></li>
+        <li><a href="#dashboard">Espace client</a></li>
+        <li><a href="#testimonials">Témoignages</a></li>
+      </ul>
+
+      <a href="#cta-final" class="nav-cta">Clip test gratuit</a>
+
+      <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#process" onclick="closeMobile()">Comment ça marche</a>
+    <a href="#services" onclick="closeMobile()">Nos formats</a>
+    <a href="#dashboard" onclick="closeMobile()">Espace client</a>
+    <a href="#testimonials" onclick="closeMobile()">Témoignages</a>
+    <a href="#cta-final" onclick="closeMobile()">Clip test gratuit</a>
+  </div>
+
+  <!-- ========================================
+       HERO
+  ======================================== -->
+  <section id="hero" class="section-blue">
+    <svg class="grain-overlay" aria-hidden="true"><rect width="100%" height="100%" filter="url(#grain)"/></svg>
+
+    <!-- Concentric circles -->
+    <div class="hero-circles" aria-hidden="true">
+      <div class="concentric-circle" style="--size: 250px; --opacity: 0.07; --delay: 0s;"></div>
+      <div class="concentric-circle" style="--size: 420px; --opacity: 0.06; --delay: -2s;"></div>
+      <div class="concentric-circle" style="--size: 600px; --opacity: 0.05; --delay: -4s;"></div>
+      <div class="concentric-circle" style="--size: 800px; --opacity: 0.04; --delay: -6s;"></div>
+      <div class="concentric-circle" style="--size: 1020px; --opacity: 0.025; --delay: -8s;"></div>
+    </div>
+
+    <div class="container hero-inner">
+      <div class="hero-content">
+        <!-- Logo + name -->
+        <div class="hero-logo-wrapper">
+          <svg id="heroLogo" viewBox="0 0 100 100" width="64" height="64" aria-label="Clipeo logo">
+            <path class="logo-c" d="M 75 22 C 60 5, 20 5, 14 45 C 8 85, 35 96, 65 96 C 75 96, 82 90, 85 82" stroke="white" stroke-width="10" fill="none" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"/>
+            <g class="eye-container" transform="translate(50, 50)">
+              <path d="M -17 0 C -11 -13, 11 -13, 17 0 C 11 13, -11 13, -17 0 Z" fill="white"/>
+              <circle cx="0" cy="0" r="7" fill="#151275"/>
+              <circle class="eye-pupil" cx="0" cy="0" r="3.5" fill="#07063A"/>
+              <circle cx="2.5" cy="-2.5" r="1.5" fill="white" opacity="0.85"/>
+              <path class="eyelid-top" d="M -17 0 C -11 -13, 11 -13, 17 0 Z" fill="#0C0A5E"/>
+              <path class="eyelid-bottom" d="M -17 0 C -11 13, 11 13, 17 0 Z" fill="#0C0A5E"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          +120 créateurs accompagnés
+        </div>
+
+        <h1 class="hero-title">Vos contenus longs deviennent des shorts viraux.</h1>
+
+        <p class="hero-subtitle">Clipeo est une agence de clipping vidéo. Nos clippers transforment vos podcasts, lives, interviews et vidéos longues en clips verticaux percutants pour TikTok, Reels et YouTube Shorts.</p>
+
+        <div class="hero-ctas">
+          <a href="#cta-final" class="btn-primary">Recevoir un clip test gratuit</a>
+          <a href="#services" class="btn-secondary">Voir nos formats</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       STATS
+  ======================================== -->
+  <section id="stats" class="section-white section-padding">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="0">
+          <div class="stat-number" data-count="500" data-prefix="+">0</div>
+          <div class="stat-label">clips livrés par mois</div>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+          <div class="stat-number" data-count="150" data-suffix="M" data-prefix="+">0</div>
+          <div class="stat-label">vues générées pour nos clients</div>
+        </div>
+        <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+          <div class="stat-number" data-count="98" data-suffix="%">0</div>
+          <div class="stat-label">de clients renouvelés</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       HOW IT WORKS
+  ======================================== -->
+  <section id="process" class="section-blue section-padding">
+    <svg class="grain-overlay" aria-hidden="true"><rect width="100%" height="100%" filter="url(#grain)"/></svg>
+    <div class="container" style="position:relative;z-index:2;">
+      <p class="section-eyebrow" data-aos="fade-up">Comment ça marche</p>
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="50">Vous filmez. On clipe. Ça viralise.</h2>
+
+      <div class="process-grid">
+        <div class="process-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="process-step">1</div>
+          <h3>Envoyez vos rushs</h3>
+          <p>Podcast, live Twitch, interview, conférence, vlog — envoyez-nous votre contenu long via Google Drive, Dropbox ou WeTransfer.</p>
+        </div>
+        <div class="process-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="process-step">2</div>
+          <h3>Nos clippers montent</h3>
+          <p>Un clipper dédié sélectionne les meilleurs moments, ajoute sous-titres dynamiques, hooks visuels et musique trending. Format 9:16, prêt à poster.</p>
+        </div>
+        <div class="process-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="process-step">3</div>
+          <h3>Recevez vos clips</h3>
+          <p>3 à 10 clips livrés sous 48h dans votre espace client. Optimisés pour TikTok, Reels et Shorts. Vous postez, on fait le reste.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       SERVICES
+  ======================================== -->
+  <section id="services" class="section-white section-padding">
+    <div class="container">
+      <p class="section-eyebrow" data-aos="fade-up" style="color: rgba(12,10,94,0.4);">Nos formats</p>
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="50">Un contenu long, des dizaines de clips viraux.</h2>
+
+      <div class="services-grid">
+        <!-- TikTok -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+          </div>
+          <h3>Clips TikTok</h3>
+          <p>Hooks percutants, sous-titres animés, sons trending. Montage taillé pour l'algorithme TikTok et la rétention des 3 premières secondes.</p>
+        </div>
+
+        <!-- Reels -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M2 12h20"/><path d="M12 2v10"/><polygon points="10 9 15 6.5 10 4"/></svg>
+          </div>
+          <h3>Instagram Reels</h3>
+          <p>Format premium, esthétique soignée, transitions fluides. Pensé pour l'engagement et le partage en story.</p>
+        </div>
+
+        <!-- Shorts -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><polygon points="10 8 16 12 10 16"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
+          </div>
+          <h3>YouTube Shorts</h3>
+          <p>Clips optimisés pour le Shelf Shorts. Titrage accrocheur, pacing rapide, call-to-action vers votre chaîne longue.</p>
+        </div>
+
+        <!-- Podcast -->
+        <div class="service-card" data-aos="fade-up" data-aos-delay="400">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </div>
+          <h3>Clips Podcast</h3>
+          <p>Audiogrammes visuels avec waveform animée, sous-titres mot-à-mot et mise en scène des punchlines. Idéal pour promouvoir vos épisodes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       DASHBOARD PREVIEW
+  ======================================== -->
+  <section id="dashboard" class="section-blue section-padding">
+    <svg class="grain-overlay" aria-hidden="true"><rect width="100%" height="100%" filter="url(#grain)"/></svg>
+    <div class="container" style="position:relative;z-index:2;">
+      <div style="text-align:center;">
+        <p class="section-eyebrow" data-aos="fade-up">Votre espace client</p>
+        <h2 class="section-title" data-aos="fade-up" data-aos-delay="50">Vos clips livrés, prêts à poster</h2>
+      </div>
+
+      <div class="dashboard-wrapper" data-aos="fade-up" data-aos-delay="150">
+        <div class="browser-mockup" id="dashboardMockup">
+          <div class="browser-bar">
+            <div class="browser-dots"><span></span><span></span><span></span></div>
+            <div class="browser-url">app.clipeo.fr/mes-clips</div>
+          </div>
+          <div class="dash-layout">
+            <div class="dash-sidebar">
+              <div class="dash-sidebar-logo">C</div>
+              <div class="dash-nav-dot active"></div>
+              <div class="dash-nav-dot"></div>
+              <div class="dash-nav-dot"></div>
+              <div class="dash-nav-dot"></div>
+            </div>
+            <div class="dash-main">
+              <div class="dash-header">Mes clips — Février 2026</div>
+              <div class="dash-metrics">
+                <div class="dash-metric">
+                  <div class="dash-metric-value">32</div>
+                  <div class="dash-metric-label">Clips livrés ce mois</div>
+                </div>
+                <div class="dash-metric">
+                  <div class="dash-metric-value" style="color:#151275;">1.2M</div>
+                  <div class="dash-metric-label">Vues cumulées</div>
+                </div>
+                <div class="dash-metric">
+                  <div class="dash-metric-value">8.4%</div>
+                  <div class="dash-metric-label">Taux d'engagement moyen</div>
+                </div>
+                <div class="dash-metric">
+                  <div class="dash-metric-value">6</div>
+                  <div class="dash-metric-label">En cours de montage</div>
+                </div>
+              </div>
+
+              <div class="dash-chart-area">
+                <div class="dash-chart-card">
+                  <div class="dash-chart-title">Vues par semaine</div>
+                  <div class="dash-bars">
+                    <div class="dash-bar" style="--h: 40%;"><span>S1</span></div>
+                    <div class="dash-bar" style="--h: 65%;"><span>S2</span></div>
+                    <div class="dash-bar" style="--h: 55%;"><span>S3</span></div>
+                    <div class="dash-bar" style="--h: 92%;"><span>S4</span></div>
+                  </div>
+                </div>
+                <div class="dash-chart-card">
+                  <div class="dash-chart-title">Derniers clips livrés</div>
+                  <div class="dash-mentions-list">
+                    <div class="dash-mention-item">
+                      <div class="dash-mention-dot" style="background:#0C0A5E;"></div>
+                      <div class="dash-mention-text"><span class="dash-mention-source">TikTok</span> — "3 erreurs en trading" — 340K vues</div>
+                      <div class="dash-mention-time">Hier</div>
+                    </div>
+                    <div class="dash-mention-item">
+                      <div class="dash-mention-dot" style="background:#151275;"></div>
+                      <div class="dash-mention-text"><span class="dash-mention-source">Reel</span> — "Le secret des top 1%" — 128K vues</div>
+                      <div class="dash-mention-time">Lun.</div>
+                    </div>
+                    <div class="dash-mention-item">
+                      <div class="dash-mention-dot" style="background:#0C0A5E;"></div>
+                      <div class="dash-mention-text"><span class="dash-mention-source">Short</span> — "Routine morning CEO" — 89K vues</div>
+                      <div class="dash-mention-time">Dim.</div>
+                    </div>
+                    <div class="dash-mention-item">
+                      <div class="dash-mention-dot" style="background:#151275;"></div>
+                      <div class="dash-mention-text"><span class="dash-mention-source">TikTok</span> — "Pourquoi tu perds de l'argent" — 512K vues</div>
+                      <div class="dash-mention-time">Sam.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       TESTIMONIALS
+  ======================================== -->
+  <section id="testimonials" class="section-white section-padding">
+    <div class="container">
+      <p class="section-eyebrow" data-aos="fade-up" style="color: rgba(12,10,94,0.4);">Témoignages</p>
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="50">Ils nous confient leur contenu</h2>
+    </div>
+
+    <div class="testimonial-wrapper" data-aos="fade-up" data-aos-delay="150">
+      <div class="testimonial-track">
+        <!-- Original cards -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote">Je leur envoie mes rushs de podcast le lundi, j'ai 8 clips prêts à poster le mercredi. Mon TikTok est passé de 2K à 85K abonnés en 4 mois.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">KB</div>
+            <div>
+              <div class="testimonial-name">Karim Benziane</div>
+              <div class="testimonial-role">Podcasteur, 120K abonnés TikTok</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">Un de nos clips a fait 2,3M de vues sur TikTok. Clipeo a trouvé le moment exact dans un live de 2h que même moi j'avais oublié. Leur sens du hook est redoutable.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">LM</div>
+            <div>
+              <div class="testimonial-name">Léa Moreau</div>
+              <div class="testimonial-role">Streameuse Twitch, 45K followers</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">On publie 30 shorts par mois grâce à Clipeo. Avant, mon monteur interne en faisait 8. La qualité est constante et le style colle parfaitement à ma marque.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">MD</div>
+            <div>
+              <div class="testimonial-name">Maxime Durand</div>
+              <div class="testimonial-role">Coach business, 200K sur YouTube</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">J'ai testé 3 agences de clipping avant. Clipeo est la seule qui comprend les codes TikTok. Les sous-titres, le rythme, les cuts — tout est pensé pour la rétention.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">SP</div>
+            <div>
+              <div class="testimonial-name">Sarah Petit</div>
+              <div class="testimonial-role">Créatrice fitness, 300K sur Instagram</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">Depuis qu'on travaille avec Clipeo, nos Reels font x5 en reach. L'équipe capte les moments forts mieux que nous. On ne revient pas en arrière.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">HV</div>
+            <div>
+              <div class="testimonial-name">Hugo Vasseur</div>
+              <div class="testimonial-role">Fondateur, marque DTC skincare</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">On externalise le clipping de nos 15 talents à Clipeo. Réactifs, créatifs, et nos influenceurs pensent qu'on a une armée de monteurs en interne.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">JA</div>
+            <div>
+              <div class="testimonial-name">Julie Arnaud</div>
+              <div class="testimonial-role">Directrice, agence talents digitaux</div>
+            </div>
+          </div>
+        </div>
+        <!-- Duplicated for seamless loop -->
+        <div class="testimonial-card">
+          <p class="testimonial-quote">Je leur envoie mes rushs de podcast le lundi, j'ai 8 clips prêts à poster le mercredi. Mon TikTok est passé de 2K à 85K abonnés en 4 mois.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">KB</div>
+            <div>
+              <div class="testimonial-name">Karim Benziane</div>
+              <div class="testimonial-role">Podcasteur, 120K abonnés TikTok</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">Un de nos clips a fait 2,3M de vues sur TikTok. Clipeo a trouvé le moment exact dans un live de 2h que même moi j'avais oublié. Leur sens du hook est redoutable.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">LM</div>
+            <div>
+              <div class="testimonial-name">Léa Moreau</div>
+              <div class="testimonial-role">Streameuse Twitch, 45K followers</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">On publie 30 shorts par mois grâce à Clipeo. Avant, mon monteur interne en faisait 8. La qualité est constante et le style colle parfaitement à ma marque.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">MD</div>
+            <div>
+              <div class="testimonial-name">Maxime Durand</div>
+              <div class="testimonial-role">Coach business, 200K sur YouTube</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">J'ai testé 3 agences de clipping avant. Clipeo est la seule qui comprend les codes TikTok. Les sous-titres, le rythme, les cuts — tout est pensé pour la rétention.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">SP</div>
+            <div>
+              <div class="testimonial-name">Sarah Petit</div>
+              <div class="testimonial-role">Créatrice fitness, 300K sur Instagram</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">Depuis qu'on travaille avec Clipeo, nos Reels font x5 en reach. L'équipe capte les moments forts mieux que nous. On ne revient pas en arrière.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">HV</div>
+            <div>
+              <div class="testimonial-name">Hugo Vasseur</div>
+              <div class="testimonial-role">Fondateur, marque DTC skincare</div>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-quote">On externalise le clipping de nos 15 talents à Clipeo. Réactifs, créatifs, et nos influenceurs pensent qu'on a une armée de monteurs en interne.</p>
+          <div class="testimonial-author">
+            <div class="testimonial-avatar">JA</div>
+            <div>
+              <div class="testimonial-name">Julie Arnaud</div>
+              <div class="testimonial-role">Directrice, agence talents digitaux</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       CTA FINAL
+  ======================================== -->
+  <section id="cta-final" class="section-blue section-padding">
+    <svg class="grain-overlay" aria-hidden="true"><rect width="100%" height="100%" filter="url(#grain)"/></svg>
+
+    <!-- Watermark logo -->
+    <div class="cta-watermark" aria-hidden="true">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M 75 22 C 60 5, 20 5, 14 45 C 8 85, 35 96, 65 96 C 75 96, 82 90, 85 82" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <g transform="translate(50, 50)">
+          <path d="M -17 0 C -11 -13, 11 -13, 17 0 C 11 13, -11 13, -17 0 Z" fill="white"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="container" style="position:relative;z-index:2;">
+      <h2 class="cta-title" data-aos="fade-up">Votre prochain clip viral est dans vos rushs. On le trouve.</h2>
+      <p class="cta-subtitle" data-aos="fade-up" data-aos-delay="100">Envoyez-nous une vidéo. On vous livre un clip test gratuit sous 48h.</p>
+      <div data-aos="fade-up" data-aos-delay="200">
+        <button class="btn-glow" onclick="window.location.href='#hero'">Recevoir mon clip test gratuit</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       FOOTER
+  ======================================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <svg viewBox="0 0 100 100" width="32" height="32" aria-hidden="true">
+            <path d="M 75 22 C 60 5, 20 5, 14 45 C 8 85, 35 96, 65 96 C 75 96, 82 90, 85 82" stroke="white" stroke-width="10" fill="none" stroke-linecap="round"/>
+            <g transform="translate(50, 50)">
+              <path d="M -17 0 C -11 -13, 11 -13, 17 0 C 11 13, -11 13, -17 0 Z" fill="white"/>
+              <circle cx="0" cy="0" r="7" fill="#07063A"/>
+              <circle cx="0" cy="0" r="3.5" fill="#151275"/>
+            </g>
+          </svg>
+          Clipeo
+        </div>
+
+        <ul class="footer-links">
+          <li><a href="#hero">Accueil</a></li>
+          <li><a href="#services">Nos formats</a></li>
+          <li><a href="#dashboard">Espace client</a></li>
+          <li><a href="#cta-final">Contact</a></li>
+          <li><a href="#">Mentions légales</a></li>
+          <li><a href="#">Confidentialité</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-bottom">
+        &copy; 2026 Clipeo — Agence de clipping vidéo. Tous droits réservés.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================
+       SCRIPTS
+  ======================================== -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/countup.js@2.8.0/dist/countUp.umd.js"></script>
+
+  <script>
+    /* ========================================
+       AOS INIT
+    ======================================== */
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 80,
+      disable: prefersReducedMotion
+    });
+
+    /* ========================================
+       NAVBAR SCROLL
+    ======================================== */
+    const navbar = document.getElementById('navbar');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+      lastScroll = window.scrollY;
+    }, { passive: true });
+
+    /* ========================================
+       MOBILE MENU
+    ======================================== */
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+    });
+
+    function closeMobile() {
+      hamburger.classList.remove('active');
+      mobileMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    /* ========================================
+       EYE TRACKING (follows cursor in Hero)
+    ======================================== */
+    const heroLogo = document.getElementById('heroLogo');
+    const pupils = document.querySelectorAll('.eye-pupil');
+    const maxPupilMove = 3.5;
+
+    document.addEventListener('mousemove', (e) => {
+      if (!heroLogo) return;
+      const rect = heroLogo.getBoundingClientRect();
+      const eyeCenterX = rect.left + rect.width / 2;
+      const eyeCenterY = rect.top + rect.height / 2;
+
+      const angle = Math.atan2(e.clientY - eyeCenterY, e.clientX - eyeCenterX);
+      const distance = Math.min(
+        Math.hypot(e.clientX - eyeCenterX, e.clientY - eyeCenterY) / 80,
+        maxPupilMove
+      );
+
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance;
+
+      pupils.forEach(pupil => {
+        pupil.setAttribute('cx', dx);
+        pupil.setAttribute('cy', dy);
+      });
+    });
+
+    /* ========================================
+       COUNTUP - Stats animation on scroll
+    ======================================== */
+    function animateCounter(el, target, prefix, suffix, duration) {
+      const start = 0;
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + (target - start) * easeOut);
+
+        let display = '';
+        if (prefix) display += prefix;
+        if (target >= 1000) {
+          display += current.toLocaleString('fr-FR');
+        } else {
+          display += current;
+        }
+        if (suffix) display += suffix;
+        el.textContent = display;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    // Try to use CountUp.js, fallback to manual
+    function initCounters() {
+      const counters = document.querySelectorAll('.stat-number');
+      let started = false;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !started) {
+            started = true;
+
+            counters.forEach(el => {
+              const target = parseInt(el.dataset.count);
+              const prefix = el.dataset.prefix || '';
+              const suffix = el.dataset.suffix || '';
+
+              // Try CountUp.js first
+              try {
+                if (window.countUp && window.countUp.CountUp) {
+                  const counter = new window.countUp.CountUp(el, target, {
+                    duration: 2.5,
+                    separator: ' ',
+                    prefix: prefix,
+                    suffix: suffix,
+                    useGrouping: true,
+                  });
+                  counter.start();
+                } else {
+                  throw new Error('CountUp not loaded');
+                }
+              } catch (e) {
+                // Fallback to manual animation
+                animateCounter(el, target, prefix, suffix, 2500);
+              }
+            });
+
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+
+      const statsSection = document.getElementById('stats');
+      if (statsSection) observer.observe(statsSection);
+    }
+
+    initCounters();
+
+    /* ========================================
+       DASHBOARD PARALLAX
+    ======================================== */
+    const dashboardMockup = document.getElementById('dashboardMockup');
+
+    if (dashboardMockup && !prefersReducedMotion) {
+      window.addEventListener('scroll', () => {
+        const rect = dashboardMockup.parentElement.getBoundingClientRect();
+        const windowH = window.innerHeight;
+        const centerOffset = (rect.top + rect.height / 2 - windowH / 2) / windowH;
+        dashboardMockup.style.transform = `translateY(${centerOffset * -25}px)`;
+      }, { passive: true });
+    }
+
+    /* ========================================
+       BLINK ANIMATION (periodic eye blink)
+    ======================================== */
+    function blink() {
+      const tops = document.querySelectorAll('.eyelid-top');
+      const bottoms = document.querySelectorAll('.eyelid-bottom');
+
+      tops.forEach(lid => {
+        lid.style.transition = 'transform 0.15s ease-in';
+        lid.style.transform = 'scaleY(1)';
+      });
+      bottoms.forEach(lid => {
+        lid.style.transition = 'transform 0.15s ease-in';
+        lid.style.transform = 'scaleY(1)';
+      });
+
+      setTimeout(() => {
+        tops.forEach(lid => {
+          lid.style.transition = 'transform 0.2s ease-out';
+          lid.style.transform = 'scaleY(0)';
+        });
+        bottoms.forEach(lid => {
+          lid.style.transition = 'transform 0.2s ease-out';
+          lid.style.transform = 'scaleY(0)';
+        });
+      }, 160);
+    }
+
+    // Blink every 4-7 seconds (random)
+    function scheduleBlink() {
+      const delay = 4000 + Math.random() * 3000;
+      setTimeout(() => {
+        blink();
+        scheduleBlink();
+      }, delay);
+    }
+
+    // Start blinking after initial eye open animation
+    setTimeout(scheduleBlink, 3000);
+  </script>
+</body>
+</html>

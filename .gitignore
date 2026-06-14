@@ -1,0 +1,17 @@
+/node_modules
+/.next
+/out
+/build
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+.env*.local
+.vercel
+
+# dev artifacts (root-level screenshots & playwright cache)
+/.playwright-mcp
+/clipeo-desktop-full.png
+/clipeo-full-page.png
+/clipeo-mobile-full.png
+/v7-mobile-top.png
+/back.jpeg

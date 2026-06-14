@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0C0A5E">
+  <title>Clipeo — Agence de Clipping Vidéo | V2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #0C0A5E;
+      --blue-dark: #07063A;
+      --blue-mid: #151275;
+      --white: #FFFFFF;
+      --white-60: rgba(255,255,255,0.60);
+      --white-15: rgba(255,255,255,0.15);
+      --white-08: rgba(255,255,255,0.08);
+      --font-h: 'Space Grotesk', sans-serif;
+      --font-b: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-b);
+      background: var(--blue-dark);
+      color: var(--white);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1,h2,h3,h4 { font-family: var(--font-h); font-weight: 700; line-height: 1.1; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── GRAIN ── */
+    .grain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.028;
+      mix-blend-mode: overlay;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 20px 0;
+      transition: all 0.4s;
+    }
+    .nav.scrolled {
+      background: rgba(7,6,58,0.9);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 12px 0;
+    }
+    .nav-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-brand {
+      font-family: var(--font-h);
+      font-weight: 700;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--white-60);
+      transition: color 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta-btn {
+      padding: 10px 28px;
+      border: 1px solid var(--white-15);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      font-family: var(--font-b);
+      color: var(--white);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .nav-cta-btn:hover {
+      background: var(--white);
+      color: var(--blue);
+    }
+    .burger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+    .burger span { display: block; width: 22px; height: 2px; background: var(--white); margin: 5px 0; border-radius: 2px; transition: 0.3s; }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta-btn { display: none; }
+      .burger { display: block; }
+    }
+
+    .mob-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--blue-dark);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+    .mob-menu.open { display: flex; }
+    .mob-menu a {
+      font-family: var(--font-h);
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 120px 0 80px;
+    }
+
+    .hero-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero-container { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 18px;
+      border: 1px solid var(--white-15);
+      border-radius: 100px;
+      font-size: 0.78rem;
+      color: var(--white-60);
+      margin-bottom: 28px;
+    }
+    .hero-tag-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #4AE68A;
+      animation: blink 2s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    .hero h1 {
+      font-size: clamp(2.6rem, 6vw, 4.5rem);
+      letter-spacing: -0.035em;
+      margin-bottom: 24px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      position: relative;
+      display: inline-block;
+    }
+    .hero h1 em::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: var(--blue-mid);
+      border-radius: 4px;
+      z-index: -1;
+      opacity: 0.6;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      color: var(--white-60);
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 900px) {
+      .hero-sub { margin: 0 auto 40px; }
+    }
+
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 14px; }
+    @media (max-width: 900px) { .hero-btns { justify-content: center; } }
+
+    .btn-fill {
+      padding: 16px 36px;
+      background: var(--white);
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: var(--font-b);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-fill:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(255,255,255,0.15); }
+
+    .btn-ghost {
+      padding: 16px 36px;
+      background: transparent;
+      color: var(--white);
+      font-weight: 500;
+      font-size: 0.95rem;
+      border: 1px solid var(--white-15);
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: var(--font-b);
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .btn-ghost:hover { background: var(--white-08); border-color: rgba(255,255,255,0.3); }
+
+    /* ── HERO PHONE MOCKUPS ── */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 520px;
+    }
+
+    @media (max-width: 900px) { .hero-visual { height: 400px; } }
+
+    .phone {
+      position: absolute;
+      width: 200px;
+      height: 420px;
+      border-radius: 28px;
+      border: 2px solid var(--white-15);
+      background: linear-gradient(145deg, rgba(21,18,117,0.5), rgba(12,10,94,0.8));
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+      transition: transform 0.6s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    @media (max-width: 900px) {
+      .phone { width: 150px; height: 320px; border-radius: 22px; }
+    }
+
+    .phone-1 { transform: rotate(-6deg) translateX(-100px); z-index: 2; }
+    .phone-2 { transform: rotate(3deg) translateX(60px) translateY(20px); z-index: 3; }
+    .phone-3 { transform: rotate(10deg) translateX(180px) translateY(-10px); z-index: 1; opacity: 0.7; }
+
+    @media (max-width: 900px) {
+      .phone-1 { transform: rotate(-6deg) translateX(-70px); }
+      .phone-2 { transform: rotate(3deg) translateX(40px) translateY(16px); }
+      .phone-3 { transform: rotate(10deg) translateX(130px) translateY(-8px); }
+    }
+
+    .phone-notch {
+      width: 80px;
+      height: 22px;
+      background: var(--blue-dark);
+      border-radius: 0 0 14px 14px;
+      margin: 0 auto;
+    }
+
+    .phone-content {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      height: calc(100% - 22px);
+    }
+
+    .phone-vid {
+      flex: 1;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phone-1 .phone-vid { background: linear-gradient(to top, var(--blue-dark), var(--blue-mid)); }
+    .phone-2 .phone-vid { background: linear-gradient(to top, var(--blue-dark), #1a1080); }
+    .phone-3 .phone-vid { background: linear-gradient(to top, var(--blue-dark), #0d0b6e); }
+
+    .phone-vid-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .phone-vid-play::after {
+      content: '';
+      width: 0;
+      height: 0;
+      border-left: 14px solid var(--white);
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      margin-left: 3px;
+    }
+
+    .phone-sub {
+      font-size: 0.55rem;
+      font-weight: 700;
+      color: var(--white);
+      background: rgba(0,0,0,0.5);
+      padding: 3px 8px;
+      border-radius: 4px;
+      width: fit-content;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .phone-handle {
+      font-size: 0.55rem;
+      color: var(--white-60);
+      margin-top: 4px;
+    }
+
+    .phone-likes {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      position: absolute;
+      right: 10px;
+      bottom: 60px;
+    }
+    .phone-likes-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .phone-likes-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+    }
+    .phone-likes-count {
+      font-size: 0.5rem;
+      color: var(--white-60);
+    }
+
+    .phone-bar {
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    .phone-bar::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: var(--progress, 60%);
+      background: var(--white);
+      border-radius: 2px;
+    }
+
+    .phone-stats {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+    }
+    .phone-stat-item {
+      text-align: center;
+    }
+    .phone-stat-val {
+      font-family: var(--font-h);
+      font-weight: 700;
+      font-size: 0.7rem;
+    }
+    .phone-stat-lab {
+      font-size: 0.45rem;
+      color: var(--white-60);
+    }
+
+    /* ── MARQUEE (logos/platforms) ── */
+    .marquee-section {
+      padding: 48px 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      overflow: hidden;
+    }
+    .marquee-label {
+      text-align: center;
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 24px;
+    }
+    .marquee-track {
+      display: flex;
+      gap: 64px;
+      animation: marquee 20s linear infinite;
+      width: max-content;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      font-family: var(--font-h);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.12);
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── STATS ── */
+    .stats {
+      padding: 100px 0;
+      background: var(--white);
+      color: var(--blue);
+    }
+    .stats-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+    }
+    @media (max-width: 600px) { .stats-inner { grid-template-columns: 1fr; text-align: center; } }
+    .stat-block {}
+    .stat-num {
+      font-family: var(--font-h);
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .stat-lab {
+      margin-top: 8px;
+      font-size: 0.9rem;
+      color: rgba(12,10,94,0.45);
+      font-weight: 500;
+    }
+    .stat-bar {
+      margin-top: 20px;
+      height: 3px;
+      background: rgba(12,10,94,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .stat-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: var(--blue);
+      width: 0%;
+      transition: width 1.5s cubic-bezier(0.22,1,0.36,1);
+    }
+
+    /* ── PROCESS ── */
+    .process {
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .process-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--white-60);
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .section-heading {
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 72px;
+      max-width: 600px;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    @media (max-width: 768px) { .process-steps { grid-template-columns: 1fr; gap: 0; } }
+
+    .step {
+      background: var(--white-08);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--white-15);
+      padding: 48px 36px;
+      position: relative;
+      transition: background 0.3s;
+    }
+    .step:first-child { border-radius: 24px 0 0 24px; }
+    .step:last-child { border-radius: 0 24px 24px 0; }
+    @media (max-width: 768px) {
+      .step:first-child { border-radius: 24px 24px 0 0; }
+      .step:last-child { border-radius: 0 0 24px 24px; }
+    }
+    .step:hover { background: rgba(255,255,255,0.12); }
+
+    .step-num {
+      font-family: var(--font-h);
+      font-size: 5rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.04);
+      position: absolute;
+      top: 16px;
+      right: 24px;
+      line-height: 1;
+    }
+    .step h3 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .step p {
+      font-size: 0.9rem;
+      color: var(--white-60);
+      line-height: 1.65;
+      position: relative;
+    }
+
+    /* ── FORMATS (services) ── */
+    .formats {
+      padding: 120px 0;
+      background: var(--white);
+      color: var(--blue);
+    }
+    .formats-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .formats .section-label { color: rgba(12,10,94,0.35); }
+    .formats .section-heading { color: var(--blue); }
+
+    .formats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 768px) { .formats-grid { grid-template-columns: 1fr; } }
+
+    .format-card {
+      border: 1px solid rgba(12,10,94,0.06);
+      border-radius: 24px;
+      padding: 44px 36px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      transition: transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+    .format-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(12,10,94,0.02), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .format-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(12,10,94,0.1);
+    }
+    .format-card:hover::before { opacity: 1; }
+
+    .format-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .format-icon svg { width: 26px; height: 26px; stroke: var(--white); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    .format-text h3 {
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+      color: var(--blue);
+    }
+    .format-text p {
+      font-size: 0.88rem;
+      color: rgba(12,10,94,0.5);
+      line-height: 1.6;
+    }
+    .format-tag {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue-mid);
+      opacity: 0.4;
+    }
+
+    /* ── DASHBOARD ── */
+    .dash-section {
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .dash-section-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .dash-section .section-heading { text-align: center; margin: 0 auto 72px; }
+    .dash-section .section-label { text-align: center; }
+
+    .dash-browser {
+      max-width: 960px;
+      margin: 0 auto;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--white-15);
+      background: rgba(255,255,255,0.03);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.3);
+    }
+
+    .dash-chrome {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid var(--white-08);
+    }
+    .dash-dots { display: flex; gap: 6px; }
+    .dash-dots span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+    }
+    .dash-url {
+      flex: 1;
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.04);
+      font-size: 0.75rem;
+      color: var(--white-60);
+    }
+
+    .dash-body {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      min-height: 400px;
+    }
+    @media (max-width: 600px) { .dash-body { grid-template-columns: 1fr; } }
+
+    .dash-side {
+      background: rgba(255,255,255,0.02);
+      padding: 14px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      border-right: 1px solid var(--white-08);
+    }
+    @media (max-width: 600px) { .dash-side { display: none; } }
+
+    .dash-side-icon {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+    }
+    .dash-side-icon.active { background: rgba(255,255,255,0.12); }
+
+    .dash-content {
+      padding: 24px;
+      background: #F5F5FA;
+      color: var(--blue);
+    }
+    .dash-content-title {
+      font-family: var(--font-h);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    .dash-kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 600px) { .dash-kpis { grid-template-columns: repeat(2, 1fr); } }
+    .dash-kpi {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 16px 14px;
+      border: 1px solid rgba(12,10,94,0.04);
+    }
+    .dash-kpi-val {
+      font-family: var(--font-h);
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .dash-kpi-lab {
+      font-size: 0.65rem;
+      color: rgba(12,10,94,0.4);
+      margin-top: 2px;
+    }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 600px) { .dash-grid { grid-template-columns: 1fr; } }
+
+    .dash-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 18px;
+      border: 1px solid rgba(12,10,94,0.04);
+    }
+    .dash-card-title {
+      font-family: var(--font-h);
+      font-size: 0.72rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: var(--blue);
+    }
+
+    .mini-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      height: 80px;
+    }
+    .mini-bar {
+      flex: 1;
+      background: var(--blue);
+      border-radius: 4px 4px 0 0;
+      height: var(--h);
+      opacity: 0.6;
+    }
+    .mini-bar:nth-child(4) { opacity: 1; }
+
+    .clip-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(12,10,94,0.04);
+    }
+    .clip-row:last-child { border-bottom: none; }
+    .clip-thumb {
+      width: 32px;
+      height: 44px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, var(--blue), var(--blue-mid));
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .clip-thumb::after {
+      content: '';
+      width: 0; height: 0;
+      border-left: 8px solid rgba(255,255,255,0.6);
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+    }
+    .clip-info { flex: 1; min-width: 0; }
+    .clip-title {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--blue);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .clip-meta {
+      font-size: 0.58rem;
+      color: rgba(12,10,94,0.35);
+    }
+    .clip-views {
+      font-family: var(--font-h);
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--blue);
+      flex-shrink: 0;
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testi {
+      padding: 120px 0;
+      background: var(--white);
+      color: var(--blue);
+      overflow: hidden;
+    }
+    .testi-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .testi .section-label { color: rgba(12,10,94,0.35); }
+    .testi .section-heading { color: var(--blue); }
+
+    .testi-slider {
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 4%, black 96%, transparent);
+    }
+    .testi-track {
+      display: flex;
+      gap: 20px;
+      animation: slide 45s linear infinite;
+      width: max-content;
+    }
+    .testi-track:hover { animation-play-state: paused; }
+    @keyframes slide { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    .testi-card {
+      flex-shrink: 0;
+      width: 400px;
+      padding: 36px;
+      border: 1px solid rgba(12,10,94,0.06);
+      border-radius: 24px;
+      background: var(--white);
+      transition: box-shadow 0.3s;
+    }
+    @media (max-width: 480px) { .testi-card { width: 310px; padding: 28px; } }
+    .testi-card:hover { box-shadow: 0 12px 40px rgba(12,10,94,0.06); }
+
+    .testi-stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 16px;
+    }
+    .testi-star {
+      width: 16px; height: 16px;
+      background: var(--blue);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    }
+
+    .testi-quote {
+      font-size: 0.93rem;
+      line-height: 1.65;
+      color: rgba(12,10,94,0.65);
+      margin-bottom: 24px;
+    }
+
+    .testi-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .testi-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: rgba(12,10,94,0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-h);
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--blue);
+    }
+    .testi-name { font-weight: 600; font-size: 0.88rem; }
+    .testi-role { font-size: 0.75rem; color: rgba(12,10,94,0.4); margin-top: 1px; }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 140px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(21,18,117,0.4), transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .cta-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 0 32px;
+      position: relative;
+    }
+    .cta-heading {
+      font-size: clamp(2.2rem, 5vw, 3.4rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .cta-sub {
+      font-size: 1.1rem;
+      color: var(--white-60);
+      margin-bottom: 48px;
+      line-height: 1.6;
+    }
+    .cta-btn {
+      padding: 20px 56px;
+      background: var(--white);
+      color: var(--blue);
+      font-family: var(--font-h);
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.2s;
+      animation: glow 3s ease-in-out infinite;
+    }
+    .cta-btn:hover { transform: translateY(-3px); }
+    @keyframes glow {
+      0%,100% { box-shadow: 0 0 24px rgba(255,255,255,0.1), 0 0 60px rgba(255,255,255,0.03); }
+      50% { box-shadow: 0 0 36px rgba(255,255,255,0.25), 0 0 90px rgba(255,255,255,0.08); }
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--blue-dark);
+      padding: 48px 0 28px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .footer-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+    .footer-brand {
+      font-family: var(--font-h);
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      list-style: none;
+    }
+    .footer-links a {
+      font-size: 0.82rem;
+      color: var(--white-60);
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-copy {
+      width: 100%;
+      text-align: center;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.2);
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+
+    /* ── ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1), transform 0.8s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- GRAIN -->
+  <svg class="grain" aria-hidden="true">
+    <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter>
+    <rect width="100%" height="100%" filter="url(#g)"/>
+  </svg>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand">
+        <svg viewBox="0 0 100 100" width="32" height="32" aria-hidden="true">
+          <path d="M 75 22 C 60 5, 20 5, 14 45 C 8 85, 35 96, 65 96 C 75 96, 82 90, 85 82" stroke="white" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <g transform="translate(50, 50)">
+            <path d="M -17 0 C -11 -13, 11 -13, 17 0 C 11 13, -11 13, -17 0 Z" fill="white"/>
+            <circle cx="0" cy="0" r="7" fill="#07063A"/>
+            <circle class="pupil" cx="0" cy="0" r="3.5" fill="#151275"/>
+          </g>
+        </svg>
+        Clipeo
+      </a>
+      <ul class="nav-links">
+        <li><a href="#process">Comment ça marche</a></li>
+        <li><a href="#formats">Nos formats</a></li>
+        <li><a href="#dashboard">Espace client</a></li>
+        <li><a href="#testi">Témoignages</a></li>
+      </ul>
+      <button class="nav-cta-btn" onclick="location.href='#cta'">Clip test gratuit</button>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="mob-menu" id="mob">
+    <a href="#process" onclick="closeMob()">Comment ça marche</a>
+    <a href="#formats" onclick="closeMob()">Nos formats</a>
+    <a href="#dashboard" onclick="closeMob()">Espace client</a>
+    <a href="#testi" onclick="closeMob()">Témoignages</a>
+    <a href="#cta" onclick="closeMob()">Clip test gratuit</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-container">
+      <div class="hero-left">
+        <div class="hero-tag"><span class="hero-tag-dot"></span>+120 créateurs accompagnés</div>
+        <h1>Vos contenus longs<br>deviennent des<br>shorts <em>viraux</em>.</h1>
+        <p class="hero-sub">Nos clippers transforment vos podcasts, lives et interviews en clips verticaux taillés pour TikTok, Reels et Shorts. Vous filmez, on fait le reste.</p>
+        <div class="hero-btns">
+          <button class="btn-fill" onclick="location.href='#cta'">Recevoir un clip test gratuit</button>
+          <button class="btn-ghost" onclick="location.href='#formats'">Voir nos formats</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <!-- Phone 1 -->
+        <div class="phone phone-1">
+          <div class="phone-notch"></div>
+          <div class="phone-content">
+            <div class="phone-vid">
+              <div class="phone-vid-play"></div>
+              <div class="phone-likes">
+                <div class="phone-likes-item"><div class="phone-likes-icon"></div><span class="phone-likes-count">340K</span></div>
+                <div class="phone-likes-item"><div class="phone-likes-icon"></div><span class="phone-likes-count">12K</span></div>
+              </div>
+              <div class="phone-sub">3 erreurs en trading</div>
+              <div class="phone-handle">@coach_finance</div>
+            </div>
+            <div class="phone-bar" style="--progress: 72%;"></div>
+          </div>
+        </div>
+        <!-- Phone 2 -->
+        <div class="phone phone-2">
+          <div class="phone-notch"></div>
+          <div class="phone-content">
+            <div class="phone-vid">
+              <div class="phone-vid-play"></div>
+              <div class="phone-likes">
+                <div class="phone-likes-item"><div class="phone-likes-icon"></div><span class="phone-likes-count">2.3M</span></div>
+                <div class="phone-likes-item"><div class="phone-likes-icon"></div><span class="phone-likes-count">89K</span></div>
+              </div>
+              <div class="phone-sub">Le secret des top 1%</div>
+              <div class="phone-handle">@mindset_fr</div>
+            </div>
+            <div class="phone-bar" style="--progress: 45%;"></div>
+          </div>
+        </div>
+        <!-- Phone 3 -->
+        <div class="phone phone-3">
+          <div class="phone-notch"></div>
+          <div class="phone-content">
+            <div class="phone-vid">
+              <div class="phone-vid-play"></div>
+              <div class="phone-sub">Morning routine CEO</div>
+              <div class="phone-handle">@startup_daily</div>
+            </div>
+            <div class="phone-bar" style="--progress: 88%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-label">Formats maîtrisés</div>
+    <div class="marquee-track">
+      <span class="marquee-item">TikTok</span>
+      <span class="marquee-item">Instagram Reels</span>
+      <span class="marquee-item">YouTube Shorts</span>
+      <span class="marquee-item">Clips Podcast</span>
+      <span class="marquee-item">Audiogrammes</span>
+      <span class="marquee-item">Threads vidéo</span>
+      <span class="marquee-item">Stories</span>
+      <span class="marquee-item">Teasers</span>
+      <span class="marquee-item">TikTok</span>
+      <span class="marquee-item">Instagram Reels</span>
+      <span class="marquee-item">YouTube Shorts</span>
+      <span class="marquee-item">Clips Podcast</span>
+      <span class="marquee-item">Audiogrammes</span>
+      <span class="marquee-item">Threads vidéo</span>
+      <span class="marquee-item">Stories</span>
+      <span class="marquee-item">Teasers</span>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <section class="stats" id="stats">
+    <div class="stats-inner">
+      <div class="stat-block reveal">
+        <div class="stat-num" data-target="500" data-prefix="+">0</div>
+        <div class="stat-lab">clips livrés par mois</div>
+        <div class="stat-bar"><div class="stat-bar-fill" data-width="82%"></div></div>
+      </div>
+      <div class="stat-block reveal reveal-d1">
+        <div class="stat-num" data-target="150" data-prefix="+" data-suffix="M">0</div>
+        <div class="stat-lab">vues générées pour nos clients</div>
+        <div class="stat-bar"><div class="stat-bar-fill" data-width="95%"></div></div>
+      </div>
+      <div class="stat-block reveal reveal-d2">
+        <div class="stat-num" data-target="98" data-suffix="%">0</div>
+        <div class="stat-lab">de clients renouvelés</div>
+        <div class="stat-bar"><div class="stat-bar-fill" data-width="98%"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="process" id="process">
+    <div class="process-inner">
+      <div class="section-label reveal">Comment ça marche</div>
+      <h2 class="section-heading reveal reveal-d1">Vous filmez. On clipe.<br>Ça viralise.</h2>
+
+      <div class="process-steps">
+        <div class="step reveal">
+          <span class="step-num">01</span>
+          <h3>Envoyez vos rushs</h3>
+          <p>Podcast, live Twitch, interview, conférence, vlog — envoyez votre contenu long via Drive, Dropbox ou WeTransfer.</p>
+        </div>
+        <div class="step reveal reveal-d1">
+          <span class="step-num">02</span>
+          <h3>Nos clippers montent</h3>
+          <p>Un clipper dédié sélectionne les meilleurs moments, ajoute sous-titres dynamiques, hooks visuels et son trending. Format 9:16.</p>
+        </div>
+        <div class="step reveal reveal-d2">
+          <span class="step-num">03</span>
+          <h3>Recevez vos clips</h3>
+          <p>3 à 10 clips livrés sous 48h dans votre espace client. Optimisés pour TikTok, Reels et Shorts. Prêts à poster.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMATS -->
+  <section class="formats" id="formats">
+    <div class="formats-inner">
+      <div class="section-label reveal">Nos formats</div>
+      <h2 class="section-heading reveal reveal-d1">Un contenu long, des dizaines<br>de clips viraux.</h2>
+
+      <div class="formats-grid">
+        <div class="format-card reveal">
+          <div class="format-icon">
+            <svg viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+          </div>
+          <div class="format-text">
+            <h3>Clips TikTok</h3>
+            <p>Hooks percutants, sous-titres animés, sons trending. Montage taillé pour l'algorithme et la rétention des 3 premières secondes.</p>
+          </div>
+          <span class="format-tag">9:16</span>
+        </div>
+        <div class="format-card reveal reveal-d1">
+          <div class="format-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M2 12h20"/><path d="M12 2v10"/><polygon points="10 9 15 6.5 10 4"/></svg>
+          </div>
+          <div class="format-text">
+            <h3>Instagram Reels</h3>
+            <p>Format premium, esthétique soignée, transitions fluides. Pensé pour l'engagement et le partage en story.</p>
+          </div>
+          <span class="format-tag">9:16</span>
+        </div>
+        <div class="format-card reveal reveal-d2">
+          <div class="format-icon">
+            <svg viewBox="0 0 24 24"><polygon points="10 8 16 12 10 16"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg>
+          </div>
+          <div class="format-text">
+            <h3>YouTube Shorts</h3>
+            <p>Clips optimisés pour le Shelf Shorts. Titrage accrocheur, pacing rapide, call-to-action vers votre chaîne longue.</p>
+          </div>
+          <span class="format-tag">9:16</span>
+        </div>
+        <div class="format-card reveal reveal-d3">
+          <div class="format-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </div>
+          <div class="format-text">
+            <h3>Clips Podcast</h3>
+            <p>Audiogrammes avec waveform animée, sous-titres mot-à-mot et mise en scène des punchlines pour promouvoir vos épisodes.</p>
+          </div>
+          <span class="format-tag">Audio → Vidéo</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section class="dash-section" id="dashboard">
+    <div class="dash-section-inner">
+      <div class="section-label reveal">Votre espace client</div>
+      <h2 class="section-heading reveal reveal-d1">Vos clips livrés, prêts à poster</h2>
+
+      <div class="dash-browser reveal reveal-d2">
+        <div class="dash-chrome">
+          <div class="dash-dots"><span></span><span></span><span></span></div>
+          <div class="dash-url">app.clipeo.fr/mes-clips</div>
+        </div>
+        <div class="dash-body">
+          <div class="dash-side">
+            <div class="dash-side-icon active"></div>
+            <div class="dash-side-icon"></div>
+            <div class="dash-side-icon"></div>
+            <div class="dash-side-icon"></div>
+          </div>
+          <div class="dash-content">
+            <div class="dash-content-title">Mes clips — Février 2026</div>
+            <div class="dash-kpis">
+              <div class="dash-kpi"><div class="dash-kpi-val">32</div><div class="dash-kpi-lab">Clips livrés</div></div>
+              <div class="dash-kpi"><div class="dash-kpi-val" style="color:#151275;">1.2M</div><div class="dash-kpi-lab">Vues cumulées</div></div>
+              <div class="dash-kpi"><div class="dash-kpi-val">8.4%</div><div class="dash-kpi-lab">Engagement moyen</div></div>
+              <div class="dash-kpi"><div class="dash-kpi-val">6</div><div class="dash-kpi-lab">En montage</div></div>
+            </div>
+            <div class="dash-grid">
+              <div class="dash-card">
+                <div class="dash-card-title">Vues par semaine</div>
+                <div class="mini-bars">
+                  <div class="mini-bar" style="--h:40%"></div>
+                  <div class="mini-bar" style="--h:62%"></div>
+                  <div class="mini-bar" style="--h:48%"></div>
+                  <div class="mini-bar" style="--h:90%"></div>
+                </div>
+              </div>
+              <div class="dash-card">
+                <div class="dash-card-title">Derniers clips livrés</div>
+                <div class="clip-row"><div class="clip-thumb"></div><div class="clip-info"><div class="clip-title">3 erreurs en trading</div><div class="clip-meta">TikTok · Hier</div></div><div class="clip-views">340K</div></div>
+                <div class="clip-row"><div class="clip-thumb"></div><div class="clip-info"><div class="clip-title">Le secret des top 1%</div><div class="clip-meta">Reel · Lun.</div></div><div class="clip-views">128K</div></div>
+                <div class="clip-row"><div class="clip-thumb"></div><div class="clip-info"><div class="clip-title">Routine morning CEO</div><div class="clip-meta">Short · Dim.</div></div><div class="clip-views">89K</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testi" id="testi">
+    <div class="testi-inner">
+      <div class="section-label reveal">Témoignages</div>
+      <h2 class="section-heading reveal reveal-d1">Ils nous confient leur contenu</h2>
+    </div>
+    <div class="testi-slider">
+      <div class="testi-track">
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">Je leur envoie mes rushs de podcast le lundi, j'ai 8 clips prêts le mercredi. Mon TikTok est passé de 2K à 85K abonnés en 4 mois.</p><div class="testi-author"><div class="testi-avatar">KB</div><div><div class="testi-name">Karim Benziane</div><div class="testi-role">Podcasteur, 120K abonnés TikTok</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">Un de nos clips a fait 2,3M de vues. Clipeo a trouvé le moment exact dans un live de 2h que même moi j'avais oublié. Sens du hook redoutable.</p><div class="testi-author"><div class="testi-avatar">LM</div><div><div class="testi-name">Léa Moreau</div><div class="testi-role">Streameuse Twitch, 45K followers</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">On publie 30 shorts par mois grâce à Clipeo. Avant, mon monteur en faisait 8. Qualité constante, style qui colle à ma marque.</p><div class="testi-author"><div class="testi-avatar">MD</div><div><div class="testi-name">Maxime Durand</div><div class="testi-role">Coach business, 200K sur YouTube</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">J'ai testé 3 agences avant. Clipeo est la seule qui comprend les codes TikTok. Les sous-titres, le rythme, les cuts — tout est pensé rétention.</p><div class="testi-author"><div class="testi-avatar">SP</div><div><div class="testi-name">Sarah Petit</div><div class="testi-role">Créatrice fitness, 300K sur Instagram</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">Depuis Clipeo, nos Reels font x5 en reach. L'équipe capte les moments forts mieux que nous. On ne revient pas en arrière.</p><div class="testi-author"><div class="testi-avatar">HV</div><div><div class="testi-name">Hugo Vasseur</div><div class="testi-role">Fondateur, marque DTC skincare</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">On externalise le clipping de nos 15 talents à Clipeo. Réactifs, créatifs. Nos influenceurs pensent qu'on a une armée de monteurs.</p><div class="testi-author"><div class="testi-avatar">JA</div><div><div class="testi-name">Julie Arnaud</div><div class="testi-role">Directrice, agence talents digitaux</div></div></div></div>
+        <!-- Duplication -->
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">Je leur envoie mes rushs de podcast le lundi, j'ai 8 clips prêts le mercredi. Mon TikTok est passé de 2K à 85K abonnés en 4 mois.</p><div class="testi-author"><div class="testi-avatar">KB</div><div><div class="testi-name">Karim Benziane</div><div class="testi-role">Podcasteur, 120K abonnés TikTok</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">Un de nos clips a fait 2,3M de vues. Clipeo a trouvé le moment exact dans un live de 2h que même moi j'avais oublié. Sens du hook redoutable.</p><div class="testi-author"><div class="testi-avatar">LM</div><div><div class="testi-name">Léa Moreau</div><div class="testi-role">Streameuse Twitch, 45K followers</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">On publie 30 shorts par mois grâce à Clipeo. Avant, mon monteur en faisait 8. Qualité constante, style qui colle à ma marque.</p><div class="testi-author"><div class="testi-avatar">MD</div><div><div class="testi-name">Maxime Durand</div><div class="testi-role">Coach business, 200K sur YouTube</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">J'ai testé 3 agences avant. Clipeo est la seule qui comprend les codes TikTok. Les sous-titres, le rythme, les cuts — tout est pensé rétention.</p><div class="testi-author"><div class="testi-avatar">SP</div><div><div class="testi-name">Sarah Petit</div><div class="testi-role">Créatrice fitness, 300K sur Instagram</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">Depuis Clipeo, nos Reels font x5 en reach. L'équipe capte les moments forts mieux que nous. On ne revient pas en arrière.</p><div class="testi-author"><div class="testi-avatar">HV</div><div><div class="testi-name">Hugo Vasseur</div><div class="testi-role">Fondateur, marque DTC skincare</div></div></div></div>
+        <div class="testi-card"><div class="testi-stars"><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div><div class="testi-star"></div></div><p class="testi-quote">On externalise le clipping de nos 15 talents à Clipeo. Réactifs, créatifs. Nos influenceurs pensent qu'on a une armée de monteurs.</p><div class="testi-author"><div class="testi-avatar">JA</div><div><div class="testi-name">Julie Arnaud</div><div class="testi-role">Directrice, agence talents digitaux</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="cta">
+    <div class="cta-inner">
+      <h2 class="cta-heading reveal">Votre prochain clip viral est dans vos rushs. On le trouve.</h2>
+      <p class="cta-sub reveal reveal-d1">Envoyez-nous une vidéo. On vous livre un clip test gratuit sous 48h.</p>
+      <div class="reveal reveal-d2">
+        <button class="cta-btn">Recevoir mon clip test gratuit</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">Clipeo</div>
+      <ul class="footer-links">
+        <li><a href="#hero">Accueil</a></li>
+        <li><a href="#formats">Nos formats</a></li>
+        <li><a href="#dashboard">Espace client</a></li>
+        <li><a href="#cta">Contact</a></li>
+        <li><a href="#">Mentions légales</a></li>
+      </ul>
+      <div class="footer-copy">&copy; 2026 Clipeo — Agence de clipping vidéo. Tous droits réservés.</div>
+    </div>
+  </footer>
+
+  <script>
+    /* NAV SCROLL */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    /* MOBILE MENU */
+    const burger = document.getElementById('burger');
+    const mob = document.getElementById('mob');
+    burger.addEventListener('click', () => mob.classList.toggle('open'));
+    function closeMob() { mob.classList.remove('open'); }
+
+    /* REVEAL ON SCROLL */
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.15 });
+    reveals.forEach(el => observer.observe(el));
+
+    /* STAT COUNTERS */
+    const statNums = document.querySelectorAll('.stat-num');
+    let statsDone = false;
+    const statObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !statsDone) {
+          statsDone = true;
+          statNums.forEach(el => {
+            const target = +el.dataset.target;
+            const prefix = el.dataset.prefix || '';
+            const suffix = el.dataset.suffix || '';
+            const start = performance.now();
+            const dur = 2200;
+            function tick(now) {
+              const p = Math.min((now - start) / dur, 1);
+              const ease = 1 - Math.pow(1 - p, 3);
+              el.textContent = prefix + Math.round(target * ease) + suffix;
+              if (p < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+          });
+          /* Animate bars */
+          document.querySelectorAll('.stat-bar-fill').forEach(bar => {
+            bar.style.width = bar.dataset.width;
+          });
+          statObs.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    const statsSection = document.getElementById('stats');
+    if (statsSection) statObs.observe(statsSection);
+
+    /* PARALLAX PHONES */
+    const phones = document.querySelectorAll('.phone');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reducedMotion) {
+      window.addEventListener('scroll', () => {
+        const hero = document.getElementById('hero');
+        if (!hero) return;
+        const rect = hero.getBoundingClientRect();
+        const progress = -rect.top / window.innerHeight;
+        phones.forEach((p, i) => {
+          const speed = [0.03, 0.05, 0.02][i] || 0.03;
+          const y = progress * speed * 200;
+          const base = p.className.includes('phone-1') ? 'rotate(-6deg) translateX(-100px)'
+            : p.className.includes('phone-2') ? 'rotate(3deg) translateX(60px) translateY(20px)'
+            : 'rotate(10deg) translateX(180px) translateY(-10px)';
+          p.style.transform = base + ` translateY(${y}px)`;
+        });
+      }, { passive: true });
+    }
+
+    /* EYE TRACKING */
+    const pupils = document.querySelectorAll('.pupil');
+    document.addEventListener('mousemove', (e) => {
+      const logo = document.querySelector('.nav-brand svg');
+      if (!logo) return;
+      const r = logo.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const angle = Math.atan2(e.clientY - cy, e.clientX - cx);
+      const dist = Math.min(Math.hypot(e.clientX - cx, e.clientY - cy) / 100, 3);
+      pupils.forEach(p => {
+        p.setAttribute('cx', Math.cos(angle) * dist);
+        p.setAttribute('cy', Math.sin(angle) * dist);
+      });
+    });
+  </script>
+</body>
+</html>
