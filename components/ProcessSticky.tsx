@@ -20,6 +20,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 export type Step = {
   num: string;
   title: string;
+  lead: string;
   bullets: string[];
   img: string;
   alt: string;
@@ -30,11 +31,12 @@ export type Step = {
 export const STEPS: Step[] = [
   {
     num: "01",
-    title: "Audit",
+    title: "On repère vos pépites.",
+    lead: "Tout démarre par un audit gratuit de votre contenu long. On cherche, dans vos vidéos, podcasts et lives, les moments capables de devenir viraux, et on cadre l'objectif avant même de lancer.",
     bullets: [
-      "Analyse du potentiel viral de vos contenus.",
-      "Objectifs de vues et de redirection.",
-      "Stratégie éditoriale sur mesure.",
+      "On isole les 30 secondes qui peuvent faire des millions de vues, là où d'autres voient une vidéo banale.",
+      "On fixe avec vous un objectif de vues chiffré, inscrit au contrat. Pas une promesse en l'air.",
+      "On définit les angles qui parlent vraiment à votre audience, jamais du clip publié au hasard.",
     ],
     img: "/img/process/etape-1.png",
     alt: "Audit du contenu : analyse du potentiel viral de la bibliothèque vidéo",
@@ -43,11 +45,12 @@ export const STEPS: Step[] = [
   },
   {
     num: "02",
-    title: "Découpage",
+    title: "On les démultiplie.",
+    lead: "Une fois les angles validés, notre réseau de clippers passe à la production. Une seule vidéo longue devient des dizaines de clips courts, chacun monté pour percer sur sa plateforme.",
     bullets: [
-      "Lancement d'une campagne privée.",
-      "Découpage et montage par nos clippers.",
-      "Respect de votre image et de vos exigences.",
+      "Découpage, montage et sous-titres aux codes de TikTok, Reels, Shorts et Twitch, plateforme par plateforme.",
+      "Hook dans les 3 premières secondes, rythme nerveux, format vertical : tout est pensé pour la rétention.",
+      "Vous validez la ligne éditoriale, on gère le volume. Votre image reste sous contrôle, à chaque clip.",
     ],
     img: "/img/process/etape-2.png",
     alt: "Découpage du contenu long en clips par les clippers",
@@ -56,11 +59,12 @@ export const STEPS: Step[] = [
   },
   {
     num: "03",
-    title: "Distribution",
+    title: "On vous rend omniprésent.",
+    lead: "Les clips sont déployés en continu, sur des dizaines de comptes, jusqu'à occuper la For You Page de votre audience. C'est la répétition qui installe la marque, puis ramène vers votre contenu long.",
     bullets: [
-      "Distribution sur des dizaines de comptes.",
-      "Tracking par contenu, plateforme et thème.",
-      "Rapport détaillé en fin de campagne.",
+      "Diffusion permanente sur TikTok, Reels, Shorts et Twitch, jour après jour, sans interruption.",
+      "Chaque vue est suivie, par clip, par plateforme et par angle : aucune dépense à l'aveugle.",
+      "En fin de campagne, un rapport clair : ce qui a cartonné, ce qu'on coupe, et où l'on scale pour la suite.",
     ],
     img: "/img/process/etape-3.png",
     alt: "Distribution des clips sur des dizaines de comptes multi-plateformes",
@@ -75,11 +79,11 @@ export const STEPS: Step[] = [
    sinon les lignes glissent et traversent les contenus).
    Lignes à y = 80 / 430 / 780, arcs r = 175. */
 const SNAKE_PATH =
-  "M80,80 H1015 " +
-  "A175,175 0 0 1 1015,430 " +
-  "H185 " +
-  "A175,175 0 0 0 185,780 " +
-  "H1120";
+  "M90,90 H980 " +
+  "A220,220 0 0 1 980,530 " +
+  "H220 " +
+  "A220,220 0 0 0 220,970 " +
+  "H1110";
 /* fractions de longueur où chaque phase est atteinte (le long du S) */
 const STEP_AT = [0.08, 0.42, 0.78];
 
@@ -94,6 +98,7 @@ const CSS = `
   .psl-step{display:block;font-family:var(--font-d);font-weight:800;letter-spacing:-.02em;line-height:1;
     font-size:clamp(2.4rem,4.4vw,3.4rem);color:var(--sky);margin-bottom:16px}
   .psl-item h3{font-family:var(--font-d);font-weight:800;font-size:clamp(1.5rem,2.8vw,2.1rem);letter-spacing:-.02em;color:var(--ink);margin-bottom:12px}
+  .psl-lead{font-size:.98rem;line-height:1.6;color:var(--w70);margin-bottom:16px;max-width:560px}
   .psl-list{list-style:none;display:flex;flex-direction:column;gap:9px}
   .psl-list li{position:relative;padding-left:20px;color:var(--w55);font-size:.95rem;line-height:1.55}
   .psl-list li:before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--sky)}
@@ -104,20 +109,21 @@ const CSS = `
   .psl-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 
   @media(min-width:900px){
-    .psl-wrap{height:1080px}
+    .psl-wrap{height:1320px}
     .psl-snake{display:block;position:absolute;inset:0;z-index:0;pointer-events:none}
     .psl-snake svg{width:100%;height:100%}
     /* 3 couloirs horizontaux, contenu sous sa ligne, côté alterné */
     .psl-row{position:absolute;left:0;right:0;padding:0;border:none}
-    /* chaque rangée est calée au CENTRE de sa boucle (255/605/930) ;
-       le centrage vertical vit sur .psl-item (translateY) car GSAP anime
-       y sur la rangée et écraserait son transform */
-    .psl-row-0{top:255px}
-    .psl-row-1{top:605px}
-    .psl-row-2{top:930px}
+    /* lignes du serpentin à y = 90 / 530 / 970 ; centres des boucles
+       (= tops des rangées, le centrage vertical vit sur .psl-item) :
+       310 / 750 / 1145. Espacement large pour laisser respirer le texte. */
+    .psl-row-0{top:310px}
+    .psl-row-1{top:750px}
+    .psl-row-2{top:1145px}
     .psl-row-0,.psl-row-2{display:flex;justify-content:flex-start;padding-left:5%}
     .psl-row-1{display:flex;justify-content:flex-end;padding-right:9%}
     .psl-item{flex-direction:row;align-items:center;gap:30px;max-width:660px;transform:translateY(-50%)}
+    .psl-item-text{max-width:560px}
     .psl-row-1 .psl-item{flex-direction:row-reverse}
     .psl-shot{flex:0 0 280px}
     .psl-text{min-width:0}
@@ -165,7 +171,7 @@ function Shot({ step, eager = false }: { step: Step; eager?: boolean }) {
   );
 }
 
-export default function ProcessSticky({ labelMode = false, steps = STEPS }: { labelMode?: boolean; steps?: Step[] }) {
+export default function ProcessSticky({ labelMode = false, images = true, steps = STEPS }: { labelMode?: boolean; images?: boolean; steps?: Step[] }) {
   const wrapRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -206,7 +212,7 @@ export default function ProcessSticky({ labelMode = false, steps = STEPS }: { la
 
       {/* Le serpentin : piste grise + remplissage bleu */}
       <div className="psl-snake" aria-hidden="true">
-        <svg viewBox="0 0 1200 1080" preserveAspectRatio="none" fill="none">
+        <svg viewBox="0 0 1200 1320" preserveAspectRatio="none" fill="none">
           <defs>
             <linearGradient id="pslGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#0a63ff" />
@@ -222,15 +228,12 @@ export default function ProcessSticky({ labelMode = false, steps = STEPS }: { la
       {steps.map((s, i) => (
         <div key={i} className={`psl-row psl-row-${i}`}>
           {!labelMode && <span className="psl-big" aria-hidden="true">{s.num}</span>}
-          <div className="psl-item">
-            {!labelMode && <Shot step={s} eager={i === 0} />}
+          <div className={`psl-item${!images || labelMode ? " psl-item-text" : ""}`}>
+            {images && !labelMode && <Shot step={s} eager={i === 0} />}
             <div className="psl-text">
-              {labelMode ? (
-                <span className="psl-step">Étape {i + 1}</span>
-              ) : (
-                <span className="psl-num">Phase {s.num}</span>
-              )}
+              {labelMode && <span className="psl-step">Étape {i + 1}</span>}
               <h3>{s.title}</h3>
+              <p className="psl-lead">{s.lead}</p>
               <ul className="psl-list">
                 {s.bullets.map((b, bi) => <li key={bi}>{b}</li>)}
               </ul>

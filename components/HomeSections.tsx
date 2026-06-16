@@ -140,7 +140,7 @@ export default function HomeSections() {
             <h2>Le clipping, <span className="grad">à grande échelle.</span></h2>
             <p>Notre méthode en <b>3 grandes étapes</b>.</p>
           </div>
-          <ProcessSticky />
+          <ProcessSticky images={false} />
         </div>
       </section>
 
@@ -347,18 +347,6 @@ export default function HomeSections() {
           <div className="bento-blog stagger">
             {/* Article vedette — large */}
             <Link href="/blog/generateurs-ia-vs-agence-clipping" className="bb-card bb-feat">
-              <div className="bb-bg" aria-hidden="true">
-                <svg viewBox="0 0 800 320" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g stroke="var(--sky)" strokeOpacity="0.22">
-                    <path d="M0 40H800M0 80H800M0 120H800M0 160H800M0 200H800M0 240H800M0 280H800" />
-                    <path d="M80 0V320M160 0V320M240 0V320M320 0V320M400 0V320M480 0V320M560 0V320M640 0V320M720 0V320" />
-                  </g>
-                  <path d="M20 170C60 100 140 100 200 160C235 195 270 195 315 160C370 117 430 130 480 175C520 210 560 210 610 175C660 140 700 150 780 120" stroke="var(--royal)" strokeOpacity="0.7" strokeWidth="2" strokeLinecap="round" />
-                  <circle cx="200" cy="160" r="3.5" fill="var(--royal)" />
-                  <circle cx="480" cy="175" r="3.5" fill="var(--royal)" />
-                  <circle cx="780" cy="120" r="3.5" fill="var(--royal)" />
-                </svg>
-              </div>
               <div className="bb-in">
                 <span className="bb-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8" /><path d="M21 7v5h-5" /></svg>
@@ -372,20 +360,6 @@ export default function HomeSections() {
 
             {/* Petit */}
             <Link href="/blog/se-lancer-clipping-2026" className="bb-card">
-              <div className="bb-bg" aria-hidden="true">
-                <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <pattern id="bbGrid" width="24" height="24" patternUnits="userSpaceOnUse">
-                      <path d="M24 0H0V24" stroke="var(--sky)" strokeOpacity="0.25" strokeWidth="0.5" />
-                    </pattern>
-                  </defs>
-                  <rect width="400" height="300" fill="url(#bbGrid)" />
-                  <path d="M40 230C110 180 180 80 350 120" stroke="var(--royal)" strokeOpacity="0.6" strokeWidth="1.4" fill="none" />
-                  <circle cx="140" cy="150" r="3" fill="var(--royal)" />
-                  <circle cx="260" cy="120" r="3" fill="var(--royal)" />
-                  <circle cx="330" cy="140" r="3" fill="var(--royal)" />
-                </svg>
-              </div>
               <div className="bb-in">
                 <span className="bb-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4H11v15.5H4.5A2.5 2.5 0 0 0 2 22z" /><path d="M22 6.5A2.5 2.5 0 0 0 19.5 4H13v15.5h6.5a2.5 2.5 0 0 1 2.5 2.5z" /></svg>
@@ -398,19 +372,6 @@ export default function HomeSections() {
 
             {/* Pleine largeur */}
             <Link href="/blog/marketing-podcast-faire-grandir-emission" className="bb-card bb-wide">
-              <div className="bb-bg" aria-hidden="true">
-                <svg viewBox="0 0 800 220" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <defs>
-                    <pattern id="bbDots" width="20" height="20" patternUnits="userSpaceOnUse">
-                      <circle cx="1" cy="1" r="1" fill="var(--sky)" fillOpacity="0.3" />
-                    </pattern>
-                  </defs>
-                  <rect width="800" height="220" fill="url(#bbDots)" />
-                  <path d="M20 130C90 70 150 150 220 120C290 90 330 110 400 80C470 50 520 110 590 95C660 80 710 110 780 70" stroke="var(--royal)" strokeOpacity="0.6" strokeWidth="1.6" fill="none" />
-                  <circle cx="400" cy="110" r="58" stroke="var(--royal)" strokeOpacity="0.25" strokeWidth="1.2" fill="none" />
-                  <circle cx="400" cy="110" r="30" stroke="var(--royal)" strokeOpacity="0.35" strokeWidth="1.2" fill="none" />
-                </svg>
-              </div>
               <div className="bb-in">
                 <span className="bb-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M10 9l5 3-5 3z" fill="var(--sky)" stroke="none" /></svg>
