@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowR, Check, CheckCircle } from "@/components/Icons";
 import CinematicHeroV6 from "@/components/CinematicHeroV6";
 import ProcessSticky from "@/components/ProcessSticky";
@@ -11,6 +11,8 @@ import { TRUST_BAR } from "@/lib/site";
 
 export default function HomeSections() {
   const rootRef = useRef<HTMLDivElement>(null);
+  // « Pour qui » sur mobile : accordéon (clic = déroule la carte client)
+  const [openWho, setOpenWho] = useState<string | null>(null);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -154,27 +156,31 @@ export default function HomeSections() {
           <div className="omni-steps stagger">
             <div className="omni-step">
               <div className="omni-node"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><path d="M7 22l-4-4 4-4" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></svg></div>
-              <span className="omni-ix">Étape 01</span>
-              <h3>Répétition</h3>
-              <p>Vos clips reviennent plusieurs fois par jour dans la For You Page de votre cible, sur des dizaines de comptes, jour après jour.</p>
+              <div className="omni-txt">
+                <h3>Répétition</h3>
+                <p>Vos clips reviennent plusieurs fois par jour dans la For You Page de votre cible, sur des dizaines de comptes, jour après jour.</p>
+              </div>
             </div>
             <div className="omni-step">
               <div className="omni-node"><svg viewBox="0 0 24 24"><path d="M9.5 2a4.5 4.5 0 0 0-4.5 4.5c0 .5-.3 1-.7 1.4A4 4 0 0 0 6 15a3.5 3.5 0 0 0 7 0V6.5A4.5 4.5 0 0 0 9.5 2z" /><path d="M14.5 2A4.5 4.5 0 0 1 19 6.5c0 .5.3 1 .7 1.4A4 4 0 0 1 18 15a3.5 3.5 0 0 1-7 0" /></svg></div>
-              <span className="omni-ix">Étape 02</span>
-              <h3>Mémorisation</h3>
-              <p>À force de revoir le même visage, votre marque s&apos;ancre durablement dans l&apos;esprit de l&apos;audience.</p>
+              <div className="omni-txt">
+                <h3>Mémorisation</h3>
+                <p>À force de revoir le même visage, votre marque s&apos;ancre durablement dans l&apos;esprit de l&apos;audience.</p>
+              </div>
             </div>
             <div className="omni-step">
               <div className="omni-node"><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" /></svg></div>
-              <span className="omni-ix">Étape 03</span>
-              <h3>Confiance</h3>
-              <p>La familiarité crée la confiance&nbsp;: un lien s&apos;installe, et le spectateur passif devient abonné ou client.</p>
+              <div className="omni-txt">
+                <h3>Confiance</h3>
+                <p>La familiarité crée la confiance&nbsp;: un lien s&apos;installe, et le spectateur passif devient abonné ou client.</p>
+              </div>
             </div>
             <div className="omni-step">
               <div className="omni-node"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3" /><path d="m10 9 5 3-5 3z" /></svg></div>
-              <span className="omni-ix">Étape 04</span>
-              <h3>Redirection</h3>
-              <p>L&apos;audience se redirige naturellement vers votre contenu long&nbsp;: chaîne, podcast, film, live.</p>
+              <div className="omni-txt">
+                <h3>Redirection</h3>
+                <p>L&apos;audience se redirige naturellement vers votre contenu long&nbsp;: chaîne, podcast, film, live.</p>
+              </div>
             </div>
           </div>
 
@@ -236,21 +242,47 @@ export default function HomeSections() {
               { ix: "04", name: "Cinéma & sorties", cover: "Film_Plus_Fort_que_Moi", client: "Plus Fort que Moi", views: "+43,7 M", clips: "457" },
               { ix: "05", name: "Émissions & Twitch", cover: "Zebro_et_Leow", client: "Zebro & Leow", views: "+18,4 M", clips: "194" },
               { ix: "06", name: "Événements", cover: "Crunch_Creator", client: "Crunch Creator", views: "+36,2 M", clips: "367" },
-            ].map((w) => (
-              <Link
-                href="/pour-qui"
-                className="who-row"
-                key={w.ix}
-                data-cover={`/img/Clipeo%20covers%20campagnes/${w.cover}.png`}
-                data-client={w.client}
-                data-views={w.views}
-                data-clips={w.clips}
-              >
-                <span className="ix">{w.ix}</span>
-                <span className="name">{w.name}</span>
-                <span className="view">Voir les campagnes <ArrowR /></span>
-              </Link>
-            ))}
+            ].map((w) => {
+              const open = openWho === w.ix;
+              const cover = `/img/Clipeo%20covers%20campagnes/${w.cover}.png`;
+              return (
+                <div className={`who-item${open ? " open" : ""}`} key={w.ix}>
+                  <Link
+                    href="/pour-qui"
+                    className="who-row"
+                    data-cover={cover}
+                    data-client={w.client}
+                    data-views={w.views}
+                    data-clips={w.clips}
+                    aria-expanded={open}
+                    onClick={(e) => {
+                      // sur tactile (pas de hover) : déroule la carte au lieu de naviguer
+                      if (window.matchMedia("(hover: none)").matches) {
+                        e.preventDefault();
+                        setOpenWho(open ? null : w.ix);
+                      }
+                    }}
+                  >
+                    <span className="ix">{w.ix}</span>
+                    <span className="name">{w.name}</span>
+                    <span className="view">Voir les campagnes <ArrowR /></span>
+                    <span className="who-caret" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
+                    </span>
+                  </Link>
+                  <div className="who-drop">
+                    <Link href="/pour-qui" className="who-drop-in">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={cover} alt={w.client} loading="lazy" width={320} height={180} />
+                      <div className="who-drop-stats">
+                        <span><b>{w.views}</b><i>vues générées</i></span>
+                        <span><b>{w.clips}</b><i>clips produits</i></span>
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 

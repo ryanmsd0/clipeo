@@ -93,7 +93,9 @@ const CSS = `
   .psl-row{padding:30px 0;border-top:1px solid var(--w08)}
   .psl-row:first-child{border-top:none}
   .psl-item{display:flex;flex-direction:column;gap:18px}
-  .psl-num{font-family:var(--font-m);font-size:.7rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--sky);margin-bottom:10px;display:block}
+  /* eyebrow « Étape 0X » : caché en desktop (le grand numéro filigrane suffit),
+     réaffiché sur mobile (carrousel) où le filigrane disparaît. */
+  .psl-num{font-family:var(--font-m);font-size:.66rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--sky);margin-bottom:10px;display:none}
   /* label-mode : « Étape X » en gros, sans image ni numéro filigrane */
   .psl-step{display:block;font-family:var(--font-d);font-weight:800;letter-spacing:-.02em;line-height:1;
     font-size:clamp(2.4rem,4.4vw,3.4rem);color:var(--sky);margin-bottom:16px}
@@ -136,7 +138,24 @@ const CSS = `
     .psl-row-0 .psl-big,.psl-row-2 .psl-big{right:4%}
     .psl-row-1 .psl-big{left:4%}
   }
-  @media(max-width:899px){.psl-big{display:none}}
+  /* ── MOBILE : carrousel horizontal (swipe) au lieu du serpentin ── */
+  @media(max-width:899px){
+    .psl-big{display:none}
+    .psl-num{display:block}
+    /* pleine largeur (bleed) + scroll-snap horizontal, scroll interne (pas de débordement page) */
+    .psl-wrap{display:flex;gap:14px;align-items:stretch;overflow-x:auto;scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;scroll-padding-left:18px;
+      margin:8px -18px 0;padding:4px 18px 16px;scrollbar-width:none}
+    .psl-wrap::-webkit-scrollbar{display:none}
+    .psl-row,.psl-row:first-child{flex:0 0 82%;scroll-snap-align:start;padding:24px 22px;margin:0;
+      border:1px solid var(--w14);border-radius:18px;background:#fff;
+      box-shadow:0 16px 36px -26px rgba(10,40,120,.32)}
+    .psl-item{gap:12px}
+    .psl-item h3{font-size:1.34rem;margin-bottom:8px}
+    .psl-lead{font-size:.92rem;line-height:1.55;margin-bottom:14px;max-width:none}
+    .psl-list{gap:8px}
+    .psl-list li{font-size:.9rem;line-height:1.5}
+  }
 `;
 
 function Shot({ step, eager = false }: { step: Step; eager?: boolean }) {
@@ -231,7 +250,11 @@ export default function ProcessSticky({ labelMode = false, images = true, steps 
           <div className={`psl-item${!images || labelMode ? " psl-item-text" : ""}`}>
             {images && !labelMode && <Shot step={s} eager={i === 0} />}
             <div className="psl-text">
-              {labelMode && <span className="psl-step">Étape {i + 1}</span>}
+              {labelMode ? (
+                <span className="psl-step">Étape {i + 1}</span>
+              ) : (
+                <span className="psl-num">Étape {s.num}</span>
+              )}
               <h3>{s.title}</h3>
               <p className="psl-lead">{s.lead}</p>
               <ul className="psl-list">
