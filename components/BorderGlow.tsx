@@ -186,14 +186,14 @@ export default function BorderGlow({
   children,
   className = "",
   edgeSensitivity = 30,
-  /* charte Clipeo : secondaire #55a4d1 + principal #080151 */
+  /* bleu Clipeo #0055fe ≈ hsl(220 100% 50%) — éclairci pour le halo */
   glowColor = "220 100 58",
   backgroundColor = "#ffffff",
   borderRadius = 18,
   glowRadius = 36,
   glowIntensity = 0.9,
   coneSpread = 25,
-  colors = ["#55a4d1", "#080151", "#55a4d1"],
+  colors = ["#0a63ff", "#6db4f2", "#2f54d6"],
   fillOpacity = 0.25,
 }: BorderGlowProps) {
   const cardRef = useRef<HTMLDivElement>(null);

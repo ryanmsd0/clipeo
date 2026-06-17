@@ -54,7 +54,7 @@ export const STEPS: Step[] = [
     ],
     img: "/img/process/etape-2.png",
     alt: "Découpage du contenu long en clips par les clippers",
-    ph: "linear-gradient(135deg,#e7eefb,#cfeef8)",
+    ph: "linear-gradient(135deg,#e7eefb,#cfdcf6)",
     phLabel: "Découpage & montage",
   },
   {
@@ -68,7 +68,7 @@ export const STEPS: Step[] = [
     ],
     img: "/img/process/etape-3.png",
     alt: "Distribution des clips sur des dizaines de comptes multi-plateformes",
-    ph: "linear-gradient(135deg,#dbe6f8,#cfeef8)",
+    ph: "linear-gradient(135deg,#dbe6f8,#bcd2f1)",
     phLabel: "Distribution multi-comptes",
   },
 ];
@@ -134,7 +134,7 @@ const CSS = `
        780-1080, centres à 255 / 605 / 930 ; tops de rangées 105/455/805). */
     .psl-big{display:block;position:absolute;top:0;transform:translateY(-50%);
       font-family:var(--font-d);font-weight:800;font-size:clamp(7rem,15vw,13rem);line-height:.9;
-      letter-spacing:-.04em;color:rgba(85,164,209,.14);z-index:0;pointer-events:none;user-select:none}
+      letter-spacing:-.04em;color:rgba(10,99,255,.14);z-index:0;pointer-events:none;user-select:none}
     .psl-row-0 .psl-big,.psl-row-2 .psl-big{right:4%}
     .psl-row-1 .psl-big{left:4%}
   }
@@ -149,7 +149,7 @@ const CSS = `
     .psl-wrap::-webkit-scrollbar{display:none}
     .psl-row,.psl-row:first-child{flex:0 0 82%;scroll-snap-align:start;padding:24px 22px;margin:0;
       border:1px solid var(--w14);border-radius:18px;background:#fff;
-      box-shadow:0 16px 36px -26px rgba(8,1,81,.32)}
+      box-shadow:0 16px 36px -26px rgba(10,40,120,.32)}
     .psl-item{gap:12px}
     .psl-item h3{font-size:1.34rem;margin-bottom:8px}
     .psl-lead{font-size:.92rem;line-height:1.55;margin-bottom:14px;max-width:none}
@@ -234,8 +234,8 @@ export default function ProcessSticky({ labelMode = false, images = true, steps 
         <svg viewBox="0 0 1200 1320" preserveAspectRatio="none" fill="none">
           <defs>
             <linearGradient id="pslGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#55a4d1" />
-              <stop offset="100%" stopColor="#55a4d1" />
+              <stop offset="0%" stopColor="#0a63ff" />
+              <stop offset="100%" stopColor="#0055fe" />
             </linearGradient>
           </defs>
           {/* viewBox 1:1 avec la hauteur du wrap (1080) */}

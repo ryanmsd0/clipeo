@@ -19,10 +19,10 @@ if (typeof window !== "undefined") {
  * ------------------------------------------------------------------ */
 
 const C = {
-  blue: "#55a4d1",
-  blueBright: "#3d86bd",
+  blue: "#0a63ff",
+  blueBright: "#0055fe",
   orange: "#ff6a3d",
-  ink: "#0a1240",
+  ink: "#0a1628",
 };
 
 const INJECTED_STYLES = `
@@ -59,10 +59,10 @@ const INJECTED_STYLES = `
     padding:11px 20px;border-radius:50px;
     font-family:var(--font-montserrat),sans-serif;font-weight:700;font-size:.82rem;
     color:#fff;background:linear-gradient(180deg,${C.blue} 0%,${C.blueBright} 100%);
-    box-shadow:0 6px 18px -4px rgba(61,134,189,.55),inset 0 1px 1px rgba(255,255,255,.4);
+    box-shadow:0 6px 18px -4px rgba(0,85,254,.55),inset 0 1px 1px rgba(255,255,255,.4);
     transition:transform .35s cubic-bezier(.25,1,.5,1),box-shadow .35s;
   }
-  .ch-fixed-cta:hover{transform:translateY(-2px);box-shadow:0 12px 26px -6px rgba(61,134,189,.7),inset 0 1px 1px rgba(255,255,255,.4);}
+  .ch-fixed-cta:hover{transform:translateY(-2px);box-shadow:0 12px 26px -6px rgba(0,85,254,.7),inset 0 1px 1px rgba(255,255,255,.4);}
 
   /* HERO TEXT (sur fond blanc) */
   .ch-hero-wrap{
@@ -78,7 +78,7 @@ const INJECTED_STYLES = `
     font-size:clamp(2.6rem,8vw,6rem);font-weight:900;letter-spacing:-.03em;
     background:linear-gradient(96deg,${C.blueBright},${C.blue});
     -webkit-background-clip:text;background-clip:text;color:transparent;
-    filter:drop-shadow(0 10px 20px rgba(61,134,189,.18));
+    filter:drop-shadow(0 10px 20px rgba(0,85,254,.18));
   }
 
   /* CARTE PREMIUM (bleu profond) */
@@ -86,7 +86,7 @@ const INJECTED_STYLES = `
   .ch-card{
     position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;pointer-events:auto;
     width:92vw;height:92vh;border-radius:32px;
-    background:linear-gradient(145deg,#080151 0%,#04081c 100%);
+    background:linear-gradient(145deg,#0a2a8c 0%,#04081c 100%);
     box-shadow:0 40px 100px -20px rgba(0,0,0,.85),0 20px 40px -20px rgba(0,0,0,.7),
       inset 0 1px 2px rgba(255,255,255,.18),inset 0 -2px 4px rgba(0,0,0,.7);
     border:1px solid rgba(255,255,255,.05);
@@ -139,8 +139,8 @@ const INJECTED_STYLES = `
 
   /* Faux clip vertical (le produit Clipeo) */
   .ch-clip{position:absolute;inset:0;background:
-      radial-gradient(120% 80% at 50% 0%,rgba(85,164,209,.35),transparent 60%),
-      linear-gradient(180deg,#080151 0%,#070a1f 100%);}
+      radial-gradient(120% 80% at 50% 0%,rgba(10,99,255,.35),transparent 60%),
+      linear-gradient(180deg,#0b1d4d 0%,#070a1f 100%);}
   .ch-clip-play{
     position:absolute;top:42%;left:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;
     background:rgba(255,255,255,.14);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;
@@ -171,7 +171,7 @@ const INJECTED_STYLES = `
     box-shadow:0 0 0 1px rgba(255,255,255,.1),0 25px 50px -12px rgba(0,0,0,.7),inset 0 1px 1px rgba(255,255,255,.2);
   }
   .ch-badge .ico{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;
-    background:linear-gradient(to bottom,rgba(85,164,209,.25),rgba(4,10,40,.1));border:1px solid rgba(120,170,255,.3);}
+    background:linear-gradient(to bottom,rgba(10,99,255,.25),rgba(4,10,40,.1));border:1px solid rgba(120,170,255,.3);}
   .ch-badge p{margin:0;}
   .ch-badge .t{color:#fff;font-size:.8rem;font-weight:700;}
   .ch-badge .s{color:rgba(155,188,255,.6);font-size:.68rem;font-weight:500;}

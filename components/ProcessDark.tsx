@@ -9,9 +9,9 @@ import { PROCESS_STEPS } from "@/components/ProcessFlow";
 const CSS = `
   .pdk{position:relative;overflow:hidden;border-radius:30px;color:#fff;padding:clamp(40px,5vw,64px);
     background:radial-gradient(900px 500px at 85% -15%,rgba(96,158,255,.45),transparent 60%),
-      radial-gradient(700px 600px at 0% 120%,rgba(8,1,81,.55),transparent 55%),
-      linear-gradient(160deg,#1a1570,#161073 46%,#080151);
-    box-shadow:0 44px 100px -46px rgba(8,1,81,.6)}
+      radial-gradient(700px 600px at 0% 120%,rgba(8,30,120,.55),transparent 55%),
+      linear-gradient(160deg,#0c3fd0,#0a2a9e 46%,#08184c);
+    box-shadow:0 44px 100px -46px rgba(8,24,76,.6)}
   .pdk::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.5;
     background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
     background-size:54px 54px;-webkit-mask-image:radial-gradient(ellipse 95% 90% at 60% 20%,#000,transparent 82%);mask-image:radial-gradient(ellipse 95% 90% at 60% 20%,#000,transparent 82%)}

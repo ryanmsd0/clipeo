@@ -17,7 +17,7 @@ const CSS = `
   .ptb-tab{display:flex;align-items:center;gap:16px;text-align:left;width:100%;padding:20px 22px;border-radius:16px;cursor:pointer;
     background:var(--glass);border:1px solid var(--w08);transition:background .35s,border-color .35s,transform .35s cubic-bezier(.32,.72,0,1)}
   .ptb-tab:hover{transform:translateY(-2px)}
-  .ptb-tab.on{background:linear-gradient(180deg,rgba(85,164,209,.1),rgba(85,164,209,.03));border-color:rgba(85,164,209,.3);box-shadow:0 14px 30px -18px rgba(85,164,209,.5)}
+  .ptb-tab.on{background:linear-gradient(180deg,rgba(10,99,255,.1),rgba(10,99,255,.03));border-color:rgba(10,99,255,.3);box-shadow:0 14px 30px -18px rgba(10,99,255,.5)}
   .ptb-tab .n{flex:none;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
     font-family:var(--font-d);font-weight:800;font-size:1.05rem;background:#fff;border:1px solid var(--w14);color:var(--w40);transition:.35s}
   .ptb-tab.on .n{background:linear-gradient(180deg,var(--sky),var(--sky-bright));color:#fff;border-color:transparent}
@@ -25,16 +25,16 @@ const CSS = `
   .ptb-tab .tg{font-family:var(--font-m);font-size:.56rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--w40);display:block;margin-bottom:3px}
 
   .ptb-panel{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--w14);
-    background:radial-gradient(700px 360px at 80% -20%,rgba(85,164,209,.1),transparent 60%),linear-gradient(180deg,#f7faff,#eef4fe);
+    background:radial-gradient(700px 360px at 80% -20%,rgba(10,99,255,.1),transparent 60%),linear-gradient(180deg,#f7faff,#eef4fe);
     padding:40px 42px;display:flex;flex-direction:column;justify-content:center;min-height:320px}
   .ptb-panel-in{animation:ptbIn .5s cubic-bezier(.32,.72,0,1)}
   @keyframes ptbIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-  .ptb-big{position:absolute;top:18px;right:30px;font-family:var(--font-d);font-weight:800;font-size:7rem;line-height:1;letter-spacing:-.04em;color:rgba(85,164,209,.08);pointer-events:none}
+  .ptb-big{position:absolute;top:18px;right:30px;font-family:var(--font-d);font-weight:800;font-size:7rem;line-height:1;letter-spacing:-.04em;color:rgba(10,99,255,.08);pointer-events:none}
   .ptb-panel .tg{font-family:var(--font-m);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--royal);display:block;margin-bottom:10px}
   .ptb-panel h3{font-family:var(--font-d);font-weight:800;font-size:clamp(1.6rem,2.6vw,2.1rem);letter-spacing:-.02em;color:var(--ink);margin-bottom:20px;line-height:1.05}
   .ptb-list{list-style:none;display:flex;flex-direction:column;gap:13px;max-width:560px}
   .ptb-list li{position:relative;padding-left:26px;color:var(--w55);font-size:.97rem;line-height:1.5}
-  .ptb-list li::before{content:"";position:absolute;left:0;top:.45em;width:14px;height:14px;border-radius:50%;background:rgba(85,164,209,.14);box-shadow:inset 0 0 0 3px #fff,0 0 0 1px rgba(85,164,209,.5)}
+  .ptb-list li::before{content:"";position:absolute;left:0;top:.45em;width:14px;height:14px;border-radius:50%;background:rgba(10,99,255,.14);box-shadow:inset 0 0 0 3px #fff,0 0 0 1px rgba(10,99,255,.5)}
 
   @media(max-width:820px){.ptb-wrap{grid-template-columns:1fr}.ptb-tab .tt{font-size:.95rem}}
 `;
