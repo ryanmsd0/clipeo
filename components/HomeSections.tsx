@@ -111,7 +111,7 @@ export default function HomeSections() {
     <div ref={rootRef}>
       {/* HERO — expérience cinématique V6 (le Nav global porte déjà le CTA permanent) */}
       <div id="top">
-        <CinematicHeroV6 showFixedCta={false} tagline1="Votre contenu long," tagline2="partout, tout le temps." />
+        <CinematicHeroV6 showFixedCta={false} tagline1="Votre contenu long" tagline2="vous rend omniprésent." />
       </div>
 
       {/* AFFIRMATION DE POSITIONNEMENT — « n°1 en France » */}
