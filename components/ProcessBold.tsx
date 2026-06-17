@@ -17,7 +17,7 @@ const CSS = `
     padding:48px 0;border-top:1px solid var(--w08)}
   .pbo-row:last-child{border-bottom:1px solid var(--w08)}
   .pbo-num{font-family:var(--font-d);font-weight:800;line-height:.8;letter-spacing:-.04em;
-    font-size:clamp(5rem,13vw,11rem);background:linear-gradient(160deg,var(--sky) 10%,rgba(10,99,255,.18));
+    font-size:clamp(5rem,13vw,11rem);background:linear-gradient(160deg,var(--sky) 10%,rgba(85,164,209,.18));
     -webkit-background-clip:text;background-clip:text;color:transparent}
   .pbo-tag{font-family:var(--font-m);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--royal);display:block;margin-bottom:10px}
   .pbo-row h3{font-family:var(--font-d);font-weight:800;font-size:clamp(1.6rem,2.8vw,2.3rem);letter-spacing:-.025em;color:var(--ink);margin-bottom:16px;line-height:1.04}

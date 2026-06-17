@@ -20,11 +20,11 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
  * ------------------------------------------------------------------ */
 
 const C = {
-  blue: "#0a63ff",
-  blueBright: "#0055fe",
+  blue: "#55a4d1",
+  blueBright: "#3d86bd",
   orange: "#ff6a3d",
   green: "#22e0a3",
-  ink: "#0a1628",
+  ink: "#0a1240",
 };
 
 function PlatformLogo({ name, className }: { name: "tiktok" | "youtube" | "instagram" | "twitch"; className?: string }) {
@@ -101,11 +101,11 @@ const INJECTED_STYLES = `
 
   .ch-fixed-cta{position:absolute;top:24px;right:24px;z-index:80;display:inline-flex;align-items:center;gap:10px;padding:9px 9px 9px 20px;border-radius:50px;
     font-family:var(--font-montserrat),sans-serif;font-weight:700;font-size:.82rem;color:#fff;background:linear-gradient(180deg,${C.blue} 0%,${C.blueBright} 100%);
-    box-shadow:0 6px 18px -4px rgba(0,85,254,.45);transition:transform .6s cubic-bezier(.32,.72,0,1),box-shadow .6s cubic-bezier(.32,.72,0,1);}
+    box-shadow:0 6px 18px -4px rgba(61,134,189,.45);transition:transform .6s cubic-bezier(.32,.72,0,1),box-shadow .6s cubic-bezier(.32,.72,0,1);}
   .ch-fixed-cta .arr{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex:none;
     transition:transform .6s cubic-bezier(.32,.72,0,1);}
   .ch-fixed-cta .arr svg{width:12px;height:12px;}
-  .ch-fixed-cta:hover{transform:translateY(-2px);box-shadow:0 10px 24px -6px rgba(0,85,254,.55);}
+  .ch-fixed-cta:hover{transform:translateY(-2px);box-shadow:0 10px 24px -6px rgba(61,134,189,.55);}
   .ch-fixed-cta:hover .arr{transform:translate(1px,-1px) scale(1.05);}
   .ch-fixed-cta:active{transform:scale(.98);}
 
@@ -117,7 +117,7 @@ const INJECTED_STYLES = `
 
   .ch-card-layer{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;pointer-events:none;perspective:1500px;}
   .ch-card{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;pointer-events:auto;width:92vw;height:92vh;border-radius:32px;
-    background:linear-gradient(145deg,#0a2a8c 0%,#04081c 100%);
+    background:linear-gradient(145deg,#080151 0%,#04081c 100%);
     box-shadow:0 40px 100px -20px rgba(0,0,0,.7),inset 0 1px 2px rgba(255,255,255,.14);
     border:1px solid rgba(255,255,255,.05);}
   @media(min-width:768px){.ch-card{width:85vw;height:85vh;border-radius:40px;}}
@@ -233,12 +233,12 @@ const INJECTED_STYLES = `
   .cv-cta p{margin:0;font-size:.95rem;font-weight:600;color:rgba(190,210,255,.85);}
   .cv-cta-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 12px 12px 26px;border-radius:50px;
     font-weight:700;font-size:.95rem;color:#fff;background:linear-gradient(180deg,${C.blue} 0%,${C.blueBright} 100%);
-    box-shadow:0 8px 24px -6px rgba(0,85,254,.55),inset 0 1px 1px rgba(255,255,255,.3);
+    box-shadow:0 8px 24px -6px rgba(61,134,189,.55),inset 0 1px 1px rgba(255,255,255,.3);
     transition:transform .6s cubic-bezier(.32,.72,0,1),box-shadow .6s cubic-bezier(.32,.72,0,1);}
   .cv-cta-btn .arr{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex:none;
     transition:transform .6s cubic-bezier(.32,.72,0,1);}
   .cv-cta-btn .arr svg{width:13px;height:13px;}
-  .cv-cta-btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px -8px rgba(0,85,254,.65),inset 0 1px 1px rgba(255,255,255,.3);}
+  .cv-cta-btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px -8px rgba(61,134,189,.65),inset 0 1px 1px rgba(255,255,255,.3);}
   .cv-cta-btn:hover .arr{transform:translate(1px,-1px) scale(1.05);}
   .cv-cta-btn:active{transform:scale(.98);}
 
@@ -538,7 +538,7 @@ export default function CinematicHeroV7({
                 }}
               >
                 <div className="t-screen">
-                  <div className="t-bg" style={{ background: `radial-gradient(120% 80% at 50% 0%, rgba(10,99,255,${0.12 + (i % 3) * 0.07}), transparent 60%), linear-gradient(180deg,#0a1430,#060a18)` }} />
+                  <div className="t-bg" style={{ background: `radial-gradient(120% 80% at 50% 0%, rgba(85,164,209,${0.12 + (i % 3) * 0.07}), transparent 60%), linear-gradient(180deg,#0a1430,#060a18)` }} />
                   <div className="t-notch" />
                   <div className="t-plat"><PlatformLogo name={t.plat} /></div>
                   <i className="t-live" />
@@ -559,7 +559,7 @@ export default function CinematicHeroV7({
                 <div className="ch-screen">
                   <div className="ch-glare" aria-hidden="true" />
                   <div className="ch-island"><i /><span>Live</span></div>
-                  <div className="ch-clipbg" style={{ background: "radial-gradient(120% 80% at 50% 0%, rgba(10,99,255,.3), transparent 60%), linear-gradient(180deg,#0b1d4d,#070a1f)" }} aria-hidden="true" />
+                  <div className="ch-clipbg" style={{ background: "radial-gradient(120% 80% at 50% 0%, rgba(85,164,209,.3), transparent 60%), linear-gradient(180deg,#080151,#070a1f)" }} aria-hidden="true" />
                   <div className="ch-platform"><PlatformLogo name="tiktok" /> TikTok</div>
                   <div className="ch-viral">
                     <div className="ch-counter ch-num"><span ref={counterRef}>0</span></div>

@@ -24,7 +24,7 @@ const CSS = `
   .psp-step{padding:34px 0;border-top:1px solid var(--w08);display:grid;grid-template-columns:78px 1fr;gap:24px}
   .psp-step:first-child{border-top:none;padding-top:0}
   .psp-num{font-family:var(--font-d);font-weight:800;font-size:clamp(2.6rem,4vw,3.4rem);line-height:.9;letter-spacing:-.04em;
-    background:linear-gradient(160deg,var(--sky) 20%,rgba(10,99,255,.2));-webkit-background-clip:text;background-clip:text;color:transparent}
+    background:linear-gradient(160deg,var(--sky) 20%,rgba(85,164,209,.2));-webkit-background-clip:text;background-clip:text;color:transparent}
   .psp-tag{font-family:var(--font-m);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--royal);display:block;margin-bottom:8px}
   .psp-step h3{font-family:var(--font-d);font-weight:800;font-size:clamp(1.4rem,2.2vw,1.8rem);letter-spacing:-.02em;color:var(--ink);margin-bottom:14px;line-height:1.05}
   .psp-list{list-style:none;display:flex;flex-direction:column;gap:10px}

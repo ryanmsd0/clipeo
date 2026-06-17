@@ -16,16 +16,16 @@ const STYLES = `
     mask-image:radial-gradient(ellipse 78% 72% at 50% 40%,#000 0%,transparent 80%);}
   .brx-grid{display:grid;width:100%;height:100%}
   .brx-cell{
-    border-right:1px solid rgba(10,99,255,.07);
-    border-bottom:1px solid rgba(10,99,255,.07);
+    border-right:1px solid rgba(85,164,209,.07);
+    border-bottom:1px solid rgba(85,164,209,.07);
     background:transparent;pointer-events:auto;
     transition:background .18s ease;
   }
-  .brx-cell:hover{background:rgba(10,99,255,.16)}
+  .brx-cell:hover{background:rgba(85,164,209,.16)}
   .brx-cell.brx-on{animation:brxRipple .62s ease-out}
   @keyframes brxRipple{
     0%{background:transparent}
-    26%{background:rgba(10,99,255,.24)}
+    26%{background:rgba(85,164,209,.24)}
     100%{background:transparent}
   }
 `;

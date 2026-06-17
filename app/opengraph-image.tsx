@@ -17,7 +17,7 @@ export default function OgImage() {
           justifyContent: "space-between",
           padding: "80px",
           background:
-            "radial-gradient(1000px 600px at 50% -10%, #1b3aa0, transparent), linear-gradient(135deg, #0a1747, #050c2a)",
+            "radial-gradient(1000px 600px at 50% -10%, #080151, transparent), linear-gradient(135deg, #0a1240, #050326)",
           color: "#fff",
           fontFamily: "sans-serif",
         }}
@@ -28,7 +28,7 @@ export default function OgImage() {
               width: 56,
               height: 56,
               borderRadius: 14,
-              background: "linear-gradient(180deg,#2f6bf0,#2348c8)",
+              background: "linear-gradient(180deg,#080151,#55a4d1)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -44,7 +44,7 @@ export default function OgImage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
           <div style={{ display: "flex", flexWrap: "wrap", fontSize: 72, fontWeight: 800, lineHeight: 1.05, letterSpacing: -2, maxWidth: 980 }}>
             <span>L&apos;agence de clipping pour&nbsp;</span>
-            <span style={{ color: "#9bd0ff" }}>grands comptes</span>
+            <span style={{ color: "#9fd2ec" }}>grands comptes</span>
           </div>
           <div style={{ fontSize: 30, color: "rgba(255,255,255,0.7)", maxWidth: 820 }}>
             +500M de vues générées · modèle CPM garanti · audit gratuit

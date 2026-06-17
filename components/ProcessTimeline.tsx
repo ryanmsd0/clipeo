@@ -20,14 +20,14 @@ const CSS = `
   .pt-body{position:relative;margin-top:48px;padding-left:0}
   .pt-spine,.pt-fill{position:absolute;left:25px;top:24px;bottom:24px;width:3px;border-radius:3px}
   .pt-spine{background:var(--w08)}
-  .pt-fill{background:linear-gradient(180deg,var(--sky-bright),var(--sky));transform:scaleY(0);transform-origin:top center;box-shadow:0 0 16px rgba(10,99,255,.4)}
+  .pt-fill{background:linear-gradient(180deg,var(--sky-bright),var(--sky));transform:scaleY(0);transform-origin:top center;box-shadow:0 0 16px rgba(85,164,209,.4)}
 
   .pt-row{position:relative;padding:0 0 52px 84px}
   .pt-row:last-child{padding-bottom:0}
   .pt-node{position:absolute;left:25px;top:-2px;transform:translateX(-50%);width:50px;height:50px;border-radius:50%;z-index:2;
     display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid var(--w14);
     font-family:var(--font-d);font-weight:800;font-size:1.05rem;color:var(--w40)}
-  .pt-node.on{border-color:var(--sky);color:var(--sky);box-shadow:0 0 0 6px rgba(10,99,255,.1),0 10px 24px -8px rgba(10,99,255,.55)}
+  .pt-node.on{border-color:var(--sky);color:var(--sky);box-shadow:0 0 0 6px rgba(85,164,209,.1),0 10px 24px -8px rgba(85,164,209,.55)}
 
   .pt-tag{font-family:var(--font-m);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--royal);margin-bottom:8px;display:block}
   .pt-row h3{font-family:var(--font-d);font-weight:800;font-size:clamp(1.5rem,2.6vw,2rem);letter-spacing:-.02em;color:var(--ink);margin-bottom:16px;line-height:1.05}

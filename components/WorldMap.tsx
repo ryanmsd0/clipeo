@@ -13,7 +13,7 @@ interface MapProps {
 
 export default function WorldMap({
   dots = [],
-  lineColor = "#0055fe",
+  lineColor = "#55a4d1",
   animationDuration = 2,
 }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
@@ -23,7 +23,7 @@ export default function WorldMap({
     () =>
       map.getSVG({
         radius: 0.22,
-        color: "#0a162833",
+        color: "#0a124033",
         shape: "circle",
         backgroundColor: "transparent",
       }),

@@ -14,26 +14,26 @@ const CSS = `
 
   .pbn-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
   .pbn-card{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--w14);background:#fff;
-    padding:30px 30px 28px;box-shadow:0 18px 44px -30px rgba(10,40,120,.3);transition:transform .5s cubic-bezier(.32,.72,0,1),border-color .4s,box-shadow .4s}
-  .pbn-card:hover{transform:translateY(-5px);border-color:rgba(10,99,255,.28);box-shadow:0 26px 54px -28px rgba(10,99,255,.4)}
+    padding:30px 30px 28px;box-shadow:0 18px 44px -30px rgba(8,1,81,.3);transition:transform .5s cubic-bezier(.32,.72,0,1),border-color .4s,box-shadow .4s}
+  .pbn-card:hover{transform:translateY(-5px);border-color:rgba(85,164,209,.28);box-shadow:0 26px 54px -28px rgba(85,164,209,.4)}
   .pbn-c0{grid-column:span 2} .pbn-c1{grid-column:span 4} .pbn-c2{grid-column:span 4}
   .pbn-num{position:absolute;top:14px;right:22px;font-family:var(--font-d);font-weight:800;font-size:4.2rem;line-height:1;
-    letter-spacing:-.04em;color:rgba(10,99,255,.08);pointer-events:none}
+    letter-spacing:-.04em;color:rgba(85,164,209,.08);pointer-events:none}
   .pbn-tag{font-family:var(--font-m);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--royal);display:block;margin-bottom:10px}
   .pbn-card h3{font-family:var(--font-d);font-weight:800;font-size:clamp(1.3rem,1.9vw,1.55rem);letter-spacing:-.02em;color:var(--ink);margin-bottom:14px;line-height:1.08;max-width:90%}
   .pbn-list{list-style:none;display:flex;flex-direction:column;gap:10px}
   .pbn-list li{position:relative;padding-left:22px;color:var(--w55);font-size:.92rem;line-height:1.5}
   .pbn-list li::before{content:"";position:absolute;left:0;top:.45em;width:13px;height:13px;border-radius:50%;
-    background:rgba(10,99,255,.12);box-shadow:inset 0 0 0 3px #fff,0 0 0 1px rgba(10,99,255,.4)}
+    background:rgba(85,164,209,.12);box-shadow:inset 0 0 0 3px #fff,0 0 0 1px rgba(85,164,209,.4)}
 
   /* carte centrale : motif démultiplication 1 -> N en bandeau */
   .pbn-feat{display:flex;flex-direction:column}
   .pbn-mini{display:flex;align-items:center;gap:14px;margin:2px 0 18px}
-  .pbn-mini-src{flex:none;width:30px;height:50px;border-radius:7px;background:linear-gradient(180deg,#0b2a8c,#0a1640);position:relative;box-shadow:0 6px 14px -6px rgba(10,40,120,.6)}
+  .pbn-mini-src{flex:none;width:30px;height:50px;border-radius:7px;background:linear-gradient(180deg,#080151,#080151);position:relative;box-shadow:0 6px 14px -6px rgba(8,1,81,.6)}
   .pbn-mini-src::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);border-style:solid;border-width:4px 0 4px 6px;border-color:transparent transparent transparent #fff}
   .pbn-mini-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;flex:1}
   .pbn-mini-grid span{height:23px;border-radius:4px;background:linear-gradient(180deg,#dbe6f8,#c4d6f3)}
-  .pbn-mini-grid span:nth-child(2n){background:linear-gradient(180deg,rgba(10,99,255,.5),rgba(10,99,255,.26))}
+  .pbn-mini-grid span:nth-child(2n){background:linear-gradient(180deg,rgba(85,164,209,.5),rgba(85,164,209,.26))}
 
   /* carte étape 3 : mini grille d'omniprésence en bandeau */
   .pbn-feeds{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;margin:2px 0 18px}
@@ -42,8 +42,8 @@ const CSS = `
 
   /* tuile résultat bleue */
   .pbn-tile{grid-column:span 2;border-radius:22px;padding:30px;display:flex;flex-direction:column;justify-content:center;color:#fff;
-    background:radial-gradient(600px 300px at 80% -20%,rgba(96,158,255,.5),transparent 60%),linear-gradient(160deg,#0c3fd0,#08184c);
-    box-shadow:0 26px 60px -34px rgba(8,24,76,.6)}
+    background:radial-gradient(600px 300px at 80% -20%,rgba(96,158,255,.5),transparent 60%),linear-gradient(160deg,#1a1570,#080151);
+    box-shadow:0 26px 60px -34px rgba(8,1,81,.6)}
   .pbn-tile .v{font-family:var(--font-d);font-weight:800;font-size:clamp(2.4rem,4vw,3.2rem);line-height:1;letter-spacing:-.03em}
   .pbn-tile .k{font-family:var(--font-m);font-size:.66rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:10px;line-height:1.5}
 

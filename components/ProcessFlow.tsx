@@ -61,12 +61,12 @@ const CSS = `
   .pf-rail{position:relative;height:56px;margin:60px 0 4px}
   .pf-rail-track,.pf-fill{position:absolute;top:27px;left:16.66%;right:16.66%;height:3px;border-radius:3px}
   .pf-rail-track{background:var(--w08)}
-  .pf-fill{right:auto;width:66.68%;background:linear-gradient(90deg,var(--sky-bright),var(--sky));transform:scaleX(0);transform-origin:left center;box-shadow:0 0 18px rgba(10,99,255,.4)}
+  .pf-fill{right:auto;width:66.68%;background:linear-gradient(90deg,var(--sky-bright),var(--sky));transform:scaleX(0);transform-origin:left center;box-shadow:0 0 18px rgba(85,164,209,.4)}
   .pf-node{position:absolute;top:14px;width:30px;height:30px;border-radius:50%;transform:translateX(-50%);
     display:flex;align-items:center;justify-content:center;background:#fff;border:2px solid var(--w14);
     font-family:var(--font-m);font-size:.66rem;font-weight:700;color:var(--w40);z-index:2;transition:none}
   .pf-node-0{left:16.66%} .pf-node-1{left:50%} .pf-node-2{left:83.33%}
-  .pf-node.on{border-color:var(--sky);color:var(--sky);box-shadow:0 0 0 5px rgba(10,99,255,.1),0 8px 20px -6px rgba(10,99,255,.5)}
+  .pf-node.on{border-color:var(--sky);color:var(--sky);box-shadow:0 0 0 5px rgba(85,164,209,.1),0 8px 20px -6px rgba(85,164,209,.5)}
 
   .pf-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;align-items:start}
   .pf-step{display:flex;flex-direction:column}
@@ -74,41 +74,41 @@ const CSS = `
   /* Carte visuelle (motif) */
   .pf-motif{position:relative;height:150px;border-radius:18px;overflow:hidden;margin-bottom:24px;
     background:linear-gradient(180deg,#f4f8ff,#eaf1fd);border:1px solid var(--w08);
-    box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 18px 40px -28px rgba(10,40,120,.3)}
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 18px 40px -28px rgba(8,1,81,.3)}
   .pf-motif::after{content:"";position:absolute;inset:0;pointer-events:none;
-    background-image:radial-gradient(rgba(10,99,255,.08) 1px,transparent 1px);background-size:16px 16px;opacity:.6}
+    background-image:radial-gradient(rgba(85,164,209,.08) 1px,transparent 1px);background-size:16px 16px;opacity:.6}
 
   /* Motif 1 — timeline vidéo, segment clé isolé */
   .pf-m1{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:0 26px}
   .pf-tl{position:relative;width:100%;height:14px;border-radius:8px;z-index:1;
     background:repeating-linear-gradient(90deg,var(--w14) 0 1px,transparent 1px 13px),var(--w05)}
   .pf-tl-seg{position:absolute;top:-3px;bottom:-3px;left:54%;width:20%;border-radius:7px;
-    background:linear-gradient(180deg,var(--sky),var(--sky-bright));box-shadow:0 0 18px rgba(10,99,255,.55),0 6px 14px -4px rgba(10,99,255,.6)}
+    background:linear-gradient(180deg,var(--sky),var(--sky-bright));box-shadow:0 0 18px rgba(85,164,209,.55),0 6px 14px -4px rgba(85,164,209,.6)}
   .pf-tl-lab{position:relative;z-index:1;font-family:var(--font-m);font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--royal);font-weight:700}
 
   /* Motif 2 — 1 vidéo -> grille de clips */
   .pf-m2{display:flex;align-items:center;gap:18px;padding:0 26px}
-  .pf-src{flex:none;width:42px;height:74px;border-radius:9px;background:linear-gradient(180deg,#0b2a8c,#0a1640);
-    box-shadow:0 8px 20px -8px rgba(10,40,120,.6),inset 0 0 0 1px rgba(255,255,255,.12);position:relative;z-index:2}
+  .pf-src{flex:none;width:42px;height:74px;border-radius:9px;background:linear-gradient(180deg,#080151,#080151);
+    box-shadow:0 8px 20px -8px rgba(8,1,81,.6),inset 0 0 0 1px rgba(255,255,255,.12);position:relative;z-index:2}
   .pf-src::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
     border-style:solid;border-width:5px 0 5px 8px;border-color:transparent transparent transparent #fff}
   .pf-fan{flex:none;width:34px;height:74px}
   .pf-clips{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;flex:1;z-index:1}
-  .pf-clips span{height:32px;border-radius:5px;background:linear-gradient(180deg,#dbe6f8,#c4d6f3);box-shadow:inset 0 0 0 1px rgba(10,99,255,.12)}
-  .pf-clips span:nth-child(3n){background:linear-gradient(180deg,rgba(10,99,255,.5),rgba(10,99,255,.28))}
+  .pf-clips span{height:32px;border-radius:5px;background:linear-gradient(180deg,#dbe6f8,#c4d6f3);box-shadow:inset 0 0 0 1px rgba(85,164,209,.12)}
+  .pf-clips span:nth-child(3n){background:linear-gradient(180deg,rgba(85,164,209,.5),rgba(85,164,209,.28))}
 
   /* Motif 3 — grille de feeds, omniprésence */
   .pf-m3{display:flex;align-items:center;justify-content:center;padding:0 22px}
   .pf-feeds{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;width:100%}
   .pf-feeds span{aspect-ratio:9/14;border-radius:4px;background:var(--w08)}
-  .pf-feeds span.on{background:linear-gradient(180deg,var(--sky),var(--sky-bright));box-shadow:0 4px 10px -3px rgba(10,99,255,.6)}
+  .pf-feeds span.on{background:linear-gradient(180deg,var(--sky),var(--sky-bright));box-shadow:0 4px 10px -3px rgba(85,164,209,.6)}
 
   .pf-tag{font-family:var(--font-m);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--royal);margin-bottom:10px}
   .pf-step h3{font-family:var(--font-d);font-weight:800;font-size:clamp(1.3rem,2vw,1.6rem);letter-spacing:-.02em;color:var(--ink);margin-bottom:16px;line-height:1.1}
   .pf-list{list-style:none;display:flex;flex-direction:column;gap:11px}
   .pf-list li{position:relative;padding-left:24px;color:var(--w55);font-size:.92rem;line-height:1.5}
   .pf-list li::before{content:"";position:absolute;left:0;top:.45em;width:13px;height:13px;border-radius:50%;
-    background:rgba(10,99,255,.12);box-shadow:inset 0 0 0 3px #fff,0 0 0 1px rgba(10,99,255,.4)}
+    background:rgba(85,164,209,.12);box-shadow:inset 0 0 0 3px #fff,0 0 0 1px rgba(85,164,209,.4)}
 
   @media(max-width:760px){
     .pf-rail{display:none}
@@ -172,9 +172,9 @@ export default function ProcessFlow() {
               <div className="pf-motif pf-m2" aria-hidden="true">
                 <span className="pf-src" />
                 <svg className="pf-fan" viewBox="0 0 34 74" fill="none" preserveAspectRatio="none">
-                  <path d="M0 37 H34" stroke="rgba(10,99,255,.4)" strokeWidth="1.4" />
-                  <path d="M0 37 C16 37 18 8 34 8" stroke="rgba(10,99,255,.3)" strokeWidth="1.4" />
-                  <path d="M0 37 C16 37 18 66 34 66" stroke="rgba(10,99,255,.3)" strokeWidth="1.4" />
+                  <path d="M0 37 H34" stroke="rgba(85,164,209,.4)" strokeWidth="1.4" />
+                  <path d="M0 37 C16 37 18 8 34 8" stroke="rgba(85,164,209,.3)" strokeWidth="1.4" />
+                  <path d="M0 37 C16 37 18 66 34 66" stroke="rgba(85,164,209,.3)" strokeWidth="1.4" />
                 </svg>
                 <div className="pf-clips">{Array.from({ length: 8 }, (_, k) => <span key={k} />)}</div>
               </div>

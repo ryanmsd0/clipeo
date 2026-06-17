@@ -20,8 +20,8 @@ const CSS = `
 
   .pst-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
   .pst-card{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--w14);background:#fff;padding:30px;
-    box-shadow:0 18px 44px -30px rgba(10,40,120,.3);transition:transform .5s cubic-bezier(.32,.72,0,1),border-color .4s,box-shadow .4s}
-  .pst-card:hover{transform:translateY(-5px);border-color:rgba(10,99,255,.28);box-shadow:0 26px 54px -28px rgba(10,99,255,.4)}
+    box-shadow:0 18px 44px -30px rgba(8,1,81,.3);transition:transform .5s cubic-bezier(.32,.72,0,1),border-color .4s,box-shadow .4s}
+  .pst-card:hover{transform:translateY(-5px);border-color:rgba(85,164,209,.28);box-shadow:0 26px 54px -28px rgba(85,164,209,.4)}
   .pst-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding-bottom:18px;margin-bottom:18px;border-bottom:1px solid var(--w08)}
   .pst-v{font-family:var(--font-d);font-weight:800;font-size:clamp(2.4rem,4vw,3.2rem);line-height:.9;letter-spacing:-.03em;
     background:linear-gradient(180deg,var(--royal),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}

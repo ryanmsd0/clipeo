@@ -13,11 +13,11 @@ const CSS = `
 
   .par-flow{display:flex;align-items:stretch;gap:0}
   .par-card{flex:1;position:relative;border-radius:20px;border:1px solid var(--w14);background:#fff;padding:28px 26px;
-    box-shadow:0 18px 44px -30px rgba(10,40,120,.3);transition:transform .5s cubic-bezier(.32,.72,0,1),border-color .4s,box-shadow .4s}
+    box-shadow:0 18px 44px -30px rgba(8,1,81,.3);transition:transform .5s cubic-bezier(.32,.72,0,1),border-color .4s,box-shadow .4s}
   .par-card::before{content:"";position:absolute;top:0;left:26px;right:26px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--sky-bright),var(--sky))}
-  .par-card:hover{transform:translateY(-6px);border-color:rgba(10,99,255,.28);box-shadow:0 28px 56px -28px rgba(10,99,255,.45)}
+  .par-card:hover{transform:translateY(-6px);border-color:rgba(85,164,209,.28);box-shadow:0 28px 56px -28px rgba(85,164,209,.45)}
   .par-n{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:13px;margin:6px 0 16px;
-    font-family:var(--font-d);font-weight:800;font-size:1.05rem;color:#fff;background:linear-gradient(180deg,var(--sky),var(--sky-bright));box-shadow:0 10px 22px -8px rgba(10,99,255,.6)}
+    font-family:var(--font-d);font-weight:800;font-size:1.05rem;color:#fff;background:linear-gradient(180deg,var(--sky),var(--sky-bright));box-shadow:0 10px 22px -8px rgba(85,164,209,.6)}
   .par-tag{font-family:var(--font-m);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--royal);display:block;margin-bottom:8px}
   .par-card h3{font-family:var(--font-d);font-weight:800;font-size:1.25rem;letter-spacing:-.02em;color:var(--ink);margin-bottom:14px;line-height:1.1}
   .par-list{list-style:none;display:flex;flex-direction:column;gap:10px}

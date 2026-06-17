@@ -15,7 +15,7 @@ const CSS = `
   .pxf-band{display:grid;grid-template-columns:1fr 58px 1fr;gap:0;align-items:center;margin-bottom:18px}
   .pxf-side{border-radius:20px;padding:30px;min-height:172px;display:flex;flex-direction:column;justify-content:center;gap:14px}
   .pxf-before{background:linear-gradient(180deg,#eef1f6,#e3e8f1);border:1px solid var(--w08)}
-  .pxf-after{color:#fff;background:radial-gradient(500px 240px at 80% -20%,rgba(96,158,255,.5),transparent 60%),linear-gradient(150deg,#0c3fd0,#08184c)}
+  .pxf-after{color:#fff;background:radial-gradient(500px 240px at 80% -20%,rgba(96,158,255,.5),transparent 60%),linear-gradient(150deg,#1a1570,#080151)}
   .pxf-lab{font-family:var(--font-m);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;font-weight:700}
   .pxf-before .pxf-lab{color:var(--w40)} .pxf-after .pxf-lab{color:rgba(255,255,255,.6)}
   .pxf-side b{font-family:var(--font-d);font-weight:800;font-size:clamp(1.2rem,2.1vw,1.55rem);letter-spacing:-.02em;line-height:1.15}
@@ -31,7 +31,7 @@ const CSS = `
 
   /* les 3 étapes (le pont) */
   .pxf-bridge{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
-  .pxf-step{border-top:2px solid rgba(10,99,255,.2);padding-top:18px}
+  .pxf-step{border-top:2px solid rgba(85,164,209,.2);padding-top:18px}
   .pxf-step .n{font-family:var(--font-m);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--royal);font-weight:700}
   .pxf-step h3{font-family:var(--font-d);font-weight:800;font-size:1.18rem;letter-spacing:-.02em;color:var(--ink);margin:8px 0 12px;line-height:1.1}
   .pxf-step ul{list-style:none;display:flex;flex-direction:column;gap:9px}
