@@ -20,7 +20,16 @@ export default function HomePage() {
     email: SITE.email,
     description: SITE.description,
     slogan: SITE.tagline,
+    logo: `${SITE.url}/img/logo.png`,
     sameAs: [] as string[],
+  };
+  const siteLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE.name,
+    url: SITE.url,
+    inLanguage: "fr-FR",
+    publisher: { "@type": "Organization", name: SITE.name },
   };
   const faqLd = {
     "@context": "https://schema.org",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CtaPanel from "@/components/CtaPanel";
@@ -83,14 +84,27 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
   const c = getCase(slug);
   if (!c) notFound();
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    headline: `${c.client}, étude de cas`,
-    description: c.excerpt,
-    publisher: { "@type": "Organization", name: SITE.name },
-    mainEntityOfPage: `${SITE.url}/etudes-de-cas/${c.slug}`,
-  };
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      headline: `${c.client}, étude de cas`,
+      description: c.excerpt,
+      image: `${SITE.url}${c.img}`,
+      author: { "@type": "Organization", name: SITE.name },
+      publisher: { "@type": "Organization", name: SITE.name, logo: { "@type": "ImageObject", url: `${SITE.url}/img/logo.png` } },
+      mainEntityOfPage: `${SITE.url}/etudes-de-cas/${c.slug}`,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
+        { "@type": "ListItem", position: 2, name: "Études de cas", item: `${SITE.url}/etudes-de-cas` },
+        { "@type": "ListItem", position: 3, name: c.client, item: `${SITE.url}/etudes-de-cas/${c.slug}` },
+      ],
+    },
+  ];
 
   const platMax = c.platforms
     ? Math.max(...c.platforms.map((p) => parseFloat(p.value.replace(/[^\d,.]/g, "").replace(",", ".")) || 0))
@@ -109,7 +123,7 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
             <Link href="/etudes-de-cas">Études de cas</Link> <span>/</span> <span>{c.client}</span>
           </div>
           <div className="cd-hero">
-            <div className="cd-cover reveal"><img src={c.img} alt={c.client} /></div>
+            <div className="cd-cover reveal"><Image src={c.img} alt={`Campagne de clipping ${c.client}`} fill sizes="(max-width:860px) 340px, 30vw" style={{ objectFit: "cover", objectPosition: "center top" }} priority /></div>
             <div className="cd-info reveal">
               <span className="cd-cat mono-label">{c.category}</span>
               <h1>{c.client}</h1>

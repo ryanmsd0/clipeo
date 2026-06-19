@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ArrowR, Check, CheckCircle } from "@/components/Icons";
 import CinematicHeroV6 from "@/components/CinematicHeroV6";
@@ -125,8 +126,7 @@ export default function HomeSections() {
             <span key={k} style={{ display: "contents" }}>
               {TRUST_BAR.map((c) => (
                 <Link href="/etudes-de-cas" key={`${k}-${c.name}`} style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={c.img} alt="" aria-hidden="true" width={28} height={28} loading="lazy" style={{ width: 28, height: 28, borderRadius: "50%", objectFit: "cover", flex: "none", border: "1.5px solid #fff", boxShadow: "0 2px 8px rgba(10,22,40,.18)" }} />
+                  <Image src={c.img} alt="" aria-hidden width={28} height={28} style={{ width: 28, height: 28, borderRadius: "50%", objectFit: "cover", flex: "none", border: "1.5px solid #fff", boxShadow: "0 2px 8px rgba(10,22,40,.18)" }} />
                   <span>{c.name}</span>
                 </Link>
               ))}
@@ -272,7 +272,7 @@ export default function HomeSections() {
                   </Link>
                   <div className="who-drop">
                     <Link href="/pour-qui" className="who-drop-in">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      {/* eslint-disable-next-line @next/next/no-img-element -- chemin avec espaces, hover lazy */}
                       <img src={cover} alt={w.client} loading="lazy" width={320} height={180} />
                       <div className="who-drop-stats">
                         <span><b>{w.views}</b><i>vues générées</i></span>
