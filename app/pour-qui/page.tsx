@@ -2,36 +2,62 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import CtaPanel from "@/components/CtaPanel";
 import { Check, XMark } from "@/components/Icons";
-import { SEGMENTS } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Pour qui, créateurs, marques, podcasts, cinéma",
+  title: "Pour qui · créateurs, marques, podcasts, cinéma, événements",
   description:
-    "Clipeo travaille avec les créateurs YouTube, les marques et grands comptes, les podcasts, le cinéma, les émissions Twitch et les événements. Une campagne de clipping sur mesure pour chaque univers.",
+    "Clipeo travaille avec les créateurs YouTube, les marques et grands comptes, les podcasts, le cinéma, les émissions Twitch et les événements. Une campagne d'omniprésence sur mesure pour chaque univers.",
   alternates: { canonical: "/pour-qui" },
 };
 
-const DELIVERABLES = [
-  { n: "01", t: "Audit", d: "Analyse du potentiel viral de votre contenu, objectifs de vues chiffrés et stratégie éditoriale sur mesure." },
-  { n: "02", t: "Découpage", d: "Découpage, montage et sous-titrage par nos clippers, aux codes de chaque plateforme, dans le respect de votre image." },
-  { n: "03", t: "Distribution", d: "Diffusion sur des dizaines de comptes, tracking par contenu et plateforme, rapport détaillé en fin de campagne." },
-];
+/* Page recentrée sur son rôle : QUI on adresse (segments) + EST-CE POUR VOUS
+   (qualification). Le « comment / modèle CPM » détaillé vit sur /a-propos et
+   la home. Exemples chiffrés = données du deck, brouillons à valider Clipeo. */
+const STYLES = `
+  .pq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .pq-seg{display:flex;flex-direction:column;background:linear-gradient(180deg,var(--glass-2),var(--glass));
+    border:1px solid var(--w14);border-radius:20px;padding:28px;transition:transform .4s,border-color .4s}
+  .pq-seg:hover{transform:translateY(-4px);border-color:var(--w22)}
+  .pq-tag{font-family:var(--font-m);font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--sky);display:block;margin-bottom:14px}
+  .pq-seg h3{font-family:var(--font-d);font-weight:800;font-size:1.3rem;letter-spacing:-.02em;color:var(--ink);margin-bottom:10px;line-height:1.1}
+  .pq-seg p{color:var(--w55);font-size:.95rem;line-height:1.6;margin-bottom:18px}
+  .pq-ex{margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:16px;border-top:1px solid var(--w08);
+    font-family:var(--font-m);font-size:.66rem;letter-spacing:.5px;text-transform:uppercase;color:var(--w40)}
+  .pq-ex b{color:var(--sky-bright);font-family:var(--font-d);font-weight:800;font-size:.92rem;letter-spacing:-.01em;text-transform:none}
 
-const CPM = [
-  { n: "01", t: "Objectif & engagement", d: "Un volume de vues garanti à l'avance grâce au modèle CPM (coût pour 1000 vues). Aucun hasard." },
-  { n: "02", t: "Distribution & tracking", d: "On construit votre omniprésence sur le format court. Vous recevez vos millions de vues, surperformance incluse." },
-  { n: "03", t: "Performance & reporting", d: "Un rapport détaillé en fin de campagne. Vous savez ce qui a fonctionné, et pourquoi." },
+  /* Bande garantie (modèle condensé) */
+  .pq-guarantee{max-width:880px;margin:0 auto;text-align:center;border:1px solid var(--w14);border-radius:24px;
+    padding:clamp(32px,4.5vw,48px);background:radial-gradient(640px 360px at 50% -25%,rgba(10,99,255,.08),transparent 60%),linear-gradient(180deg,var(--glass-2),var(--glass))}
+  .pq-guarantee .mono-label{display:block;margin-bottom:18px}
+  .pq-guarantee h2{font-family:var(--font-d);font-weight:800;font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.05;letter-spacing:-.03em;color:var(--ink);margin-bottom:14px}
+  .pq-guarantee p{max-width:560px;margin:0 auto;color:var(--w55);font-size:1.05rem;line-height:1.6}
+  .pq-guarantee b{color:var(--ink)}
+
+  @media(max-width:900px){.pq-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:600px){.pq-grid{grid-template-columns:1fr}}
+`;
+
+const SEGMENTS = [
+  { ix: "01", slug: "createurs", tag: "YouTube · Vlog · Doc", name: "Créateurs YouTube", desc: "On transforme vos longues vidéos en flux de clips quotidiens qui ramènent des abonnés vers vos formats complets.", ex: "FastGoodCuisine · +27,4M de vues" },
+  { ix: "02", slug: "marques", tag: "Brand · B2B · B2C", name: "Marques & grands comptes", desc: "Une présence permanente sur le format court, sans monter d'équipe interne, avec un volume de vues garanti au contrat.", ex: "Objectif de vues tenu au contrat" },
+  { ix: "03", slug: "podcasts", tag: "Audio · Vidéo", name: "Podcasts", desc: "Chaque épisode devient des dizaines de moments forts, distribués pour faire grandir l'audience et le nombre d'écoutes.", ex: "Kyan Khojandi · +23,1M de vues" },
+  { ix: "04", slug: "cinema", tag: "Film · Sortie", name: "Cinéma & sorties", desc: "On crée l'intention avant et pendant la sortie, en saturant le format court de vos meilleurs moments.", ex: "Plus Fort que Moi · +44M de vues" },
+  { ix: "05", slug: "twitch", tag: "Live · Replay", name: "Émissions & Twitch", desc: "On capte les meilleurs instants de vos lives et replays, et on les fait tourner partout, en continu.", ex: "Clips live & replay en temps réel" },
+  { ix: "06", slug: "evenements", tag: "Jour J · Temps réel", name: "Événements", desc: "Couverture en temps réel le jour J : les clips tombent pendant l'événement, avant même qu'il soit fini.", ex: "Crunch Creator · +39M de vues" },
 ];
 
 export default function PourQuiPage() {
   return (
     <main>
+      <style dangerouslySetInnerHTML={{ __html: STYLES }} />
+
       <section className="page-hero">
         <div className="container">
           <div className="breadcrumb">
             <Link href="/">Accueil</Link> <span>/</span> <span>Pour qui</span>
           </div>
-          <h1>Vous avez du contenu long.<br />On le fait travailler partout.</h1>
+          <span className="mono-label" style={{ display: "block", marginBottom: 20 }}>Pour qui on travaille</span>
+          <h1>Vous avez du contenu long.<br />On le fait <span className="grad">travailler partout.</span></h1>
           <p>
             Créateurs, marques, podcasts, sorties cinéma, émissions : si votre croissance dépend du format
             court, on construit une campagne d&apos;omniprésence autour de votre contenu.
@@ -42,63 +68,30 @@ export default function PourQuiPage() {
       {/* SEGMENTS */}
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="container">
-          <div className="guides-grid stagger">
+          <div className="sec-head reveal">
+            <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Les univers qu&apos;on adresse</span>
+            <h2>Un modèle de campagne<br />pour chaque univers.</h2>
+          </div>
+          <div className="pq-grid stagger">
             {SEGMENTS.map((s) => (
-              <div className="guide" key={s.ix}>
-                <div className="ix">{s.ix}</div>
+              <div className="pq-seg" key={s.ix}>
+                <span className="pq-tag">{s.tag}</span>
                 <h3>{s.name}</h3>
                 <p>{s.desc}</p>
-                <Link href="/etudes-de-cas">Voir les campagnes →</Link>
+                <div className="pq-ex"><b>{s.ex}</b></div>
+                <Link href={`/campagnes/${s.slug}`} style={{ marginTop: 16, fontFamily: "var(--font-m)", fontSize: ".7rem", letterSpacing: "1px", textTransform: "uppercase", color: "var(--sky-bright)" }}>
+                  Découvrir →
+                </Link>
               </div>
             ))}
           </div>
+          <p style={{ textAlign: "center", marginTop: 20, fontSize: ".82rem", color: "var(--w40)", fontFamily: "var(--font-m)" }}>
+            Exemples de campagnes réelles menées par Clipeo.
+          </p>
         </div>
       </section>
 
-      {/* CE QU'ON LIVRE */}
-      <section className="sec" style={{ paddingTop: 0 }}>
-        <div className="container">
-          <div className="sec-head reveal">
-            <h2>Ce qu&apos;on livre à<br />chaque campagne.</h2>
-            <p>Une mécanique en trois temps, de l&apos;analyse à la distribution massive.</p>
-          </div>
-          <div className="guides-grid stagger">
-            {DELIVERABLES.map((d) => (
-              <div className="guide" key={d.n}>
-                <div className="ix">{d.n}</div>
-                <h3>{d.t}</h3>
-                <p>{d.d}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MODÈLE CPM */}
-      <section className="sec" style={{ paddingTop: 0 }}>
-        <div className="container">
-          <div className="sec-head reveal">
-            <h2>Vous payez les vues,<br /><span className="grad">pas l&apos;effort.</span></h2>
-            <p>Grâce à notre modèle CPM, vous ne prenez aucun risque.</p>
-          </div>
-          <div className="guides-grid stagger" style={{ marginBottom: 24 }}>
-            {CPM.map((c) => (
-              <div className="guide" key={c.n}>
-                <div className="ix">{c.n}</div>
-                <h3>{c.t}</h3>
-                <p>{c.d}</p>
-              </div>
-            ))}
-          </div>
-          <div className="disc reveal" style={{ textAlign: "center", fontSize: "1.05rem", color: "var(--w70)", padding: "26px 28px" }}>
-            <strong style={{ color: "var(--ink)" }}>Soit on atteint l&apos;objectif,</strong>{" "}
-            <span className="accent" style={{ fontWeight: 700 }}>soit on vous rembourse la différence.</span>{" "}
-            Le volume de vues est inscrit au contrat, c&apos;est notre engagement, pas une promesse.
-          </div>
-        </div>
-      </section>
-
-      {/* HONNÊTETÉ */}
+      {/* QUALIFICATION — ce n'est pas pour tout le monde */}
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="container">
           <div className="sec-head reveal">
@@ -124,6 +117,20 @@ export default function PourQuiPage() {
                 <li><Check />Vous voulez un reporting transparent et un engagement contractuel.</li>
               </ul>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* GARANTIE — modèle condensé (le détail vit sur /a-propos) */}
+      <section className="sec" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <div className="pq-guarantee reveal">
+            <span className="mono-label">Quel que soit votre univers</span>
+            <h2>Vous payez les vues,<br /><span className="grad">pas l&apos;effort.</span></h2>
+            <p>
+              <b>Soit on atteint l&apos;objectif, soit on rembourse la différence.</b> Le volume de vues est
+              chiffré et inscrit au contrat grâce au modèle CPM. C&apos;est notre engagement, pas une promesse.
+            </p>
           </div>
         </div>
       </section>

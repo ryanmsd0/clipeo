@@ -23,18 +23,18 @@ export default function Footer() {
         <div className="footer-cols">
           <div className="fcol">
             <h5>Services</h5>
-            <Link href="/pour-qui">Agence de clipping</Link>
-            <Link href="/pour-qui">Campagnes de clipping</Link>
-            <Link href="/pour-qui">Montage format court</Link>
-            <Link href="/contact">Tarification CPM</Link>
+            <Link href="/services">Campagne managée</Link>
+            <Link href="/services">Production de clips</Link>
+            <Link href="/services">Distribution & tracking</Link>
+            <Link href="/tarifs">Tarification CPM</Link>
             <Link href="/etudes-de-cas">Études de cas</Link>
           </div>
           <div className="fcol">
             <h5>Pour qui</h5>
-            <Link href="/pour-qui">Créateurs YouTube</Link>
-            <Link href="/pour-qui">Marques & grands comptes</Link>
-            <Link href="/pour-qui">Podcasts</Link>
-            <Link href="/pour-qui">Cinéma & sorties</Link>
+            <Link href="/campagnes/createurs">Créateurs YouTube</Link>
+            <Link href="/campagnes/marques">Marques & grands comptes</Link>
+            <Link href="/campagnes/podcasts">Podcasts</Link>
+            <Link href="/campagnes/cinema">Cinéma & sorties</Link>
           </div>
           <div className="fcol">
             <h5>Société</h5>

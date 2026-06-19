@@ -119,7 +119,7 @@ export default function HomeSections() {
 
       {/* TRUST BAR — marques clientes, cliquables vers les études de cas */}
       <div className="logos">
-        <span className="mono-label">+500 M de vues générées pour eux</span>
+        <span className="mono-label">+620 M de vues générées pour eux</span>
         <div className="mq"><div className="mq-track">
           {[...Array(2)].map((_, k) => (
             <span key={k} style={{ display: "contents" }}>
@@ -236,12 +236,12 @@ export default function HomeSections() {
           <div className="who-list stagger pull-left" data-who-list>
             {[
               // cover = visuel de campagne ; stats = brouillons à faire valider par Clipeo
-              { ix: "01", name: "Créateurs YouTube", cover: "Charles_et_Melanie", client: "Charles et Mélanie", views: "+138,7 M", clips: "1 294" },
+              { ix: "01", name: "Créateurs YouTube", cover: "Charles_et_Melanie", client: "Charles et Mélanie", views: "+160,9 M", clips: "1 355" },
               { ix: "02", name: "Marques & grands comptes", cover: "La_Marine_Nationale", client: "La Marine Nationale", views: "+12,4 M", clips: "164" },
-              { ix: "03", name: "Podcasts", cover: "Kyan_Khojandi", client: "Kyan Khojandi", views: "+23,2 M", clips: "244" },
-              { ix: "04", name: "Cinéma & sorties", cover: "Film_Plus_Fort_que_Moi", client: "Plus Fort que Moi", views: "+43,7 M", clips: "457" },
-              { ix: "05", name: "Émissions & Twitch", cover: "Zebro_et_Leow", client: "Zebro & Leow", views: "+18,4 M", clips: "194" },
-              { ix: "06", name: "Événements", cover: "Crunch_Creator", client: "Crunch Creator", views: "+36,2 M", clips: "367" },
+              { ix: "03", name: "Podcasts", cover: "Kyan_Khojandi", client: "Kyan Khojandi", views: "+23,1 M", clips: "144" },
+              { ix: "04", name: "Cinéma & sorties", cover: "Film_Plus_Fort_que_Moi", client: "Plus Fort que Moi", views: "+44 M", clips: "358" },
+              { ix: "05", name: "Émissions & Twitch", cover: "Zebro_et_Leow", client: "Zebro & Leow", views: "+20,2 M", clips: "210" },
+              { ix: "06", name: "Événements", cover: "Crunch_Creator", client: "Crunch Creator", views: "+39 M", clips: "292" },
             ].map((w) => {
               const open = openWho === w.ix;
               const cover = `/img/Clipeo%20covers%20campagnes/${w.cover}.png`;
@@ -305,8 +305,8 @@ export default function HomeSections() {
             <p>Tout ce qu&apos;il faut savoir avant de se lancer.</p>
           </div>
           <div className="faq-pills reveal">
-            <div className="faq-pill"><span className="v grad">+500M</span><span className="k">vues générées</span></div>
-            <div className="faq-pill"><span className="v grad">+5,1K</span><span className="k">clips produits</span></div>
+            <div className="faq-pill"><span className="v grad">+620M</span><span className="k">vues générées</span></div>
+            <div className="faq-pill"><span className="v grad">+6,6K</span><span className="k">clips produits</span></div>
             <div className="faq-pill"><span className="v grad">1–2 j</span><span className="k">avant le lancement</span></div>
           </div>
           <div className="faq-layout">
@@ -374,7 +374,7 @@ export default function HomeSections() {
         <div className="container">
           <div className="sec-head left reveal" style={{ marginBottom: 44 }}>
             <h2>Les dernières du <span className="blue">Blog</span></h2>
-            <p>Guides, décryptages et playbooks de l&apos;équipe derrière +500M de vues.</p>
+            <p>Guides, décryptages et playbooks de l&apos;équipe derrière +620M de vues.</p>
           </div>
           <div className="bento-blog stagger">
             {/* Article vedette — large */}

@@ -99,10 +99,10 @@ export default function ClaimHero() {
         </p>
 
         <div className="clh-stats stagger">
-          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="500" data-prefix="+" data-suffix=" M">+0 M</span><span className="clh-k">vues générées</span></div></div>
-          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="5.1" data-dec="1" data-prefix="+" data-suffix=" K">+0 K</span><span className="clh-k">clips produits</span></div></div>
-          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="20" data-prefix="+">+0</span><span className="clh-k">clients accompagnés</span></div></div>
-          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="50" data-prefix="+">+0</span><span className="clh-k">campagnes réalisées</span></div></div>
+          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="620" data-prefix="+" data-suffix=" M">+0 M</span><span className="clh-k">vues générées</span></div></div>
+          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="6.6" data-dec="1" data-prefix="+" data-suffix=" K">+0 K</span><span className="clh-k">clips produits</span></div></div>
+          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="24" data-prefix="+">+0</span><span className="clh-k">clients accompagnés</span></div></div>
+          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="57" data-prefix="+">+0</span><span className="clh-k">campagnes réalisées</span></div></div>
         </div>
 
         <div className="clh-cta reveal">

@@ -6,7 +6,7 @@ import { CASES } from "@/lib/cases";
 export const metadata: Metadata = {
   title: "Études de cas, campagnes de clipping",
   description:
-    "Découvrez les campagnes de clipping de Clipeo : +43,7M de vues pour « Plus Fort que Moi », +138,7M pour Charles & Mélanie… Des résultats chiffrés, des objectifs dépassés.",
+    "Découvrez les campagnes de clipping de Clipeo : +44M de vues pour « Plus Fort que Moi », +160,9M pour Charles & Mélanie… Des résultats chiffrés, des objectifs dépassés.",
   alternates: { canonical: "/etudes-de-cas" },
 };
 
@@ -20,7 +20,7 @@ export default function EtudesDeCasPage() {
           </div>
           <h1>Quand la campagne<br />dépasse l&apos;objectif.</h1>
           <p>
-            20 clients accompagnés, 50 campagnes réalisées, +500M de vues en 6 mois. Voici comment on
+            24 clients accompagnés, 57 campagnes réalisées, +620M de vues en 6 mois. Voici comment on
             transforme du contenu long en omniprésence mesurable.
           </p>
         </div>

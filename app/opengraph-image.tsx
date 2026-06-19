@@ -47,7 +47,7 @@ export default function OgImage() {
             <span style={{ color: "#9bd0ff" }}>grands comptes</span>
           </div>
           <div style={{ fontSize: 30, color: "rgba(255,255,255,0.7)", maxWidth: 820 }}>
-            +500M de vues générées · modèle CPM garanti · audit gratuit
+            +620M de vues générées · modèle CPM garanti · audit gratuit
           </div>
         </div>
 

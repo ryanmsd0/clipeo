@@ -6,6 +6,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ScrollFX from "@/components/ScrollFX";
 import { SITE } from "@/lib/site";
+import { getAllPosts } from "@/lib/posts";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -54,12 +55,13 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const navPosts = getAllPosts().slice(0, 4).map((p) => ({ slug: p.slug, title: p.title, category: p.category }));
   return (
     <html lang="fr" className={`${montserrat.variable} ${geistMono.variable}`}>
       <body>
         <Grain />
         <ScrollFX />
-        <Nav />
+        <Nav posts={navPosts} />
         {children}
         <Footer />
       </body>

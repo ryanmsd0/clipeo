@@ -6,7 +6,7 @@ import { getAllPosts } from "@/lib/posts";
 export const metadata: Metadata = {
   title: "Blog, guides et playbooks du clipping",
   description:
-    "Guides, décryptages et playbooks sur le clipping, le format court et l'omniprésence, par l'équipe Clipeo derrière +500M de vues.",
+    "Guides, décryptages et playbooks sur le clipping, le format court et l'omniprésence, par l'équipe Clipeo derrière +620M de vues.",
   alternates: { canonical: "/blog" },
 };
 
@@ -21,7 +21,7 @@ export default function BlogPage() {
           </div>
           <h1>Guides &amp; playbooks<br />du format court.</h1>
           <p>
-            Tout ce qu&apos;on a appris en générant +500M de vues : stratégie, distribution, et ce qui fait
+            Tout ce qu&apos;on a appris en générant +620M de vues : stratégie, distribution, et ce qui fait
             vraiment décoller un contenu.
           </p>
         </div>
