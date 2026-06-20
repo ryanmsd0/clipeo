@@ -199,13 +199,13 @@ const INJECTED_STYLES = `
   /* Compteur viral + sparkline */
   .ch-viral{position:absolute;top:42px;left:50%;transform:translateX(-50%);z-index:25;display:flex;flex-direction:column;align-items:center;}
   .ch-counter{font-size:2rem;font-weight:800;letter-spacing:-.03em;color:#fff;text-shadow:0 4px 18px rgba(0,0,0,.6);line-height:1;}
-  .ch-views-lab{font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(155,188,255,.7);font-weight:700;margin-top:4px;font-family:var(--font-space-mono),monospace;}
+  .ch-views-lab{font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(155,188,255,.7);font-weight:700;margin-top:4px;font-family:var(--font-m);}
   .ch-spark-wrap{width:128px;height:34px;margin-top:8px;position:relative;}
   .ch-spark{fill:none;stroke:${C.green};stroke-width:3;stroke-linecap:round;stroke-linejoin:round;
     stroke-dasharray:240;filter:drop-shadow(0 0 5px rgba(34,224,163,.6));}
   .ch-spark-area{fill:url(#chSparkGrad);opacity:.22;}
   .ch-spark-dot{fill:${C.green};filter:drop-shadow(0 0 6px ${C.green});}
-  .ch-trend{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:.56rem;font-weight:800;color:${C.green};font-family:var(--font-space-mono),monospace;}
+  .ch-trend{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:.56rem;font-weight:800;color:${C.green};font-family:var(--font-m);}
 
   /* Sous-titres karaoké */
   .ch-caps{position:absolute;left:14px;right:14px;bottom:128px;z-index:25;display:flex;flex-wrap:wrap;justify-content:center;gap:5px 6px;}
@@ -488,7 +488,7 @@ export default function CinematicHeroV6({
               <div className="ch-badge ch-badge-tl">
                 <div className="ico">🔥</div>
                 <div>
-                  <p className="t">+500 M vues</p>
+                  <p className="t">+620 M vues</p>
                   <p className="s">Portée délivrée</p>
                 </div>
               </div>

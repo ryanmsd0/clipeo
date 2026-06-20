@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import CtaPanel from "@/components/CtaPanel";
 import ScrollParallax from "@/components/ScrollParallax";
@@ -6,11 +7,73 @@ import { Check, ArrowR } from "@/components/Icons";
 import { PlatformTile } from "@/components/BrandLogo";
 
 export const metadata: Metadata = {
-  title: "Services · campagne managée, production de clips, distribution",
+  title: "Le service Clipeo · audit, algorithme, production, distribution, tracking",
   description:
-    "Travaillez avec Clipeo : campagne de clipping managée de bout en bout, production de clips à la demande, ou distribution multi-comptes. Choisissez ce qui colle à votre besoin.",
+    "Un seul service qui réunit tout notre savoir-faire : compréhension fine de l'algorithme, audit, stratégie, production de clips, distribution multi-comptes et tracking. De votre contenu long à des vues qui comptent.",
   alternates: { canonical: "/services" },
 };
+
+/* Icônes piliers (stroke, sur-mesure) */
+const ICONS: Record<string, ReactNode> = {
+  algo: <><circle cx="12" cy="12" r="2.4" /><path d="M5 8a8 8 0 0 0 0 8M19 8a8 8 0 0 1 0 8M8.5 10.5a4 4 0 0 0 0 3M15.5 10.5a4 4 0 0 1 0 3" /></>,
+  audit: <><circle cx="11" cy="11" r="6.5" /><path d="m20 20-3.6-3.6M11 8v6M8 11h6" /></>,
+  strategy: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="4.6" /><circle cx="12" cy="12" r="1" /><path d="M12 1v3M12 20v3M1 12h3M20 12h3" /></>,
+  prod: <><circle cx="6" cy="6" r="2.6" /><circle cx="6" cy="18" r="2.6" /><path d="M20 4 8.4 15.6M14.4 14.4 20 20M8.4 8.4 12 12" /></>,
+  distrib: <><circle cx="6" cy="12" r="2.6" /><circle cx="18" cy="6" r="2.6" /><circle cx="18" cy="18" r="2.6" /><path d="M8.3 10.8 15.7 7.2M8.3 13.2l7.4 3.6" /></>,
+  track: <><path d="M4 19V5M4 19h16" /><path d="m7 15 3.5-4 3 2.5L20 7" /><path d="M20 11V7h-4" /></>,
+};
+
+const PILLARS = [
+  {
+    ic: "algo", t: "Compréhension de l'algorithme",
+    d: "On connaît les codes de chaque plateforme : fenêtres de publication, signaux de rétention, hooks, watch-time. On publie quand et comme l'algorithme récompense — pas au hasard.",
+  },
+  {
+    ic: "audit", t: "Audit",
+    d: "On cartographie votre contenu, on isole les angles à plus fort potentiel viral et on fixe un objectif de vues chiffré — avant même de produire le premier clip.",
+  },
+  {
+    ic: "strategy", t: "Stratégie",
+    d: "Un plan de diffusion sur-mesure : formats, cadence, plateformes prioritaires, narratifs. Chaque clip a un rôle précis dans la mécanique de croissance.",
+  },
+  {
+    ic: "prod", t: "Production",
+    d: "Un réseau de clippers et un vrai savoir-faire de montage : découpage, rythme et sous-titres pensés pour la rétention, aux codes natifs de TikTok, Reels, Shorts et Twitch.",
+  },
+  {
+    ic: "distrib", t: "Distribution",
+    d: "Diffusion sur des dizaines de comptes, multi-plateformes, calée sur les fenêtres algo de chaque réseau. La portée n'est jamais laissée au hasard.",
+  },
+  {
+    ic: "track", t: "Tracking",
+    d: "On mesure par contenu, plateforme et thème. On coupe ce qui ne marche pas, on amplifie ce qui performe. Chaque vague de clips nourrit la suivante.",
+  },
+];
+
+const SIGNALS = [
+  { k: "Hook < 3 s", v: "Capter avant le scroll" },
+  { k: "Rétention & watch-time", v: "Le signal n°1 des plateformes" },
+  { k: "Fenêtres de publication", v: "Le bon moment, réseau par réseau" },
+  { k: "Format & ratio natifs", v: "Aux codes de chaque plateforme" },
+  { k: "Sous-titres & rythme", v: "Pensés pour aller au bout" },
+  { k: "Signaux d'engagement", v: "Commentaires, partages, replays" },
+];
+
+const METHOD = [
+  { n: "1", t: "Audit", d: "On analyse votre contenu et on fixe un objectif de vues chiffré." },
+  { n: "2", t: "Stratégie", d: "Plan de diffusion : formats, cadence, plateformes, narratifs." },
+  { n: "3", t: "Production", d: "Le réseau de clippers produit des centaines de clips orientés rétention." },
+  { n: "4", t: "Distribution", d: "Diffusion multi-comptes, calée sur les fenêtres algo de chaque réseau." },
+  { n: "5", t: "Tracking", d: "Mesure par contenu, plateforme et thème, en continu." },
+  { n: "6", t: "Optimisation", d: "On coupe, on amplifie. Chaque vague nourrit la suivante." },
+];
+
+const INCLUDED = [
+  { t: "Objectif garanti", d: "Un volume de vues chiffré, inscrit au contrat, ou remboursé." },
+  { t: "Multi-plateforme", d: "TikTok, Reels, Shorts et Twitch, aux codes de chacun." },
+  { t: "Sous-titres pro", d: "Montage et sous-titrage pensés pour la rétention." },
+  { t: "Reporting clair", d: "Tracking par contenu, plateforme et thème, en continu." },
+];
 
 const STYLES = `
   .sv-hero{position:relative;overflow:hidden;padding:160px 0 60px;text-align:center;isolation:isolate}
@@ -20,102 +83,70 @@ const STYLES = `
   .sv-chips{position:absolute;inset:0;z-index:-1;pointer-events:none}
   .sv-chip{position:absolute;display:flex;align-items:center;gap:8px;padding:11px 16px;border-radius:14px;background:#fff;
     border:1px solid var(--w08);box-shadow:0 22px 50px -26px rgba(10,40,120,.4);font-family:var(--font-d);font-weight:700;font-size:.82rem;color:var(--ink)}
-  .sv-chip i{width:24px;height:24px;border-radius:7px;display:inline-block}
   .sv-chip.c1{top:120px;left:7%}
-  .sv-chip.c2{top:210px;right:8%}
-  .sv-chip.c3{top:330px;left:12%}
-  .sv-chip.c4{top:300px;right:13%}
-
+  .sv-chip.c2{top:170px;right:8%}
+  .sv-chip.c3{top:320px;left:12%}
   .sv-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border-radius:50px;background:var(--glass);border:1px solid var(--w14);
     font-family:var(--font-m);font-size:.64rem;letter-spacing:2px;text-transform:uppercase;color:var(--w55);margin-bottom:24px}
   .sv-eyebrow b{color:var(--sky-bright);font-weight:700}
   .sv-hero h1{font-family:var(--font-d);font-weight:800;font-size:clamp(2.4rem,6vw,4.4rem);line-height:1.04;letter-spacing:-.03em;margin-bottom:20px}
-  .sv-hero .sub{font-size:clamp(1.05rem,1.7vw,1.25rem);color:var(--w70);max-width:600px;margin:0 auto 30px;line-height:1.6}
+  .sv-hero .sub{font-size:clamp(1.05rem,1.7vw,1.25rem);color:var(--w70);max-width:640px;margin:0 auto 30px;line-height:1.6}
   .sv-cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap}
 
-  /* Offres */
-  .sv-tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
-  .sv-tier{position:relative;display:flex;flex-direction:column;background:linear-gradient(180deg,var(--glass-2),var(--glass));
-    border:1px solid var(--w14);border-radius:24px;padding:32px 28px;transition:transform .4s,border-color .4s}
-  .sv-tier:hover{transform:translateY(-5px);border-color:var(--w22)}
-  .sv-tier.feat{background:linear-gradient(180deg,#0b2a8c,var(--ink));border-color:transparent;box-shadow:0 40px 90px -44px rgba(10,40,120,.7)}
-  .sv-tier.feat *{color:#fff}
-  .sv-badge{position:absolute;top:-12px;left:28px;padding:6px 14px;border-radius:50px;background:var(--sky);color:#fff !important;
-    font-family:var(--font-m);font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
-  .sv-tier .kick{font-family:var(--font-m);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--sky);margin-bottom:14px;display:block}
-  .sv-tier.feat .kick{color:#9bd0ff}
-  .sv-tier h3{font-family:var(--font-d);font-weight:800;font-size:1.5rem;letter-spacing:-.02em;color:var(--ink);margin-bottom:8px}
-  .sv-tier .tg{color:var(--w55);font-size:.95rem;line-height:1.55;margin-bottom:22px}
-  .sv-tier.feat .tg{color:rgba(255,255,255,.7)}
-  .sv-tier ul{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:26px}
-  .sv-tier li{display:flex;align-items:flex-start;gap:10px;font-size:.93rem;color:var(--w70);line-height:1.45}
-  .sv-tier.feat li{color:rgba(255,255,255,.88)}
-  .sv-tier li svg{flex:none;width:18px;height:18px;stroke:var(--sky);fill:none;stroke-width:2.6;margin-top:1px}
-  .sv-tier.feat li svg{stroke:#9bd0ff}
-  .sv-tbtn{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 20px;border-radius:50px;
-    font-family:var(--font-d);font-weight:700;font-size:.92rem;transition:transform .3s}
-  .sv-tbtn:hover{transform:translateY(-2px)}
-  .sv-tbtn.ghost{background:var(--glass);border:1px solid var(--w14);color:var(--ink)}
-  .sv-tbtn.solid{background:#fff;color:var(--ink)}
+  /* Piliers d'expertise */
+  .sx-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .sx-pillar{position:relative;background:linear-gradient(180deg,var(--glass-2),var(--glass));border:1px solid var(--w14);border-radius:22px;padding:30px 28px;
+    transition:transform .4s,border-color .4s,box-shadow .4s}
+  .sx-pillar:hover{transform:translateY(-5px);border-color:var(--w22);box-shadow:0 34px 70px -44px rgba(10,40,120,.55)}
+  .sx-pillar .ic{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+    background:rgba(10,99,255,.1)}
+  .sx-pillar .ic svg{width:24px;height:24px;stroke:var(--sky);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .sx-pillar h3{font-family:var(--font-d);font-weight:800;font-size:1.18rem;letter-spacing:-.01em;color:var(--ink);margin-bottom:10px}
+  .sx-pillar p{color:var(--w70);font-size:.95rem;line-height:1.6}
 
-  /* Inclus partout */
+  /* Algorithme — split */
+  .sx-algo{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .sx-algo h2{margin-bottom:18px}
+  .sx-algo .lede{color:var(--w70);font-size:1.05rem;line-height:1.7;margin-bottom:22px;max-width:480px}
+  .sx-algo .pts{list-style:none;display:flex;flex-direction:column;gap:13px}
+  .sx-algo .pts li{position:relative;padding-left:28px;color:var(--w70);font-size:.98rem;line-height:1.5}
+  .sx-algo .pts li svg{position:absolute;left:0;top:2px;width:18px;height:18px;stroke:var(--sky);fill:none;stroke-width:2.6}
+  .sx-panel{background:linear-gradient(180deg,#0b2a8c,var(--ink));border-radius:24px;padding:34px 30px;box-shadow:0 44px 90px -44px rgba(10,40,120,.7)}
+  .sx-panel .ph{font-family:var(--font-m);font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:#9bd0ff;margin-bottom:20px;display:block}
+  .sx-sig{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-top:1px solid rgba(255,255,255,.1)}
+  .sx-sig:first-of-type{border-top:none}
+  .sx-sig .sk{font-family:var(--font-d);font-weight:700;font-size:.98rem;color:#fff}
+  .sx-sig .sv{font-size:.82rem;color:rgba(255,255,255,.6);text-align:right;line-height:1.35}
+
+  /* Méthode */
+  .sx-method{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .sx-mc{position:relative;background:#fff;border:1px solid var(--w08);border-radius:20px;padding:26px;box-shadow:0 18px 40px -30px rgba(10,40,120,.35);overflow:hidden}
+  .sx-mc .n{font-family:var(--font-d);font-weight:800;font-size:3rem;line-height:1;letter-spacing:-.04em;
+    background:linear-gradient(180deg,var(--sky-bright),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.22;position:absolute;top:14px;right:20px}
+  .sx-mc h4{font-family:var(--font-d);font-weight:800;font-size:1.12rem;color:var(--ink);margin-bottom:9px;letter-spacing:-.01em}
+  .sx-mc p{color:var(--w70);font-size:.92rem;line-height:1.55}
+
+  /* Inclus */
   .sv-incl{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
   .sv-inc{background:#fff;border:1px solid var(--w08);border-radius:18px;padding:24px;box-shadow:0 18px 40px -30px rgba(10,40,120,.35)}
-  .sv-inc .ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;
-    background:rgba(10,99,255,.1)}
+  .sv-inc .ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;background:rgba(10,99,255,.1)}
   .sv-inc .ic svg{width:20px;height:20px;stroke:var(--sky);fill:none;stroke-width:2.4}
   .sv-inc h4{font-family:var(--font-d);font-weight:800;font-size:1.02rem;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em}
-  .sv-inc p{color:var(--w55);font-size:.88rem;line-height:1.5}
+  .sv-inc p{color:var(--w70);font-size:.88rem;line-height:1.5}
 
-  /* Process */
-  .sv-proc{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-  .sv-proc::before{content:"";position:absolute;top:30px;left:8%;right:8%;height:2px;background:linear-gradient(90deg,var(--w14),var(--sky),var(--w14));z-index:0}
-  .sv-step{position:relative;z-index:1;text-align:center;padding:0 8px}
-  .sv-step .dot{width:60px;height:60px;border-radius:50%;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;
-    background:#fff;border:2px solid var(--w14);font-family:var(--font-d);font-weight:800;font-size:1.2rem;color:var(--sky);box-shadow:0 14px 30px -14px rgba(10,99,255,.5)}
-  .sv-step h4{font-family:var(--font-d);font-weight:800;font-size:1.1rem;color:var(--ink);margin-bottom:8px;letter-spacing:-.01em}
-  .sv-step p{color:var(--w55);font-size:.9rem;line-height:1.55}
-
-  @media(max-width:900px){
-    .sv-tiers{grid-template-columns:1fr;max-width:460px;margin:0 auto}
+  @media(max-width:960px){
+    .sx-pillars{grid-template-columns:1fr 1fr}
+    .sx-algo{grid-template-columns:1fr;gap:30px}
+    .sx-method{grid-template-columns:1fr 1fr}
     .sv-incl{grid-template-columns:1fr 1fr}
-    .sv-proc{grid-template-columns:1fr 1fr;gap:30px 16px}.sv-proc::before{display:none}
     .sv-chip{display:none}
   }
-  @media(max-width:520px){.sv-incl{grid-template-columns:1fr}.sv-proc{grid-template-columns:1fr}}
+  @media(max-width:560px){
+    .sx-pillars{grid-template-columns:1fr}
+    .sx-method{grid-template-columns:1fr}
+    .sv-incl{grid-template-columns:1fr}
+  }
 `;
-
-const TIERS = [
-  {
-    slug: "campagne-managee", kick: "Le plus choisi", feat: true, name: "Campagne managée", tg: "On gère tout, de l'audit à la croissance. Vous validez la ligne édito, on s'occupe du reste.",
-    items: ["Audit & stratégie + objectif de vues chiffré", "Production de clips par notre réseau de clippers", "Distribution sur des dizaines de comptes", "Tracking, reporting & optimisation continue"],
-    cta: "Découvrir l'offre", btn: "solid",
-  },
-  {
-    slug: "production-de-clips", kick: "À la demande", feat: false, name: "Production de clips", tg: "Vous avez le contenu long, vous voulez les clips. On découpe, on monte, vous diffusez.",
-    items: ["Découpage & montage aux codes de chaque plateforme", "Sous-titres optimisés pour la rétention", "Livraison prête à poster", "Volume adapté à votre rythme"],
-    cta: "Découvrir l'offre", btn: "ghost",
-  },
-  {
-    slug: "distribution-tracking", kick: "Diffusion", feat: false, name: "Distribution & tracking", tg: "Vous avez les clips, il leur manque la portée. On les fait tourner sur notre réseau.",
-    items: ["Diffusion multi-comptes & multi-plateformes", "Calage aux fenêtres algo de chaque réseau", "Tracking par contenu & plateforme", "Rapport de performance détaillé"],
-    cta: "Découvrir l'offre", btn: "ghost",
-  },
-];
-
-const INCLUDED = [
-  { t: "Objectif garanti", d: "Un volume de vues chiffré et inscrit au contrat, ou remboursé." },
-  { t: "Multi-plateforme", d: "TikTok, Reels, Shorts et Twitch, aux codes de chacun." },
-  { t: "Sous-titres pro", d: "Montage et sous-titrage pensés pour la rétention." },
-  { t: "Reporting clair", d: "Tracking par contenu, plateforme et thème, en continu." },
-];
-
-const STEPS = [
-  { n: "1", t: "Audit", d: "On cartographie votre contenu et on fixe l'objectif de vues." },
-  { n: "2", t: "Production", d: "Le réseau de clippers produit des centaines de clips." },
-  { n: "3", t: "Distribution", d: "Diffusion sur des dizaines de comptes, au bon moment." },
-  { n: "4", t: "Optimisation", d: "On mesure, on coupe, on amplifie. Chaque vague nourrit la suivante." },
-];
 
 export default function ServicesPage() {
   return (
@@ -131,14 +162,14 @@ export default function ServicesPage() {
             <div className="sv-chip c1" data-parallax="0.5"><PlatformTile p="tiktok" size={24} />TikTok</div>
             <div className="sv-chip c2" data-parallax="0.32"><PlatformTile p="youtube" size={24} />YouTube Shorts</div>
             <div className="sv-chip c3" data-parallax="0.42"><PlatformTile p="instagram" size={24} />Reels</div>
-            <div className="sv-chip c4" data-parallax="0.24"><PlatformTile p="twitch" size={24} />Twitch</div>
           </div>
           <div className="container">
-            <span className="sv-eyebrow">Travailler avec Clipeo · <b>+620M de vues générées</b></span>
-            <h1>Une agence.<br />Trois façons de <span className="grad">passer à l&apos;échelle.</span></h1>
+            <span className="sv-eyebrow">Le service Clipeo · <b>+620 M de vues générées</b></span>
+            <h1>Un seul service.<br />Toute la chaîne, <span className="grad">maîtrisée.</span></h1>
             <p className="sub">
-              Campagne managée de bout en bout, production de clips à la demande, ou distribution
-              multi-comptes. Vous choisissez ce qui colle à votre besoin, on garantit le résultat.
+              Audit, stratégie, compréhension fine de l&apos;algorithme, production, distribution
+              et tracking. Tout est réuni dans un service unique, pensé pour transformer votre
+              contenu long en vues qui comptent — avec un objectif chiffré, garanti au contrat.
             </p>
             <div className="sv-cta">
               <Link href="/contact" className="btn btn-primary"><span>Réserver un audit gratuit</span><ArrowR /></Link>
@@ -147,32 +178,80 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        {/* OFFRES */}
+        {/* PILIERS — SAVOIR-FAIRE */}
         <section className="sec" style={{ paddingTop: 20 }}>
           <div className="container">
             <div className="sec-head reveal">
-              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Nos offres</span>
-              <h2>Choisissez ce qui<br />colle à votre besoin.</h2>
+              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Notre savoir-faire</span>
+              <h2>Six expertises,<br />un seul service.</h2>
             </div>
-            <div className="sv-tiers stagger">
-              {TIERS.map((t) => (
-                <div className={`sv-tier${t.feat ? " feat" : ""}`} key={t.name}>
-                  {t.feat ? <span className="sv-badge">{t.kick}</span> : <span className="kick">{t.kick}</span>}
-                  <h3>{t.name}</h3>
-                  <p className="tg">{t.tg}</p>
-                  <ul>{t.items.map((it) => <li key={it}><Check />{it}</li>)}</ul>
-                  <Link href={`/services/${t.slug}`} className={`sv-tbtn ${t.btn}`}>{t.cta}<ArrowR /></Link>
+            <div className="sx-pillars stagger">
+              {PILLARS.map((p) => (
+                <div className="sx-pillar" key={p.t}>
+                  <div className="ic"><svg viewBox="0 0 24 24">{ICONS[p.ic]}</svg></div>
+                  <h3>{p.t}</h3>
+                  <p>{p.d}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* INCLUS PARTOUT */}
+        {/* ALGORITHME — LE CŒUR DU MÉTIER */}
+        <section className="sec" style={{ paddingTop: 0 }}>
+          <div className="container">
+            <div className="sx-algo">
+              <div className="reveal">
+                <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Le cœur du métier</span>
+                <h2>On ne devine pas<br />l&apos;algorithme. <span className="grad">On le comprend.</span></h2>
+                <p className="lede">
+                  La différence entre un clip à 2 000 vues et un clip à 2 millions ne tient pas à la
+                  chance. Elle tient à une lecture précise des signaux que chaque plateforme valorise —
+                  et à la discipline de s&apos;y plier, contenu après contenu.
+                </p>
+                <ul className="pts">
+                  <li><Check />Chaque format est calé sur les codes natifs du réseau.</li>
+                  <li><Check />Chaque publication vise une fenêtre algo précise.</li>
+                  <li><Check />Chaque clip est jugé sur la rétention, pas sur l&apos;esthétique.</li>
+                </ul>
+              </div>
+              <div className="sx-panel reveal">
+                <span className="ph">Ce qu&apos;on optimise</span>
+                {SIGNALS.map((s) => (
+                  <div className="sx-sig" key={s.k}>
+                    <span className="sk">{s.k}</span>
+                    <span className="sv">{s.v}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* MÉTHODE */}
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="container">
             <div className="sec-head reveal">
-              <h2>Toujours inclus,<br />quelle que soit l&apos;offre.</h2>
+              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>La méthode</span>
+              <h2>De l&apos;audit à la <span className="grad">croissance.</span></h2>
+            </div>
+            <div className="sx-method stagger">
+              {METHOD.map((m) => (
+                <div className="sx-mc" key={m.n}>
+                  <span className="n">{m.n}</span>
+                  <h4>{m.t}</h4>
+                  <p>{m.d}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* TOUJOURS INCLUS */}
+        <section className="sec" style={{ paddingTop: 0 }}>
+          <div className="container">
+            <div className="sec-head reveal">
+              <h2>Toujours inclus,<br />sans option cachée.</h2>
             </div>
             <div className="sv-incl stagger">
               {INCLUDED.map((i) => (
@@ -180,25 +259,6 @@ export default function ServicesPage() {
                   <div className="ic"><Check /></div>
                   <h4>{i.t}</h4>
                   <p>{i.d}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* PROCESS */}
-        <section className="sec" style={{ paddingTop: 0 }}>
-          <div className="container">
-            <div className="sec-head reveal">
-              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Le déroulé</span>
-              <h2>De l&apos;audit à la<br /><span className="grad">croissance.</span></h2>
-            </div>
-            <div className="sv-proc reveal">
-              {STEPS.map((s) => (
-                <div className="sv-step" key={s.n}>
-                  <div className="dot">{s.n}</div>
-                  <h4>{s.t}</h4>
-                  <p>{s.d}</p>
                 </div>
               ))}
             </div>

@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 import { CASES } from "@/lib/cases";
-import { SERVICE_TYPES } from "@/lib/services";
 import { CAMPAIGN_TYPES } from "@/lib/campaigns";
 import { getAllPosts } from "@/lib/posts";
 
@@ -23,10 +22,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/cgv", priority: 0.3 },
   ].map((r) => ({ url: `${base}${r.path}`, lastModified, priority: r.priority, changeFrequency: monthly }));
 
-  const serviceRoutes = SERVICE_TYPES.map((s) => ({
-    url: `${base}/services/${s.slug}`, lastModified, priority: 0.7, changeFrequency: monthly,
-  }));
-
   const campaignRoutes = CAMPAIGN_TYPES.map((c) => ({
     url: `${base}/campagnes/${c.slug}`, lastModified, priority: 0.7, changeFrequency: monthly,
   }));
@@ -39,5 +34,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${base}/blog/${p.slug}`, lastModified: p.date, priority: 0.6, changeFrequency: monthly,
   }));
 
-  return [...staticRoutes, ...serviceRoutes, ...campaignRoutes, ...caseRoutes, ...postRoutes];
+  return [...staticRoutes, ...campaignRoutes, ...caseRoutes, ...postRoutes];
 }

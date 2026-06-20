@@ -27,6 +27,8 @@ export default function CtaPanel({
     <section className="cta-sec">
       <div className="container">
         <div className="cta2 reveal">
+          {/* eslint-disable-next-line @next/next/no-img-element -- filigrane décoratif */}
+          <img className="cta2-wm" src="/img/logo-mark-white.png" alt="" aria-hidden="true" />
           <div className="cta2-copy">
             <span className="cta2-eye">{eyebrow}</span>
             <h2>{title}</h2>

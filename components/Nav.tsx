@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import * as NM from "@radix-ui/react-navigation-menu";
 import { CASES } from "@/lib/cases";
-import { SITE } from "@/lib/site";
 
 /* Nav avec mega-menus animés (Radix NavigationMenu) : viewport partagé qui se
    redimensionne en douceur d'un menu à l'autre, slide + fade + indicateur.
@@ -14,12 +13,6 @@ import { SITE } from "@/lib/site";
 type Card = { label: string; desc: string; href: string; icon?: keyof typeof ICONS; ini?: string; img?: string };
 type Item = { label: string; href: string; cols?: number; menu?: Card[]; all?: { label: string; href: string } };
 type PostLite = { slug: string; title: string; category: string };
-
-const SERVICES: Card[] = [
-  { label: "Campagne managée", desc: "On gère tout, de l'audit à la distribution.", href: "/services/campagne-managee", icon: "layers" },
-  { label: "Production de clips", desc: "Montage à la demande, vous diffusez.", href: "/services/production-de-clips", icon: "scissors" },
-  { label: "Distribution & tracking", desc: "Vos clips, partout sur des dizaines de comptes.", href: "/services/distribution-tracking", icon: "broadcast" },
-];
 
 const POURQUI: Card[] = [
   { label: "Créateurs YouTube", desc: "Vos vidéos longues en flux de clips.", href: "/campagnes/createurs", icon: "play" },
@@ -36,11 +29,6 @@ const CASE_CARDS: Card[] = CASES.slice(0, 6).map((c) => {
   const cat = c.category.split("·")[0].trim();
   return { label: name, desc: `${c.bigNum} de vues · ${cat}`, href: `/etudes-de-cas/${c.slug}`, ini, img: c.img };
 });
-
-const CONTACT: Card[] = [
-  { label: "Réserver un audit", desc: "20 min · projection de vues chiffrée.", href: "/contact", icon: "phone" },
-  { label: "Nous écrire", desc: SITE.email, href: `mailto:${SITE.email}`, icon: "mail" },
-];
 
 const ICONS = {
   layers: <><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /></>,
@@ -85,16 +73,18 @@ function MegaCard({ c }: { c: Card }) {
 
 export default function Nav({ posts = [] }: { posts?: PostLite[] }) {
   const [open, setOpen] = useState(false);
+  // alignement du dropdown : coin gauche sous l'item survolé
+  const [vpLeft, setVpLeft] = useState(0);
+  const triggers = useRef<Record<string, HTMLButtonElement | null>>({});
 
   const BLOG: Card[] = posts.slice(0, 4).map((p) => ({ label: p.title, desc: p.category, href: `/blog/${p.slug}`, icon: "doc" }));
 
   const ITEMS: Item[] = [
-    { label: "Services", href: "/services", cols: 2, menu: SERVICES, all: { label: "Voir tous les services", href: "/services" } },
+    { label: "Services", href: "/services" },
     { label: "Pour qui", href: "/pour-qui", cols: 3, menu: POURQUI, all: { label: "Tous les univers", href: "/pour-qui" } },
     { label: "Études de cas", href: "/etudes-de-cas", cols: 3, menu: CASE_CARDS, all: { label: "Toutes les études de cas", href: "/etudes-de-cas" } },
-    { label: "À propos", href: "/a-propos" },
     ...(BLOG.length ? [{ label: "Blog", href: "/blog", cols: 2, menu: BLOG, all: { label: "Tout le blog", href: "/blog" } } as Item] : [{ label: "Blog", href: "/blog" } as Item]),
-    { label: "Contact", href: "/contact", cols: 1, menu: CONTACT },
+    { label: "À propos", href: "/a-propos" },
   ];
 
   return (
@@ -102,16 +92,25 @@ export default function Nav({ posts = [] }: { posts?: PostLite[] }) {
       <nav className="nav">
         <div className="nav-pill">
           <Link href="/" className="brand" onClick={() => setOpen(false)}>
-            <img src="/img/logo.png" alt="Clipeo" width={30} height={30} />
+            {/* eslint-disable-next-line @next/next/no-img-element -- logo détouré noir */}
+            <img src="/img/logo-mark-black.png" alt="Clipeo" width={30} height={31} />
             <span>clipeo</span>
           </Link>
 
-          <NM.Root className="nav-links nm-root" delayDuration={120} skipDelayDuration={300}>
+          <NM.Root
+            className="nav-links nm-root"
+            delayDuration={120}
+            skipDelayDuration={300}
+            onValueChange={(v) => {
+              const el = triggers.current[v];
+              if (el) setVpLeft(el.offsetLeft);
+            }}
+          >
             <NM.List className="nm-list">
               {ITEMS.map((it) =>
                 it.menu ? (
-                  <NM.Item key={it.href}>
-                    <NM.Trigger className="nm-trigger">
+                  <NM.Item key={it.href} value={it.href}>
+                    <NM.Trigger className="nm-trigger" ref={(el) => { triggers.current[it.href] = el; }}>
                       {it.label}
                       <svg className="nm-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
                     </NM.Trigger>
@@ -140,7 +139,7 @@ export default function Nav({ posts = [] }: { posts?: PostLite[] }) {
               <NM.Indicator className="nm-indicator"><div className="nm-arrow" /></NM.Indicator>
             </NM.List>
 
-            <div className="nm-viewport-pos">
+            <div className="nm-viewport-pos" style={{ transform: `translateX(${vpLeft}px)` }}>
               <NM.Viewport className="nm-viewport" />
             </div>
           </NM.Root>

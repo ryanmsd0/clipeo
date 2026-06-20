@@ -74,15 +74,16 @@ export const STEPS: Step[] = [
 ];
 
 /* Serpentin symétrique : 3 lignes horizontales reliées par des
-   demi-cercles parfaits (rayon = moitié de l'écart entre lignes).
-   viewBox 1200 × 1080 = hauteur réelle du wrap (échelle 1:1 en y,
+   demi-cercles parfaits (rayon = moitié de l'écart entre lignes = 220).
+   viewBox 1200 × 1380 = hauteur réelle du wrap (échelle 1:1 en y,
    sinon les lignes glissent et traversent les contenus).
-   Lignes à y = 80 / 430 / 780, arcs r = 175. */
+   Lignes à y = 90 / 530 / 970. Les sommets des arcs sont rentrés à
+   x = 1170 (droite) et x = 30 (gauche) pour ne pas être rognés au bord. */
 const SNAKE_PATH =
-  "M90,90 H980 " +
-  "A220,220 0 0 1 980,530 " +
-  "H220 " +
-  "A220,220 0 0 0 220,970 " +
+  "M90,90 H950 " +
+  "A220,220 0 0 1 950,530 " +
+  "H250 " +
+  "A220,220 0 0 0 250,970 " +
   "H1110";
 /* fractions de longueur où chaque phase est atteinte (le long du S) */
 const STEP_AT = [0.08, 0.42, 0.78];
@@ -102,7 +103,7 @@ const CSS = `
   .psl-item h3{font-family:var(--font-d);font-weight:800;font-size:clamp(1.5rem,2.8vw,2.1rem);letter-spacing:-.02em;color:var(--ink);margin-bottom:12px}
   .psl-lead{font-size:.98rem;line-height:1.6;color:var(--w70);margin-bottom:16px;max-width:560px}
   .psl-list{list-style:none;display:flex;flex-direction:column;gap:9px}
-  .psl-list li{position:relative;padding-left:20px;color:var(--w55);font-size:.95rem;line-height:1.55}
+  .psl-list li{position:relative;padding-left:20px;color:rgba(10,22,40,.62);font-size:.95rem;line-height:1.55}
   .psl-list li:before{content:"";position:absolute;left:0;top:.55em;width:7px;height:7px;border-radius:50%;background:var(--sky)}
   .psl-shot{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--w14);
     background:var(--glass-2);box-shadow:0 22px 54px -26px rgba(10,22,40,.25);aspect-ratio:16/10}
@@ -111,7 +112,7 @@ const CSS = `
   .psl-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 
   @media(min-width:900px){
-    .psl-wrap{height:1320px}
+    .psl-wrap{height:1380px}
     .psl-snake{display:block;position:absolute;inset:0;z-index:0;pointer-events:none}
     .psl-snake svg{width:100%;height:100%}
     /* 3 couloirs horizontaux, contenu sous sa ligne, côté alterné */
@@ -121,7 +122,7 @@ const CSS = `
        310 / 750 / 1145. Espacement large pour laisser respirer le texte. */
     .psl-row-0{top:310px}
     .psl-row-1{top:750px}
-    .psl-row-2{top:1145px}
+    .psl-row-2{top:1190px}
     .psl-row-0,.psl-row-2{display:flex;justify-content:flex-start;padding-left:5%}
     .psl-row-1{display:flex;justify-content:flex-end;padding-right:9%}
     .psl-item{flex-direction:row;align-items:center;gap:30px;max-width:660px;transform:translateY(-50%)}
@@ -231,7 +232,7 @@ export default function ProcessSticky({ labelMode = false, images = true, steps 
 
       {/* Le serpentin : piste grise + remplissage bleu */}
       <div className="psl-snake" aria-hidden="true">
-        <svg viewBox="0 0 1200 1320" preserveAspectRatio="none" fill="none">
+        <svg viewBox="0 0 1200 1380" preserveAspectRatio="none" fill="none">
           <defs>
             <linearGradient id="pslGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="#0a63ff" />

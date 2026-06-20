@@ -8,6 +8,7 @@ import CinematicHeroV6 from "@/components/CinematicHeroV6";
 import ProcessSticky from "@/components/ProcessSticky";
 import BorderGlow from "@/components/BorderGlow";
 import ClaimHero from "@/components/ClaimHero";
+import { BrandLogo } from "@/components/BrandLogo";
 import { TRUST_BAR } from "@/lib/site";
 
 export default function HomeSections() {
@@ -54,7 +55,8 @@ export default function HomeSections() {
       const followViews = follow.querySelector(".who-follow-views") as HTMLElement | null;
       const followClips = follow.querySelector(".who-follow-clips") as HTMLElement | null;
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0, active = false;
+      let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0, active = false, onButton = false;
+      let currentBtn: HTMLElement | null = null;
 
       const render = () => {
         const ease = reduce ? 1 : 0.16;
@@ -67,23 +69,51 @@ export default function HomeSections() {
           raf = 0;
         }
       };
+      // La cover est visible sur une ligne, SAUF quand le curseur approche du
+      // bouton « Voir les campagnes » (zone élargie REACH) : on la cache pour
+      // pouvoir le cliquer. Le masquage du curseur est en CSS STATIQUE (fiable),
+      // pas piloté ici (sinon Chrome ne réévalue pas le curseur déjà posé).
+      const REACH_X = 100, REACH_Y = 45;
+      const section = whoList.closest("section");
+      const sync = () => {
+        follow.classList.toggle("on", active && !onButton);
+      };
       const onMove = (e: MouseEvent) => {
         tx = e.clientX; ty = e.clientY;
-        if (!active) {
-          active = true;
-          // place instantanément sous le curseur la première fois (pas de vol depuis le coin)
-          if (cx === 0 && cy === 0) { cx = tx; cy = ty; }
-          follow.classList.add("on");
+        // la cover ne s'affiche QUE sur une ligne (sinon : titre, marges, bas de
+        // section → cachée, au lieu de traîner jusqu'à la sortie de la section).
+        const overRow = !!(e.target as HTMLElement | null)?.closest?.(".who-row");
+        if (overRow) {
+          if (!active) {
+            active = true;
+            // place instantanément sous le curseur la première fois (pas de vol depuis le coin)
+            if (cx === 0 && cy === 0) { cx = tx; cy = ty; }
+          }
+          // proximité du bouton de la ligne survolée (zone élargie autour)
+          if (currentBtn) {
+            const r = currentBtn.getBoundingClientRect();
+            onButton = tx >= r.left - REACH_X && tx <= r.right + REACH_X && ty >= r.top - REACH_Y && ty <= r.bottom + REACH_Y;
+          } else {
+            onButton = false;
+          }
+        } else {
+          active = false;
+          onButton = false;
         }
+        sync();
         if (!raf) raf = requestAnimationFrame(render);
       };
       const onLeave = () => {
         active = false;
-        follow.classList.remove("on");
+        onButton = false;
+        currentBtn = null;
+        sync();
       };
       const rows = Array.from(whoList.querySelectorAll<HTMLElement>(".who-row"));
       const rowHandlers = rows.map((rowEl) => {
+        const btn = rowEl.querySelector<HTMLElement>(".view");
         const h = () => {
+          currentBtn = btn;
           const cover = rowEl.dataset.cover;
           if (cover && followImg && followImg.getAttribute("src") !== cover) followImg.src = cover;
           if (followViews) followViews.textContent = rowEl.dataset.views || "";
@@ -93,11 +123,15 @@ export default function HomeSections() {
         return () => rowEl.removeEventListener("mouseenter", h);
       });
 
-      whoList.addEventListener("mousemove", onMove);
-      whoList.addEventListener("mouseleave", onLeave);
+      // mousemove sur TOUTE la section (pas la liste étroite) : on suit le curseur
+      // partout et on détecte proprement quand il n'est plus sur une ligne — sans
+      // clignotement (l'état dépend de la position réelle, pas d'événements enter/leave).
+      const leaveZone = section || whoList;
+      leaveZone.addEventListener("mousemove", onMove);
+      leaveZone.addEventListener("mouseleave", onLeave);
       cleanups.push(() => {
-        whoList.removeEventListener("mousemove", onMove);
-        whoList.removeEventListener("mouseleave", onLeave);
+        leaveZone.removeEventListener("mousemove", onMove);
+        leaveZone.removeEventListener("mouseleave", onLeave);
         rowHandlers.forEach((c) => c());
         if (raf) cancelAnimationFrame(raf);
       });
@@ -235,43 +269,45 @@ export default function HomeSections() {
           </div>
           <div className="who-list stagger pull-left" data-who-list>
             {[
-              // cover = visuel de campagne ; stats = brouillons à faire valider par Clipeo
-              { ix: "01", name: "Créateurs YouTube", cover: "Charles_et_Melanie", client: "Charles et Mélanie", views: "+160,9 M", clips: "1 355" },
-              { ix: "02", name: "Marques & grands comptes", cover: "La_Marine_Nationale", client: "La Marine Nationale", views: "+12,4 M", clips: "164" },
-              { ix: "03", name: "Podcasts", cover: "Kyan_Khojandi", client: "Kyan Khojandi", views: "+23,1 M", clips: "144" },
-              { ix: "04", name: "Cinéma & sorties", cover: "Film_Plus_Fort_que_Moi", client: "Plus Fort que Moi", views: "+44 M", clips: "358" },
-              { ix: "05", name: "Émissions & Twitch", cover: "Zebro_et_Leow", client: "Zebro & Leow", views: "+20,2 M", clips: "210" },
-              { ix: "06", name: "Événements", cover: "Crunch_Creator", client: "Crunch Creator", views: "+39 M", clips: "292" },
+              // cover = visuel de campagne ; campaign = page « pour qui » ; caseSlug = étude de cas (null = pas encore d'étude dédiée → liste)
+              { ix: "01", name: "Créateurs YouTube", cover: "Charles_et_Melanie", client: "Charles et Mélanie", views: "+160,9 M", clips: "1 355", campaign: "createurs", caseSlug: "charles-et-melanie" },
+              { ix: "02", name: "Marques & grands comptes", cover: "La_Marine_Nationale", client: "La Marine Nationale", views: "+7,4 M", clips: "190", campaign: "marques", caseSlug: "la-marine-nationale" },
+              { ix: "03", name: "Podcasts", cover: "Kyan_Khojandi", client: "Kyan Khojandi", views: "+23,1 M", clips: "144", campaign: "podcasts", caseSlug: "kyan-khojandi" },
+              { ix: "04", name: "Cinéma & sorties", cover: "Film_Plus_Fort_que_Moi", client: "Plus Fort que Moi", views: "+44 M", clips: "358", campaign: "cinema", caseSlug: "plus-fort-que-moi" },
+              { ix: "05", name: "Émissions & Twitch", cover: "Zebro_et_Leow", client: "Zebro & Leow", views: "+19,9 M", clips: "194", campaign: "twitch", caseSlug: "zebro-et-leow" },
+              { ix: "06", name: "Événements", cover: "Crunch_Creator", client: "Crunch Creator", views: "+39 M", clips: "292", campaign: "evenements", caseSlug: "crunch-creator" },
             ].map((w) => {
               const open = openWho === w.ix;
               const cover = `/img/Clipeo%20covers%20campagnes/${w.cover}.png`;
+              const caseHref = w.caseSlug ? `/etudes-de-cas/${w.caseSlug}` : "/etudes-de-cas";
+              const campaignHref = `/campagnes/${w.campaign}`;
               return (
                 <div className={`who-item${open ? " open" : ""}`} key={w.ix}>
-                  <Link
-                    href="/pour-qui"
-                    className="who-row"
-                    data-cover={cover}
-                    data-client={w.client}
-                    data-views={w.views}
-                    data-clips={w.clips}
-                    aria-expanded={open}
-                    onClick={(e) => {
-                      // sur tactile (pas de hover) : déroule la carte au lieu de naviguer
-                      if (window.matchMedia("(hover: none)").matches) {
-                        e.preventDefault();
-                        setOpenWho(open ? null : w.ix);
-                      }
-                    }}
-                  >
-                    <span className="ix">{w.ix}</span>
-                    <span className="name">{w.name}</span>
-                    <span className="view">Voir les campagnes <ArrowR /></span>
+                  <div className="who-row" data-cover={cover} data-client={w.client} data-views={w.views} data-clips={w.clips}>
+                    {/* Clic sur la ligne / la cover → étude de cas du créateur affiché */}
+                    <Link
+                      href={caseHref}
+                      className="who-main"
+                      aria-expanded={open}
+                      onClick={(e) => {
+                        // sur tactile (pas de hover) : déroule la carte au lieu de naviguer
+                        if (window.matchMedia("(hover: none)").matches) {
+                          e.preventDefault();
+                          setOpenWho(open ? null : w.ix);
+                        }
+                      }}
+                    >
+                      <span className="ix">{w.ix}</span>
+                      <span className="name">{w.name}</span>
+                    </Link>
+                    {/* Bouton → toutes les campagnes de cette catégorie */}
+                    <Link href={campaignHref} className="view">Voir les campagnes <ArrowR /></Link>
                     <span className="who-caret" aria-hidden="true">
                       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
                     </span>
-                  </Link>
+                  </div>
                   <div className="who-drop">
-                    <Link href="/pour-qui" className="who-drop-in">
+                    <Link href={caseHref} className="who-drop-in">
                       {/* eslint-disable-next-line @next/next/no-img-element -- chemin avec espaces, hover lazy */}
                       <img src={cover} alt={w.client} loading="lazy" width={320} height={180} />
                       <div className="who-drop-stats">
@@ -340,6 +376,8 @@ export default function HomeSections() {
       <section className="cta-sec">
         <div className="container">
           <div className="cta2 reveal">
+            {/* eslint-disable-next-line @next/next/no-img-element -- filigrane décoratif */}
+            <img className="cta2-wm" src="/img/logo-mark-white.png" alt="" aria-hidden="true" />
             <div className="cta2-copy">
               <span className="cta2-eye">Audit gratuit · avant tout engagement</span>
               <h2>On audite votre contenu.<br /><span className="hl">Gratuitement.</span></h2>
@@ -379,10 +417,24 @@ export default function HomeSections() {
           <div className="bento-blog stagger">
             {/* Article vedette — large */}
             <Link href="/blog/generateurs-ia-vs-agence-clipping" className="bb-card bb-feat">
+              {/* Fond pleine carte : Clipeo (agence réelle) VS OpusClip (IA) */}
+              <div className="bb-vs-bg" aria-hidden="true">
+                {/* eslint-disable-next-line @next/next/no-img-element -- logo décoratif détouré */}
+                <img className="bb-vs-clipeo" src="/img/logo-mark-navy.png" alt="" width={36} height={37} />
+                  <span className="bb-vs-x">VS</span>
+                  <svg className="bb-vs-opus" viewBox="0 0 103 24" fill="none" role="img" aria-label="OpusClip">
+                    <path fill="currentColor" d="M11.954 3.817c-4.49 0-8.132 3.644-8.152 8.146v12H0V12C0 5.373 5.352 0 11.954 0s11.953 5.373 11.953 12-5.351 12-11.953 12a12 12 0 0 1-1.718-.123v-3.876q.831.181 1.718.182c4.502 0 8.152-3.663 8.152-8.183s-3.65-8.183-8.152-8.183" />
+                    <path fill="currentColor" d="M5.118 24V11.995c0-3.79 3.062-6.857 6.836-6.857 3.773 0 6.836 3.068 6.836 6.857s-3.063 6.857-6.836 6.857c-.594 0-1.17-.076-1.718-.218V14.5c.488.337 1.08.534 1.718.534a3.037 3.037 0 0 0 3.034-3.04 3.037 3.037 0 0 0-3.034-3.04 3.037 3.037 0 0 0-3.034 3.008V24z" />
+                    <path fill="currentColor" d="M90.962 5.524c.857 0 1.477.607 1.477 1.433s-.622 1.434-1.477 1.434c-.854 0-1.46-.607-1.46-1.434 0-.826.637-1.433 1.46-1.433M90.805 9.4h1.417v8.493h-2.484V10.47a1.07 1.07 0 0 1 1.067-1.07" />
+                    <path fill="currentColor" fillRule="evenodd" d="M37.913 5.962c-3.49 0-6.076 2.562-6.076 6.033s2.634 6.034 6.076 6.034 6.028-2.563 6.028-6.034-2.537-6.033-6.028-6.033m3.374 6.033c0 2.158-1.426 3.758-3.374 3.758-1.999 0-3.409-1.6-3.409-3.758s1.463-3.758 3.41-3.758c1.945 0 3.373 1.6 3.373 3.758M46.716 9.4h-1.417l.018 11.56h2.484V17c.453.624 1.394 1.028 2.384 1.028 2.468 0 4.13-1.684 4.13-4.382s-1.662-4.382-4.13-4.382c-.992 0-1.933.582-2.402 1.206a1.07 1.07 0 0 0-1.067-1.07m5.096 4.228c0 1.364-.824 2.276-2.015 2.276-1.19 0-1.996-.93-1.996-2.276 0-1.347.805-2.258 1.996-2.258s2.015.894 2.015 2.258" clipRule="evenodd" />
+                    <path fill="currentColor" d="M55.607 14.862v-5.46h2.468v4.853c0 .994.571 1.6 1.461 1.6 1.158 0 1.83-.993 1.83-2.764V9.4h2.485v8.493h-2.484v-.944c-.403.54-1.36 1.077-2.619 1.077-1.846 0-3.139-1.213-3.139-3.168z" />
+                    <path fill="currentColor" d="M67.41 15.027h-2.216v.003c.1 1.735 1.392 3 3.542 3 1.945 0 3.34-1.147 3.34-2.732 0-2.096-1.696-2.49-3.01-2.795-.829-.193-1.506-.35-1.506-.878 0-.369.368-.589.873-.589.706 0 1.208.37 1.343.994h2.216c-.22-1.703-1.494-2.765-3.56-2.765-1.912 0-3.088 1.114-3.088 2.511 0 1.902 1.593 2.302 2.876 2.624.865.217 1.59.4 1.59.983 0 .471-.404.758-1.074.758-.806 0-1.242-.405-1.326-1.114" />
+                    <path fill="currentColor" d="M73.05 11.995c0-3.842 2.586-6.033 5.944-6.033 2.904 0 4.985 1.82 5.186 4.382h-2.652c-.168-1.247-1.175-2.107-2.534-2.107-1.864 0-3.274 1.332-3.274 3.758s1.428 3.758 3.274 3.758c1.326 0 2.366-.876 2.568-2.14h2.67c-.269 2.511-2.25 4.416-5.238 4.416-3.292 0-5.944-2.174-5.944-6.034" />
+                    <path fill="currentColor" d="M87.972 5.962h-2.484v11.933h2.484z" />
+                    <path fill="currentColor" fillRule="evenodd" d="M95.4 9.4h-1.416l.018 11.56h2.483V17c.454.624 1.395 1.028 2.384 1.028 2.469 0 4.131-1.684 4.131-4.382s-1.662-4.382-4.13-4.382c-.992 0-1.933.582-2.402 1.206A1.07 1.07 0 0 0 95.4 9.4m5.096 4.228c0 1.364-.823 2.276-2.014 2.276s-1.997-.93-1.997-2.276c0-1.347.806-2.258 1.997-2.258 1.19 0 2.014.894 2.014 2.258" clipRule="evenodd" />
+                  </svg>
+              </div>
               <div className="bb-in">
-                <span className="bb-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8" /><path d="M21 7v5h-5" /></svg>
-                </span>
                 <span className="bb-cat">Stratégie</span>
                 <h3>Générateurs de clips IA <span className="bb-ac">vs agence de clipping.</span></h3>
                 <p>Les outils de clip automatique promettent dix vidéos en un clic. Une agence promet des vues. On compare honnêtement les deux approches, coûts et résultats.</p>
@@ -392,10 +444,13 @@ export default function HomeSections() {
 
             {/* Petit */}
             <Link href="/blog/se-lancer-clipping-2026" className="bb-card">
+              {/* Fond : vrais logos des plateformes du format court */}
+              <div className="bb-bg bb-plat-bg" aria-hidden="true">
+                <BrandLogo name="tiktok" className="p1" />
+                <BrandLogo name="youtube" className="p2" />
+                <BrandLogo name="instagram" className="p3" />
+              </div>
               <div className="bb-in">
-                <span className="bb-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><path d="M2 6.5A2.5 2.5 0 0 1 4.5 4H11v15.5H4.5A2.5 2.5 0 0 0 2 22z" /><path d="M22 6.5A2.5 2.5 0 0 0 19.5 4H13v15.5h6.5a2.5 2.5 0 0 1 2.5 2.5z" /></svg>
-                </span>
                 <span className="bb-cat">Guide</span>
                 <h3>Se lancer dans le <span className="bb-ac">clipping en 2026.</span></h3>
                 <span className="bb-foot"><span className="bb-go">Lire l&apos;article <ArrowR /></span><span className="bb-min">11 min</span></span>
@@ -404,10 +459,18 @@ export default function HomeSections() {
 
             {/* Pleine largeur */}
             <Link href="/blog/marketing-podcast-faire-grandir-emission" className="bb-card bb-wide">
+              {/* Fond : micro + vague audio qui monte (le son qui grandit) */}
+              <div className="bb-bg bb-pod-bg" aria-hidden="true">
+                <svg className="pod-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="9" y="2" width="6" height="11" rx="3" /><path d="M5 10a7 7 0 0 0 14 0M12 17v4M8 21h8" />
+                </svg>
+                <svg className="pod-wave" viewBox="0 0 300 100" fill="currentColor">
+                  {[20, 34, 26, 44, 36, 54, 46, 62, 52, 70, 60, 78, 68, 84, 74, 90, 82, 96].map((h, i) => (
+                    <rect key={i} x={i * 16 + 5} y={(100 - h) / 2} width="7" height={h} rx="3.5" />
+                  ))}
+                </svg>
+              </div>
               <div className="bb-in">
-                <span className="bb-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M10 9l5 3-5 3z" fill="var(--sky)" stroke="none" /></svg>
-                </span>
                 <span className="bb-cat">Playbook</span>
                 <h3>Marketing de podcast : <span className="bb-ac">faire grandir une émission.</span></h3>
                 <p>La plupart des podcasts stagnent non pas par manque de qualité, mais par manque de découverte. Le format court est le levier le plus rapide pour y remédier.</p>

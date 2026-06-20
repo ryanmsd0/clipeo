@@ -5,6 +5,14 @@ const nextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  // Les 3 anciennes sous-pages services fusionnées en une seule page /services
+  async redirects() {
+    return [
+      { source: "/services/campagne-managee", destination: "/services", permanent: true },
+      { source: "/services/production-de-clips", destination: "/services", permanent: true },
+      { source: "/services/distribution-tracking", destination: "/services", permanent: true },
+    ];
+  },
   // En-têtes de sécurité = signaux de confiance SEO
   async headers() {
     return [

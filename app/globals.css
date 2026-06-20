@@ -7,7 +7,7 @@
   --w40:rgba(10,22,40,.4); --w22:rgba(10,22,40,.2); --w14:rgba(10,22,40,.12);
   --w08:rgba(10,22,40,.08); --w05:rgba(10,22,40,.05);
   --glass:rgba(10,22,40,.025); --glass-2:rgba(10,22,40,.045);
-  --font-d:var(--font-montserrat),'Montserrat',sans-serif; --font-b:var(--font-montserrat),'Montserrat',sans-serif; --font-m:var(--font-space-mono),'Geist Mono',monospace;
+  --font-d:var(--font-montserrat),'Montserrat',sans-serif; --font-b:var(--font-montserrat),'Montserrat',sans-serif; --font-m:var(--font-montserrat),'Montserrat',sans-serif;
   --maxw:1180px;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -33,7 +33,7 @@ a{text-decoration:none;color:inherit} ul{list-style:none} img{max-width:100%;dis
 .grain{position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.03;mix-blend-mode:overlay}
 
 /* pills / labels */
-.mono-label{font-family:var(--font-m);font-size:.66rem;letter-spacing:3px;text-transform:uppercase;color:var(--w40)}
+.mono-label{font-family:var(--font-m);font-size:.66rem;letter-spacing:3px;text-transform:uppercase;color:rgba(10,22,40,.62)}
 .grad{background:linear-gradient(96deg,var(--sky-bright),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
 .blue{color:var(--sky)} .accent{color:var(--orange)}
 
@@ -60,8 +60,8 @@ a{text-decoration:none;color:inherit} ul{list-style:none} img{max-width:100%;dis
   backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);
   box-shadow:0 8px 30px rgba(10,22,40,.1)}
 .brand{display:flex;align-items:center;gap:9px;flex-shrink:0}
-.brand img{width:30px;height:30px;border-radius:8px}
-.brand span{font-family:var(--font-d);font-size:1.3rem;font-weight:800;letter-spacing:-.5px}
+.brand img{height:30px;width:auto;border-radius:0}
+.brand span{font-family:var(--font-d);font-size:1.3rem;font-weight:800;letter-spacing:-.5px;color:var(--ink)}
 .nav-links{display:flex;align-items:center;gap:20px}
 .nav-links a{display:flex;align-items:center;gap:5px;font-size:.88rem;color:var(--w70);font-weight:500;transition:color .25s}
 .nav-links a:hover{color:var(--ink)}
@@ -99,7 +99,7 @@ a{text-decoration:none;color:inherit} ul{list-style:none} img{max-width:100%;dis
 .nm-grid{display:grid;gap:5px;padding:12px}
 
 /* viewport partagé qui se redimensionne en douceur */
-.nm-viewport-pos{position:absolute;top:calc(100% + 12px);left:0;width:100%;display:flex;justify-content:center;z-index:300}
+.nm-viewport-pos{position:absolute;top:calc(100% + 12px);left:0;display:flex;z-index:300;transition:transform .34s cubic-bezier(.32,.72,0,1)}
 .nm-viewport{position:relative;flex:none;width:var(--radix-navigation-menu-viewport-width);height:var(--radix-navigation-menu-viewport-height);
   border-radius:20px;background:rgba(255,255,255,.97);border:1px solid var(--w08);overflow:hidden;transform-origin:top center;
   box-shadow:0 30px 70px -30px rgba(10,40,120,.42),0 8px 22px -10px rgba(10,22,40,.14);
@@ -123,8 +123,12 @@ a{text-decoration:none;color:inherit} ul{list-style:none} img{max-width:100%;dis
   color:var(--ink);transition:background .2s}
 .nav-links .nav-card:hover{background:var(--navy-850)}
 .nav-links .nav-card .ic{flex:none;width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(160deg,rgba(10,99,255,.12),rgba(10,99,255,.04));border:1px solid var(--w08);color:var(--sky)}
-.nav-links .nav-card .ic svg{width:21px;height:21px;opacity:1}
+  background:linear-gradient(160deg,rgba(10,99,255,.12),rgba(10,99,255,.04));border:1px solid var(--w08);color:var(--sky);
+  transition:transform .34s cubic-bezier(.34,1.56,.64,1),box-shadow .3s,background .25s}
+.nav-links .nav-card:hover .ic{transform:translateY(-3px) scale(1.08);box-shadow:0 10px 20px -8px rgba(10,99,255,.55);
+  background:linear-gradient(160deg,rgba(10,99,255,.24),rgba(10,99,255,.08))}
+.nav-links .nav-card .ic svg{width:21px;height:21px;opacity:1;transition:transform .34s cubic-bezier(.34,1.56,.64,1)}
+.nav-links .nav-card:hover .ic svg{transform:scale(1.12)}
 .nav-links .nav-card .ic.ini{font-family:var(--font-d);font-weight:800;font-size:.92rem;letter-spacing:-.02em}
 .nav-links .nav-card .ic.img{padding:0;overflow:hidden;background:#0b2a8c;border-color:var(--w14)}
 .nav-links .nav-card .ic.img img{width:100%;height:100%;object-fit:cover;object-position:center top}
@@ -182,7 +186,7 @@ a{text-decoration:none;color:inherit} ul{list-style:none} img{max-width:100%;dis
 .logos .mono-label{display:block;text-align:center;margin-bottom:18px}
 .mq{overflow:hidden;white-space:nowrap;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
 .mq-track{display:inline-flex;align-items:center;animation:mq 90s linear infinite} .mq:hover .mq-track{animation-play-state:paused}
-.mq-track span{font-family:var(--font-d);font-weight:700;font-size:1.3rem;color:var(--w40);padding:0 36px}
+.mq-track span{font-family:var(--font-d);font-weight:700;font-size:1.3rem;color:rgba(10,22,40,.6);padding:0 36px}
 .mq-track span::after{content:"·";margin-left:36px;color:var(--w14)}
 @keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
@@ -315,6 +319,8 @@ section{position:relative}
 .who-list{max-width:none;width:calc(100% + max(0px,100vw - 1180px));margin:80px 0 0}
 .who-item:last-child{border-bottom:1px solid var(--w08)}
 .who-row{position:relative;display:flex;align-items:center;gap:30px;padding:30px 0;border-top:1px solid var(--w08);cursor:pointer;transition:.4s;text-align:left}
+/* lien principal (n° + nom) → étude de cas ; le bouton .view est un lien séparé → campagne */
+.who-row .who-main{display:flex;align-items:center;gap:30px;flex:1;min-width:0;color:inherit;text-decoration:none}
 /* Accordéon « Pour qui » (mobile) — caché en desktop (qui a le hover-card) */
 .who-caret{display:none;flex:none;color:var(--w40);transition:transform .4s cubic-bezier(.32,.72,0,1)}
 .who-caret svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -327,7 +333,14 @@ section{position:relative}
 .who-drop-stats span{display:flex;flex-direction:column;gap:3px;background:#fff;border:1px solid var(--w14);border-radius:13px;padding:14px 16px}
 .who-drop-stats b{font-family:var(--font-d);font-weight:800;font-size:1.2rem;color:var(--ink);line-height:1}
 .who-drop-stats i{font-family:var(--font-m);font-size:.56rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--w40);font-style:normal}
-@media(hover:hover){.who-drop{display:none}.who-caret{display:none!important}}
+@media(hover:hover){.who-drop{display:none}.who-caret{display:none!important}
+  /* Curseur masqué sur TOUTE la section #pour-qui, en STATIQUE : Chrome met « none »
+     en cache dès qu'on entre dans la section (franchissement de frontière) → fiable,
+     sans clignotement. Si c'était piloté en JS, Chrome ne réévaluerait pas le curseur
+     déjà posé sur la ligne. La cover suit le curseur ; le bouton garde un pointeur. */
+  #pour-qui,#pour-qui *{cursor:none}
+  #pour-qui .who-row .view{cursor:pointer}
+}
 @media(hover:none){.who-caret{display:inline-flex}}
 .who-row .ix{font-family:var(--font-m);font-size:.72rem;color:var(--w40);width:30px;flex-shrink:0}
 .who-row .name{font-family:var(--font-d);font-weight:800;font-size:clamp(2rem,5vw,3.6rem);letter-spacing:-.02em;color:var(--w40);transition:.4s;flex:1;line-height:1}
@@ -416,6 +429,25 @@ section{position:relative}
 .bb-wide{grid-column:span 6}
 .bb-card:not(.bb-feat):not(.bb-wide){grid-column:span 2}
 .bb-in{position:relative;z-index:2}
+/* Fond pleine carte « Clipeo (agence) VS OpusClip (IA) » de l'article vedette */
+.bb-vs-bg{position:absolute;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;
+  gap:clamp(22px,4.5vw,52px);opacity:.1;pointer-events:none;user-select:none;transform:translateY(7px)}
+.bb-vs-bg .bb-vs-clipeo{height:clamp(108px,19vw,166px);width:auto;display:block}
+.bb-vs-bg .bb-vs-x{flex:none;display:inline-flex;align-items:center;justify-content:center;
+  width:clamp(42px,7vw,56px);height:clamp(42px,7vw,56px);border-radius:50%;
+  background:rgba(10,99,255,.2);color:var(--sky-bright);font-family:var(--font-d);font-weight:800;font-size:clamp(.95rem,2vw,1.3rem)}
+.bb-vs-bg .bb-vs-opus{height:clamp(40px,7.5vw,60px);width:auto;display:block;color:var(--ink)}
+/* Fonds filigrane des autres cartes blog */
+.bb-bg{position:absolute;inset:0;z-index:0;opacity:.1;pointer-events:none;user-select:none;color:var(--ink)}
+/* « 2026 » : vrais logos plateformes en cluster bas-droite */
+.bb-plat-bg svg{position:absolute;fill:currentColor}
+.bb-plat-bg .p1{width:100px;height:100px;right:-14px;bottom:-12px}
+.bb-plat-bg .p2{width:58px;height:58px;right:76px;bottom:36px}
+.bb-plat-bg .p3{width:60px;height:60px;right:12px;bottom:98px}
+/* Podcast : micro + vague audio qui monte (à droite) */
+.bb-pod-bg{display:flex;align-items:center;justify-content:flex-end;gap:clamp(16px,2.6vw,36px);padding-right:5%}
+.bb-pod-bg .pod-mic{flex:none;width:clamp(54px,6.5vw,84px);height:auto}
+.bb-pod-bg .pod-wave{flex:none;width:clamp(250px,34vw,420px);height:auto}
 .bb-icon{display:inline-flex;width:44px;height:44px;border-radius:13px;align-items:center;justify-content:center;
   background:rgba(10,99,255,.09);box-shadow:inset 0 0 0 1px rgba(10,99,255,.22);margin-bottom:22px;margin-right:14px;vertical-align:middle}
 .bb-icon svg{width:20px;height:20px;stroke:var(--sky);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
@@ -470,6 +502,9 @@ section{position:relative}
   background-size:54px 54px;
   -webkit-mask-image:radial-gradient(ellipse 95% 85% at 72% 28%,#000,transparent 82%);mask-image:radial-gradient(ellipse 95% 85% at 72% 28%,#000,transparent 82%)}
 .cta2>*{position:relative;z-index:1}
+/* filigrane logo Clipeo (détouré transparent) en fond du CTA */
+.cta2 .cta2-wm{position:absolute;z-index:0;pointer-events:none;user-select:none;
+  right:-48px;bottom:-66px;width:min(340px,38%);height:auto;opacity:.11}
 .cta2-eye{display:block;font-family:var(--font-m);font-size:.64rem;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.72);margin-bottom:18px}
 .cta2 h2{font-family:var(--font-d);font-weight:800;font-size:clamp(1.9rem,3.5vw,3rem);line-height:1.04;letter-spacing:-.03em;margin-bottom:16px;color:#fff}
 .cta2 .hl{background:linear-gradient(98deg,#c7e4ff,#fff 55%,#a9caff);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -528,15 +563,15 @@ section{position:relative}
 .footer-cta .brand{justify-content:center;margin-bottom:22px}
 .footer-cta .brand span{font-size:1.6rem}
 .footer-cols{display:grid;grid-template-columns:repeat(5,1fr);gap:30px;position:relative;z-index:2}
-.fcol h5{display:flex;align-items:center;gap:7px;font-family:var(--font-m);font-size:.66rem;letter-spacing:2px;text-transform:uppercase;color:var(--w70);margin-bottom:18px}
-.fcol h5::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--sky)}
-.fcol a{display:block;font-size:.88rem;color:var(--w55);margin-bottom:12px;transition:color .25s} .fcol a:hover{color:var(--ink)}
+.fcol .fcol-t{display:flex;align-items:center;gap:7px;font-family:var(--font-m);font-size:.66rem;letter-spacing:2px;text-transform:uppercase;color:var(--w70);margin-bottom:18px}
+.fcol .fcol-t::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--sky)}
+.fcol a{display:block;font-size:.88rem;color:rgba(10,22,40,.64);margin-bottom:12px;transition:color .25s} .fcol a:hover{color:var(--ink)}
 .socials{display:flex;gap:10px}
 .socials a{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff}
 .socials svg{width:20px;height:20px;fill:currentColor}
 .footer-wm{margin-top:50px;font-family:var(--font-d);font-weight:800;font-size:clamp(3rem,15vw,12rem);line-height:.8;letter-spacing:-.04em;
   text-align:center;color:transparent;background:linear-gradient(180deg,var(--w08),transparent);-webkit-background-clip:text;background-clip:text;white-space:nowrap;overflow:hidden}
-.footer-bot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:26px;border-top:1px solid var(--w08);font-size:.8rem;color:var(--w40);margin-top:20px}
+.footer-bot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding-top:26px;border-top:1px solid var(--w08);font-size:.8rem;color:rgba(10,22,40,.62);margin-top:20px}
 
 /* reveal */
 .reveal{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
@@ -617,8 +652,12 @@ section{position:relative}
 
 /* ══ ÉTUDES DE CAS ══ */
 .cases-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.case-card{display:block;background:linear-gradient(180deg,var(--glass-2),var(--glass));border:1px solid var(--w14);border-radius:22px;padding:32px;transition:transform .4s,border-color .4s}
-.case-card:hover{transform:translateY(-5px);border-color:var(--w22)}
+.case-card{display:block;overflow:hidden;background:linear-gradient(180deg,var(--glass-2),var(--glass));border:1px solid var(--w14);border-radius:22px;transition:transform .4s,border-color .4s,box-shadow .4s}
+.case-card:hover{transform:translateY(-5px);border-color:var(--w22);box-shadow:0 26px 56px -34px rgba(10,40,120,.5)}
+.case-cover{position:relative;aspect-ratio:16/9;overflow:hidden;background:linear-gradient(180deg,#0b2a8c,var(--ink))}
+.case-cover img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform .5s cubic-bezier(.32,.72,0,1)}
+.case-card:hover .case-cover img{transform:scale(1.04)}
+.case-body{padding:26px 30px 28px}
 .case-card .cat{font-family:var(--font-m);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--sky);margin-bottom:16px;display:block}
 .case-card .num{font-family:var(--font-d);font-weight:800;font-size:clamp(2.4rem,4.5vw,3.4rem);line-height:1;letter-spacing:-.02em;background:linear-gradient(180deg,var(--sky-bright),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
 .case-card h3{font-family:var(--font-d);font-weight:700;font-size:1.3rem;margin:6px 0 8px}
@@ -675,6 +714,7 @@ section{position:relative}
   /* Pour qui : noms compacts sur une ligne, lien sous le nom */
   .who-list{margin-top:48px}
   .who-row{flex-wrap:wrap;gap:8px 14px;padding:22px 0}
+  .who-row .who-main{flex:1 1 auto;gap:8px 14px;min-width:0}
   .who-row .ix{width:auto}
   .who-row .name{font-size:1.35rem;flex:1 1 auto;line-height:1.2;text-align:left}
   .who-row .view{flex-basis:100%;padding-left:28px;font-size:.6rem}

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat, Geist_Mono } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Grain from "@/components/Grain";
 import Nav from "@/components/Nav";
@@ -14,15 +14,6 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   display: "swap",
 });
-/* Geist Mono remplace Space Mono pour tous les labels techniques —
-   la variable CSS garde son nom historique pour basculer tout le site d'un coup. */
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-space-mono",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
@@ -57,7 +48,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const navPosts = getAllPosts().slice(0, 4).map((p) => ({ slug: p.slug, title: p.title, category: p.category }));
   return (
-    <html lang="fr" className={`${montserrat.variable} ${geistMono.variable}`}>
+    <html lang="fr" className={montserrat.variable}>
       <body>
         <Grain />
         <ScrollFX />

@@ -76,7 +76,7 @@ export default function PaletteClone({
       background:rgba(255,255,255,.9);backdrop-filter:blur(14px) saturate(150%);
       -webkit-backdrop-filter:blur(14px) saturate(150%);
       border:1px solid rgba(10,22,40,.1);box-shadow:0 12px 34px rgba(10,22,40,.16);
-      font-family:var(--font-m,monospace);font-size:.72rem;letter-spacing:.04em;color:#0a1240;
+      font-family:var(--font-m);font-size:.72rem;letter-spacing:.04em;color:#0a1240;
     }
     .pal-badge i{width:14px;height:14px;border-radius:50%;display:inline-block;box-shadow:inset 0 0 0 1px rgba(10,22,40,.12)}
     .pal-badge b{font-weight:500}

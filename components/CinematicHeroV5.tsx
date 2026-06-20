@@ -149,7 +149,7 @@ const INJECTED_STYLES = `
   .ch-clip-play:after{content:"";border-style:solid;border-width:9px 0 9px 15px;border-color:transparent transparent transparent #fff;margin-left:3px;}
   .ch-views{position:absolute;top:46px;left:50%;transform:translateX(-50%);text-align:center;z-index:20;}
   .ch-counter{font-size:2rem;font-weight:800;letter-spacing:-.03em;color:#fff;text-shadow:0 4px 18px rgba(0,0,0,.6);line-height:1;}
-  .ch-views-lab{font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(155,188,255,.7);font-weight:700;margin-top:4px;font-family:var(--font-space-mono),monospace;}
+  .ch-views-lab{font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(155,188,255,.7);font-weight:700;margin-top:4px;font-family:var(--font-m);}
   .ch-clip-meta{position:absolute;left:14px;right:60px;bottom:54px;z-index:20;}
   .ch-handle{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
   .ch-handle .av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,${C.orange},#ff8a63);border:1.5px solid #fff;}
@@ -406,7 +406,7 @@ export default function CinematicHeroV5({
                 <div className="ch-badge ch-badge-tl">
                   <div className="ico">📈</div>
                   <div>
-                    <p className="t">+500 M vues</p>
+                    <p className="t">+620 M vues</p>
                     <p className="s">Portée délivrée</p>
                   </div>
                 </div>

@@ -29,18 +29,27 @@ export default function EtudesDeCasPage() {
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="container">
           <div className="cases-grid stagger">
-            {CASES.map((c) => (
-              <Link href={`/etudes-de-cas/${c.slug}`} className="case-card" key={c.slug}>
-                <span className="cat">{c.category}</span>
-                <div className="num">{c.bigNum}</div>
-                <h3>{c.client}</h3>
-                <div className="meta">{c.meta}</div>
-                <span className="more">
-                  Lire l&apos;étude de cas
-                  <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-                </span>
-              </Link>
-            ))}
+            {CASES.map((c) => {
+              const cover = `/img/Clipeo%20covers%20campagnes/${c.img.split("/").pop()}`;
+              return (
+                <Link href={`/etudes-de-cas/${c.slug}`} className="case-card" key={c.slug}>
+                  <div className="case-cover">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- cover de campagne (chemin avec espaces) */}
+                    <img src={cover} alt={`Campagne de clipping ${c.client}`} loading="lazy" width={1600} height={900} />
+                  </div>
+                  <div className="case-body">
+                    <span className="cat">{c.category}</span>
+                    <div className="num">{c.bigNum}</div>
+                    <h3>{c.client}</h3>
+                    <div className="meta">{c.meta}</div>
+                    <span className="more">
+                      Lire l&apos;étude de cas
+                      <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
