@@ -1,6 +1,6 @@
 export const SITE = {
   name: "Clipeo",
-  url: "https://www.agenceclipeo.com",
+  url: "https://clipeo-one.vercel.app",
   email: "contact@agenceclipeo.com",
   tagline: "L'agence de clipping pour grands comptes",
   description:

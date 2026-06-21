@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit -q -m 'SITE.url -> déploiement Vercel \\(clipeo-one.vercel.app\\) pour preview OG *)"
+    ]
+  }
+}
