@@ -1,64 +1,124 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { SITE } from "@/lib/site";
 
-export const alt = `${SITE.name} · ${SITE.tagline}`;
+export const alt = `${SITE.name} · agence de clipping · réservez un audit gratuit`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OgImage() {
+const font = (w: string) => readFile(join(process.cwd(), `assets/fonts/montserrat-${w}.ttf`));
+
+export default async function OgImage() {
+  const [logoBuf, m400, m700, m800] = await Promise.all([
+    readFile(join(process.cwd(), "public/img/logo-mark-white.png")),
+    font("400"),
+    font("700"),
+    font("800"),
+  ]);
+  const logoSrc = `data:image/png;base64,${logoBuf.toString("base64")}`;
+  const domain = SITE.url.replace(/^https?:\/\/(www\.)?/, "");
+
   return new ImageResponse(
     (
       <div
         style={{
+          position: "relative",
+          overflow: "hidden",
           width: "100%",
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "80px",
+          padding: "66px 72px",
           background:
-            "radial-gradient(1000px 600px at 50% -10%, #1b3aa0, transparent), linear-gradient(135deg, #0a1747, #050c2a)",
+            "radial-gradient(900px 520px at 82% -12%, rgba(96,158,255,0.4), transparent 60%), linear-gradient(140deg, #0c2b86 0%, #0a1b5c 46%, #060f33 100%)",
           color: "#fff",
-          fontFamily: "sans-serif",
+          fontFamily: "Montserrat",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+        {/* Filigrane logo (le C-œil) en bas à droite, comme le CTA */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={logoSrc} width={440} height={452} alt="" style={{ position: "absolute", right: -96, bottom: -132, opacity: 0.12 }} />
+
+        {/* En-tête : logo (icône + wordmark) + badge */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={logoSrc} width={46} height={47} alt="" />
+            <div style={{ display: "flex", fontSize: 44, fontWeight: 800, letterSpacing: -1.5 }}>clipeo</div>
+          </div>
           <div
             style={{
-              width: 56,
-              height: 56,
-              borderRadius: 14,
-              background: "linear-gradient(180deg,#2f6bf0,#2348c8)",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
-              fontSize: 34,
-              fontWeight: 800,
+              padding: "11px 22px",
+              borderRadius: 100,
+              background: "rgba(255,255,255,0.1)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              fontSize: 23,
+              fontWeight: 600,
+              color: "rgba(255,255,255,0.92)",
             }}
           >
-            C
-          </div>
-          <div style={{ fontSize: 40, fontWeight: 800, letterSpacing: -1 }}>clipeo</div>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-          <div style={{ display: "flex", flexWrap: "wrap", fontSize: 72, fontWeight: 800, lineHeight: 1.05, letterSpacing: -2, maxWidth: 980 }}>
-            <span>L&apos;agence de clipping pour&nbsp;</span>
-            <span style={{ color: "#9bd0ff" }}>grands comptes</span>
-          </div>
-          <div style={{ fontSize: 30, color: "rgba(255,255,255,0.7)", maxWidth: 820 }}>
-            +620M de vues générées · modèle CPM garanti · audit gratuit
+            Agence de clipping
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: 36, fontSize: 24, color: "rgba(255,255,255,0.55)" }}>
-          <span>TikTok</span>
-          <span>YouTube Shorts</span>
-          <span>Instagram Reels</span>
-          <span>Twitch</span>
+        {/* Accroche + preuve */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+          <div style={{ display: "flex", flexDirection: "column", fontSize: 78, fontWeight: 800, lineHeight: 1.03, letterSpacing: -2.5 }}>
+            <div style={{ display: "flex" }}>Votre contenu long,</div>
+            <div style={{ display: "flex", color: "#9bd0ff" }}>des millions de vues.</div>
+          </div>
+          <div style={{ display: "flex", fontSize: 29, fontWeight: 400, color: "rgba(255,255,255,0.74)" }}>
+            +620 M de vues générées · CPM garanti au contrat · audit gratuit
+          </div>
+        </div>
+
+        {/* CTA + domaine */}
+        <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 14,
+              padding: "16px 18px 16px 30px",
+              borderRadius: 100,
+              background: "#fff",
+              color: "#0a1b5c",
+              fontSize: 28,
+              fontWeight: 700,
+            }}
+          >
+            Réserver un audit gratuit
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 40,
+                height: 40,
+                borderRadius: 100,
+                background: "rgba(10,99,255,0.14)",
+              }}
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0055fe" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M7 17L17 7M17 7H8M17 7v9" />
+              </svg>
+            </div>
+          </div>
+          <div style={{ display: "flex", fontSize: 25, fontWeight: 500, color: "rgba(255,255,255,0.5)" }}>{domain}</div>
         </div>
       </div>
     ),
-    size
+    {
+      ...size,
+      fonts: [
+        { name: "Montserrat", data: m400, weight: 400, style: "normal" },
+        { name: "Montserrat", data: m700, weight: 700, style: "normal" },
+        { name: "Montserrat", data: m800, weight: 800, style: "normal" },
+      ],
+    },
   );
 }
