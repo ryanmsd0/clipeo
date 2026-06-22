@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import CtaPanel from "@/components/CtaPanel";
@@ -60,10 +59,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
       <section className="page-hero" style={{ paddingBottom: 30 }}>
         <div className="container">
-          <div className="breadcrumb">
-            <Link href="/">Accueil</Link> <span>/</span> <Link href="/#blog">Blog</Link> <span>/</span>{" "}
-            <span>{meta.category}</span>
-          </div>
+          <span className="mono-label" style={{ display: "block", marginBottom: 18 }}>{meta.category}</span>
           <h1 style={{ maxWidth: 820, marginLeft: "auto", marginRight: "auto" }}>{meta.title}</h1>
           <p style={{ fontFamily: "var(--font-m)", fontSize: ".74rem", letterSpacing: "1px", color: "var(--w40)", textTransform: "uppercase" }}>
             {meta.author} · {meta.readingTime}

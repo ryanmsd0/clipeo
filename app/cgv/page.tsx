@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { SITE } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -13,9 +12,6 @@ export default function CgvPage() {
     <main>
       <section className="page-hero" style={{ paddingBottom: 30 }}>
         <div className="container">
-          <div className="breadcrumb">
-            <Link href="/">Accueil</Link> <span>/</span> <span>CGV</span>
-          </div>
           <h1>Conditions générales de vente</h1>
           <p>Dernière mise à jour : juin 2026.</p>
         </div>

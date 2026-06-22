@@ -180,9 +180,6 @@ export default function AProposPage() {
       {/* HERO */}
       <section className="page-hero">
         <div className="container">
-          <div className="breadcrumb">
-            <Link href="/">Accueil</Link> <span>/</span> <span>À propos</span>
-          </div>
           <span className="mono-label" style={{ display: "block", marginBottom: 20 }}>À propos · Clipeo</span>
           <h1>
             L&apos;équipe derrière<br />

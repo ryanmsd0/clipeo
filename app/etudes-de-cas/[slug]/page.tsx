@@ -118,10 +118,6 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
       {/* HERO — cover à gauche, résultat + CTA à droite */}
       <section className="page-hero" style={{ paddingBottom: 30 }}>
         <div className="container">
-          <div className="breadcrumb">
-            <Link href="/">Accueil</Link> <span>/</span>{" "}
-            <Link href="/etudes-de-cas">Études de cas</Link> <span>/</span> <span>{c.client}</span>
-          </div>
           <div className="cd-hero">
             <div className="cd-cover reveal"><Image src={c.img} alt={`Campagne de clipping ${c.client}`} fill sizes="(max-width:860px) 340px, 30vw" style={{ objectFit: "cover", objectPosition: "center top" }} priority /></div>
             <div className="cd-info reveal">

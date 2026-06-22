@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
 import { SITE } from "@/lib/site";
 
@@ -15,9 +14,6 @@ export default function ContactPage() {
     <main>
       <section className="page-hero" style={{ paddingBottom: 30 }}>
         <div className="container">
-          <div className="breadcrumb">
-            <Link href="/">Accueil</Link> <span>/</span> <span>Contact</span>
-          </div>
           <h1>Audit gratuit.<br /><span className="grad">Projection chiffrée.</span></h1>
           <p>
             On audite votre contenu long, on identifie ce qui peut cartonner, et on vous projette un objectif

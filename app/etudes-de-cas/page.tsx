@@ -15,9 +15,6 @@ export default function EtudesDeCasPage() {
     <main>
       <section className="page-hero">
         <div className="container">
-          <div className="breadcrumb">
-            <Link href="/">Accueil</Link> <span>/</span> <span>Études de cas</span>
-          </div>
           <h1>Quand la campagne<br />dépasse l&apos;objectif.</h1>
           <p>
             24 clients accompagnés, 57 campagnes réalisées, +620M de vues en 6 mois. Voici comment on
