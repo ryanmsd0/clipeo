@@ -7,7 +7,8 @@ export default function Footer() {
       <div className="container">
         <div className="footer-cta">
           <Link href="/" className="brand">
-            <img src="/img/logo.png" alt="Clipeo" width={30} height={30} />
+            {/* eslint-disable-next-line @next/next/no-img-element -- logo détouré noir (identique navbar) */}
+            <img src="/img/logo-mark-black.png" alt="Clipeo" width={30} height={31} />
             <span>clipeo</span>
           </Link>
           <div>
@@ -40,7 +41,7 @@ export default function Footer() {
             <Link href="/">Accueil</Link>
             <Link href="/a-propos">À propos</Link>
             <Link href="/contact">Contact</Link>
-            <Link href="/blog">Blog</Link>
+            <Link href="/#blog">Blog</Link>
           </div>
           <div className="fcol">
             <p className="fcol-t">Support</p>

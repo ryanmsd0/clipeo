@@ -63,7 +63,7 @@ const STYLES = `
 
 const FACTORS = [
   { n: "01", t: "L'objectif de vues", d: "Le levier principal. Plus le volume garanti est élevé, plus la campagne mobilise de clippers et de comptes." },
-  { n: "02", t: "Les plateformes visées", d: "TikTok, Reels, Shorts, Twitch : chaque réseau a ses codes et son coût de distribution propre." },
+  { n: "02", t: "Les plateformes visées", d: "TikTok, Reels, Shorts : chaque réseau a ses codes et son coût de distribution propre." },
   { n: "03", t: "La cadence & la durée", d: "Lancement ponctuel autour d'une sortie, ou présence continue dans la durée : le rythme change le périmètre." },
   { n: "04", t: "Le volume de contenu source", d: "Plus vous avez de contenu long à exploiter, plus on en tire de clips, et meilleur est le coût par vue." },
 ];

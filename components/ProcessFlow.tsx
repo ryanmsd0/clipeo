@@ -41,7 +41,7 @@ export const PROCESS_STEPS = [
     tag: "Étape 03",
     title: "On vous rend omniprésent.",
     bullets: [
-      "Vos clips tournent en continu sur des dizaines de comptes : TikTok, Reels, Shorts, Twitch.",
+      "Vos clips tournent en continu sur des dizaines de comptes : TikTok, Reels, Shorts.",
       "Chaque vue est suivie, par clip et par plateforme. Aucune dépense à l'aveugle.",
       "En fin de campagne, un rapport clair : ce qui a cartonné, et où on scale ensuite.",
     ],

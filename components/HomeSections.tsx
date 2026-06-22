@@ -225,7 +225,7 @@ export default function HomeSections() {
 
           <div className="how-btns reveal" style={{ justifyContent: "center", marginTop: 32 }}>
             <Link href="/etudes-de-cas" className="btn btn-sky"><span>Voir les études de cas</span></Link>
-            <Link href="/blog" className="btn"><span>C&apos;est quoi le clipping ?</span></Link>
+            <Link href="/#blog" className="btn"><span>C&apos;est quoi le clipping ?</span></Link>
           </div>
         </div>
       </section>
@@ -347,7 +347,7 @@ export default function HomeSections() {
           </div>
           <div className="faq-layout">
             <div className="faq-list reveal">
-              <div className="qitem"><span className="qn">01</span><div><h3>Qu&apos;est-ce que Clipeo ?</h3><p>Une agence de clipping managée pour marques, créateurs et sorties. On active un réseau de clippers pour créer et publier des montages orientés performance sur TikTok, Reels, Shorts et Twitch.</p></div></div>
+              <div className="qitem"><span className="qn">01</span><div><h3>Qu&apos;est-ce que Clipeo ?</h3><p>Une agence de clipping managée pour marques, créateurs et sorties. On active un réseau de clippers pour créer et publier des montages orientés performance sur TikTok, Reels et Shorts.</p></div></div>
               <div className="qitem"><span className="qn">02</span><div><h3>Comment fonctionne le process ?</h3><p>On démarre par un court appel. Vous venez avec votre vision, et on gère la stratégie, le setup du lancement et l&apos;exécution hebdomadaire de la campagne.</p></div></div>
               <div className="qitem"><span className="qn">03</span><div><h3>En combien de temps peut-on lancer ?</h3><p>La plupart des campagnes se lancent en 1 à 2 jours après l&apos;appel. Notre onboarding est conçu pour la vitesse.</p></div></div>
               <div className="qitem"><span className="qn">04</span><div><h3>Avec qui travaillez-vous ?</h3><p>Des créateurs, des marques, des podcasts, des sorties cinéma et des émissions. Si votre croissance dépend du format court, on construit un modèle de campagne autour de votre contenu.</p></div></div>
@@ -360,7 +360,7 @@ export default function HomeSections() {
               <p className="sub">Process, fit, timing et prix au même endroit pour lancer en confiance.</p>
               <ul>
                 <li><CheckCircle />Onboarding rapide, campagne lancée en 1–2 jours</li>
-                <li><CheckCircle />Clipping multi-plateforme : TikTok, Reels, Shorts, Twitch</li>
+                <li><CheckCircle />Clipping multi-plateforme : TikTok, Reels, Shorts</li>
                 <li><CheckCircle />Reporting transparent et suivi des performances</li>
               </ul>
               <div className="btns">
@@ -437,8 +437,8 @@ export default function HomeSections() {
               <div className="bb-in">
                 <span className="bb-cat">Stratégie</span>
                 <h3>Générateurs de clips IA <span className="bb-ac">vs agence de clipping.</span></h3>
-                <p>Les outils de clip automatique promettent dix vidéos en un clic. Une agence promet des vues. On compare honnêtement les deux approches, coûts et résultats.</p>
-                <span className="bb-foot"><span className="bb-go">Lire l&apos;article <ArrowR /></span><span className="bb-min">12 min</span></span>
+                <p>Opus, Vizard et les autres découpent très bien vos vidéos. Le problème n&apos;a jamais été le découpage. On vous montre où se gagnent vraiment les vues.</p>
+                <span className="bb-foot"><span className="bb-go">Lire l&apos;article <ArrowR /></span><span className="bb-min">9 min</span></span>
               </div>
             </Link>
 
@@ -453,7 +453,7 @@ export default function HomeSections() {
               <div className="bb-in">
                 <span className="bb-cat">Guide</span>
                 <h3>Se lancer dans le <span className="bb-ac">clipping en 2026.</span></h3>
-                <span className="bb-foot"><span className="bb-go">Lire l&apos;article <ArrowR /></span><span className="bb-min">11 min</span></span>
+                <span className="bb-foot"><span className="bb-go">Lire l&apos;article <ArrowR /></span><span className="bb-min">10 min</span></span>
               </div>
             </Link>
 
@@ -473,8 +473,8 @@ export default function HomeSections() {
               <div className="bb-in">
                 <span className="bb-cat">Playbook</span>
                 <h3>Marketing de podcast : <span className="bb-ac">faire grandir une émission.</span></h3>
-                <p>La plupart des podcasts stagnent non pas par manque de qualité, mais par manque de découverte. Le format court est le levier le plus rapide pour y remédier.</p>
-                <span className="bb-foot"><span className="bb-go">Lire l&apos;article <ArrowR /></span><span className="bb-min">8 min</span></span>
+                <p>Un bon podcast ne grandit pas tout seul. L&apos;audio ne circule pas, la vidéo si. On montre comment transformer chaque épisode en moteur de découverte.</p>
+                <span className="bb-foot"><span className="bb-go">Lire l&apos;article <ArrowR /></span><span className="bb-min">7 min</span></span>
               </div>
             </Link>
           </div>

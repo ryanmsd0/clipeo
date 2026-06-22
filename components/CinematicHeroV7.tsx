@@ -61,7 +61,6 @@ const WALL_TILES: Array<{ plat: Plat; time: string; views: number; x: number; y:
   { plat: "tiktok", time: "02:14", views: 412_000, x: -210, y: -30, z: -40, s: 0.96 },
   { plat: "instagram", time: "06:38", views: 1_200_000, x: -355, y: -165, z: -90, s: 0.9 },
   { plat: "youtube", time: "09:12", views: 88_000, x: -355, y: 115, z: -90, s: 0.9 },
-  { plat: "twitch", time: "11:47", views: 47_000, x: -500, y: -30, z: -140, s: 0.84, far: true },
   { plat: "instagram", time: "14:05", views: 2_100_000, x: 210, y: -30, z: -40, s: 0.96 },
   { plat: "youtube", time: "16:33", views: 760_000, x: 355, y: -165, z: -90, s: 0.9 },
   { plat: "tiktok", time: "19:21", views: 318_000, x: 355, y: 115, z: -90, s: 0.9 },

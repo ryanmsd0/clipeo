@@ -48,7 +48,7 @@ export const STEPS: Step[] = [
     title: "On les démultiplie.",
     lead: "Une fois les angles validés, notre réseau de clippers passe à la production. Une seule vidéo longue devient des dizaines de clips courts, chacun monté pour percer sur sa plateforme.",
     bullets: [
-      "Découpage, montage et sous-titres aux codes de TikTok, Reels, Shorts et Twitch, plateforme par plateforme.",
+      "Découpage, montage et sous-titres aux codes de TikTok, Reels et Shorts, plateforme par plateforme.",
       "Hook dans les 3 premières secondes, rythme nerveux, format vertical : tout est pensé pour la rétention.",
       "Vous validez la ligne éditoriale, on gère le volume. Votre image reste sous contrôle, à chaque clip.",
     ],
@@ -62,7 +62,7 @@ export const STEPS: Step[] = [
     title: "On vous rend omniprésent.",
     lead: "Les clips sont déployés en continu, sur des dizaines de comptes, jusqu'à occuper la For You Page de votre audience. C'est la répétition qui installe la marque, puis ramène vers votre contenu long.",
     bullets: [
-      "Diffusion permanente sur TikTok, Reels, Shorts et Twitch, jour après jour, sans interruption.",
+      "Diffusion permanente sur TikTok, Reels et Shorts, jour après jour, sans interruption.",
       "Chaque vue est suivie, par clip, par plateforme et par angle : aucune dépense à l'aveugle.",
       "En fin de campagne, un rapport clair : ce qui a cartonné, ce qu'on coupe, et où l'on scale pour la suite.",
     ],

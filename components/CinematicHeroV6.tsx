@@ -279,8 +279,8 @@ export default function CinematicHeroV6({
   cardDescription = (
     <>
       <span style={{ color: "#fff", fontWeight: 600 }}>Clipeo</span> découpe votre
-      contenu long en dizaines de clips courts, publiés en continu sur TikTok, Shorts,
-      Reels et Twitch par un réseau de clippers.
+      contenu long en dizaines de clips courts, publiés en continu sur TikTok, Shorts
+      et Reels par un réseau de clippers.
     </>
   ),
   metricValue = 2_400_000,
@@ -497,10 +497,9 @@ export default function CinematicHeroV6({
                   <PlatformLogo name="tiktok" />
                   <PlatformLogo name="youtube" />
                   <PlatformLogo name="instagram" />
-                  <PlatformLogo name="twitch" />
                 </div>
                 <div>
-                  <p className="t">4 plateformes</p>
+                  <p className="t">3 plateformes</p>
                   <p className="s">Une seule prod</p>
                 </div>
               </div>

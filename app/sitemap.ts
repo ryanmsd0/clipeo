@@ -12,11 +12,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     { path: "", priority: 1.0 },
     { path: "/services", priority: 0.9 },
-    { path: "/pour-qui", priority: 0.8 },
     { path: "/tarifs", priority: 0.8 },
     { path: "/etudes-de-cas", priority: 0.8 },
     { path: "/a-propos", priority: 0.7 },
-    { path: "/blog", priority: 0.7 },
     { path: "/contact", priority: 0.9 },
     { path: "/confidentialite", priority: 0.3 },
     { path: "/cgv", priority: 0.3 },

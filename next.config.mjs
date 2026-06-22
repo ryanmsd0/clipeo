@@ -11,6 +11,10 @@ const nextConfig = {
       { source: "/services/campagne-managee", destination: "/services", permanent: true },
       { source: "/services/production-de-clips", destination: "/services", permanent: true },
       { source: "/services/distribution-tracking", destination: "/services", permanent: true },
+      // Page « tous les univers » supprimée → section « Pour qui » de la home
+      { source: "/pour-qui", destination: "/#pour-qui", permanent: true },
+      // Page « tout le blog » supprimée → section « Blog » de la home (les articles gardent leur page)
+      { source: "/blog", destination: "/#blog", permanent: true },
     ];
   },
   // En-têtes de sécurité = signaux de confiance SEO

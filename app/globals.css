@@ -137,7 +137,7 @@ a{text-decoration:none;color:inherit} ul{list-style:none} img{max-width:100%;dis
 .nav-links .nav-mega-all:hover{background:var(--navy-800)}
 .nav-links .nav-mega-all svg{width:14px;height:14px;opacity:1}
 .nav-links .nav-card .tx{display:flex;flex-direction:column;gap:2px}
-.nav-links .nav-card .tx b{font-family:var(--font-d);font-weight:700;font-size:.9rem;color:var(--ink);letter-spacing:-.01em}
+.nav-links .nav-card .tx b{font-family:var(--font-d);font-weight:700;font-size:.9rem;color:var(--ink);letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .nav-links .nav-card .tx span{font-size:.77rem;color:var(--w55);line-height:1.3;font-weight:400}
 .nav-links .nav-card .arr{flex:none;width:16px;height:16px;margin-left:auto;color:var(--sky);opacity:0;transform:translateX(-6px);transition:opacity .2s,transform .2s}
 .nav-links .nav-card:hover .arr{opacity:1;transform:translateX(0)}

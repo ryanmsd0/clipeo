@@ -5,6 +5,7 @@ import ScrollParallax from "@/components/ScrollParallax";
 import { Check, ArrowR } from "@/components/Icons";
 import { PlatformTile } from "@/components/BrandLogo";
 import { CAMPAIGN_TYPES, type CampaignType as CT } from "@/lib/campaigns";
+import { getCase } from "@/lib/cases";
 
 const STYLES = `
   .ct-hero{position:relative;overflow:hidden;padding:160px 0 56px;isolation:isolate}
@@ -74,8 +75,13 @@ const STYLES = `
   .ct-proof .q{font-size:clamp(1.15rem,2vw,1.5rem);line-height:1.4;font-weight:600;letter-spacing:-.01em;margin-bottom:22px}
   .ct-proof .who{display:flex;align-items:center;gap:12px}
   .ct-proof .who i{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:800;color:#0b2a8c;background:#fff;font-style:normal}
+  .ct-proof .who .pp{width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:center top;flex:none;background:#fff;border:1.5px solid rgba(255,255,255,.45)}
   .ct-proof .who b{display:block;font-family:var(--font-d);font-size:1rem}
   .ct-proof .who span{font-family:var(--font-m);font-size:.6rem;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.6)}
+  .ct-proof-cta{display:inline-flex;align-items:center;gap:9px;margin-top:24px;padding:13px 22px;border-radius:50px;
+    background:#fff;color:#0b2a8c;font-family:var(--font-d);font-weight:700;font-size:.92rem;transition:transform .3s,box-shadow .3s}
+  .ct-proof-cta:hover{transform:translateY(-2px);box-shadow:0 18px 36px -16px rgba(0,0,0,.5)}
+  .ct-proof-cta svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.4}
 
   /* FAQ + autres univers */
   .ct-faq{max-width:820px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
@@ -126,6 +132,7 @@ const UNIV_DESC: Record<string, string> = {
 export default function CampaignType({ data }: { data: CT }) {
   const others = CAMPAIGN_TYPES.filter((c) => c.slug !== data.slug).slice(0, 4);
   const hs = data.heroStat;
+  const pp = getCase(data.caseSlug)?.img; // photo de profil = créateur de l'étude de cas liée
 
   return (
     <ScrollParallax>
@@ -236,9 +243,17 @@ export default function CampaignType({ data }: { data: CT }) {
               <div>
                 <p className="q">« {data.proof.quote} »</p>
                 <div className="who">
-                  <i>{data.proof.ini}</i>
+                  {pp ? (
+                    // eslint-disable-next-line @next/next/no-img-element -- avatar photo créateur
+                    <img className="pp" src={pp} alt={data.proof.name} width={44} height={44} />
+                  ) : (
+                    <i>{data.proof.ini}</i>
+                  )}
                   <span><b>{data.proof.name}</b><span>{data.proof.cat}</span></span>
                 </div>
+                <Link href={`/etudes-de-cas/${data.caseSlug}`} className="ct-proof-cta">
+                  Voir l&apos;étude de cas complète<ArrowR />
+                </Link>
               </div>
             </div>
           </div>

@@ -219,7 +219,7 @@ export default function CinematicHeroV5({
     <>
       <span style={{ color: "#fff", fontWeight: 600 }}>Clipeo</span> transforme votre
       contenu long en clips courts pensés pour la viralité, publiés en continu par un
-      réseau de clippers sur TikTok, Shorts, Reels et Twitch.
+      réseau de clippers sur TikTok, Shorts et Reels.
     </>
   ),
   metricValue = 2_400_000,

@@ -4,6 +4,7 @@
 
 export type CampaignType = {
   slug: string;
+  caseSlug: string;
   label: string;
   metaTitle: string;
   metaDesc: string;
@@ -26,6 +27,7 @@ export type CampaignType = {
 export const CAMPAIGN_TYPES: CampaignType[] = [
   {
     slug: "createurs",
+    caseSlug: "charles-et-melanie",
     label: "Créateurs YouTube",
     metaTitle: "Campagnes de clipping pour créateurs YouTube",
     metaDesc:
@@ -68,6 +70,7 @@ export const CAMPAIGN_TYPES: CampaignType[] = [
   },
   {
     slug: "marques",
+    caseSlug: "la-marine-nationale",
     label: "Marques & grands comptes",
     metaTitle: "Campagnes de clipping pour marques & grands comptes",
     metaDesc:
@@ -101,7 +104,7 @@ export const CAMPAIGN_TYPES: CampaignType[] = [
       { t: "Un seul interlocuteur", d: "Des dizaines de comptes et de clippers, mais un seul point de contact côté marque." },
       { t: "Un engagement contractuel", d: "Vous achetez un résultat chiffré, pas une prestation au forfait. Le risque est de notre côté." },
     ],
-    proof: { name: "Grand compte", cat: "Marque · campagne en cours", metric: "Objectif", metricK: "atteint et tenu au contrat", ini: "M", quote: "Objectif de vues annoncé au contrat, et tenu. Pour une fois, on payait un résultat, pas une promesse." },
+    proof: { name: "La Marine Nationale", cat: "Marque · campagne en cours", metric: "Objectif", metricK: "atteint et tenu au contrat", ini: "MN", quote: "Objectif de vues annoncé au contrat, et tenu. Pour une fois, on payait un résultat, pas une promesse." },
     faq: [
       { q: "Vous respectez notre charte de marque ?", a: "Oui. La ligne édito et les garde-fous sont posés dès le cadrage, et vous validez la direction avant production." },
       { q: "On garde la main sur l'image ?", a: "Toujours. Vous validez la ligne édito ; on gère l'exécution et la distribution sans jamais sortir du cadre." },
@@ -110,6 +113,7 @@ export const CAMPAIGN_TYPES: CampaignType[] = [
   },
   {
     slug: "podcasts",
+    caseSlug: "kyan-khojandi",
     label: "Podcasts",
     metaTitle: "Campagnes de clipping pour podcasts",
     metaDesc:
@@ -152,6 +156,7 @@ export const CAMPAIGN_TYPES: CampaignType[] = [
   },
   {
     slug: "cinema",
+    caseSlug: "plus-fort-que-moi",
     label: "Cinéma & sorties",
     metaTitle: "Campagnes de clipping pour le cinéma & les sorties",
     metaDesc:
@@ -194,6 +199,7 @@ export const CAMPAIGN_TYPES: CampaignType[] = [
   },
   {
     slug: "twitch",
+    caseSlug: "zebro-et-leow",
     label: "Émissions & Twitch",
     metaTitle: "Campagnes de clipping pour émissions & Twitch",
     metaDesc:
@@ -204,7 +210,7 @@ export const CAMPAIGN_TYPES: CampaignType[] = [
     sub: "Des heures de live, c'est des dizaines de moments cultes qui disparaissent à la fin du stream. On les capture et on les fait vivre en format court, en continu.",
     heroStat: { v: "24/7", k: "vos meilleurs moments, en boucle" },
     floats: [
-      { label: "Twitch", color: "#9146FF" },
+      { label: "Reels", color: "#E1306C" },
       { label: "TikTok", color: "#000" },
       { label: "YouTube Shorts", color: "#FF0000" },
     ],
@@ -227,7 +233,7 @@ export const CAMPAIGN_TYPES: CampaignType[] = [
       { t: "Le volume du live", d: "Des heures de contenu par semaine : impossible à exploiter seul. On s'en charge." },
       { t: "De nouveaux viewers", d: "Les clips sont la meilleure porte d'entrée vers votre chaîne et vos lives." },
     ],
-    proof: { name: "Émission live", cat: "Twitch · live & replay", metric: "Temps réel", metricK: "clips livrés pendant le stream", ini: "T", quote: "Les meilleurs moments du live tournaient sur TikTok avant même la fin du stream. La chaîne a gagné des viewers réguliers." },
+    proof: { name: "Zebro & Leow", cat: "Twitch · live & replay", metric: "Temps réel", metricK: "clips livrés pendant le stream", ini: "ZL", quote: "Les meilleurs moments du live tournaient sur TikTok avant même la fin du stream. La chaîne a gagné des viewers réguliers." },
     faq: [
       { q: "Vous clippez en direct ?", a: "Oui, on peut capter les moments forts pendant le live et livrer des clips à chaud, en plus du travail sur les replays." },
       { q: "Ça marche pour une émission, pas qu'un streamer ?", a: "Oui : talk-show, émission, plateau, podcast filmé en live. Tout format avec un flux régulier d'épisodes." },
@@ -236,6 +242,7 @@ export const CAMPAIGN_TYPES: CampaignType[] = [
   },
   {
     slug: "evenements",
+    caseSlug: "crunch-creator",
     label: "Événements",
     metaTitle: "Campagnes de clipping pour événements",
     metaDesc:

@@ -34,8 +34,7 @@ export default async function CampagnePage({ params }: { params: Promise<{ slug:
       "@context": "https://schema.org", "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
-        { "@type": "ListItem", position: 2, name: "Pour qui", item: `${SITE.url}/pour-qui` },
-        { "@type": "ListItem", position: 3, name: data.label, item: `${SITE.url}/campagnes/${data.slug}` },
+        { "@type": "ListItem", position: 2, name: data.label, item: `${SITE.url}/campagnes/${data.slug}` },
       ],
     },
   ];

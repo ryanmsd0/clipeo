@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import Link from "next/link";
 import CtaPanel from "@/components/CtaPanel";
 import ScrollParallax from "@/components/ScrollParallax";
+import ServicesPillars from "@/components/ServicesPillars";
 import { Check, ArrowR } from "@/components/Icons";
 import { PlatformTile } from "@/components/BrandLogo";
 
@@ -12,43 +12,6 @@ export const metadata: Metadata = {
     "Un seul service qui réunit tout notre savoir-faire : compréhension fine de l'algorithme, audit, stratégie, production de clips, distribution multi-comptes et tracking. De votre contenu long à des vues qui comptent.",
   alternates: { canonical: "/services" },
 };
-
-/* Icônes piliers (stroke, sur-mesure) */
-const ICONS: Record<string, ReactNode> = {
-  algo: <><circle cx="12" cy="12" r="2.4" /><path d="M5 8a8 8 0 0 0 0 8M19 8a8 8 0 0 1 0 8M8.5 10.5a4 4 0 0 0 0 3M15.5 10.5a4 4 0 0 1 0 3" /></>,
-  audit: <><circle cx="11" cy="11" r="6.5" /><path d="m20 20-3.6-3.6M11 8v6M8 11h6" /></>,
-  strategy: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="4.6" /><circle cx="12" cy="12" r="1" /><path d="M12 1v3M12 20v3M1 12h3M20 12h3" /></>,
-  prod: <><circle cx="6" cy="6" r="2.6" /><circle cx="6" cy="18" r="2.6" /><path d="M20 4 8.4 15.6M14.4 14.4 20 20M8.4 8.4 12 12" /></>,
-  distrib: <><circle cx="6" cy="12" r="2.6" /><circle cx="18" cy="6" r="2.6" /><circle cx="18" cy="18" r="2.6" /><path d="M8.3 10.8 15.7 7.2M8.3 13.2l7.4 3.6" /></>,
-  track: <><path d="M4 19V5M4 19h16" /><path d="m7 15 3.5-4 3 2.5L20 7" /><path d="M20 11V7h-4" /></>,
-};
-
-const PILLARS = [
-  {
-    ic: "algo", t: "Compréhension de l'algorithme",
-    d: "On connaît les codes de chaque plateforme : fenêtres de publication, signaux de rétention, hooks, watch-time. On publie quand et comme l'algorithme récompense — pas au hasard.",
-  },
-  {
-    ic: "audit", t: "Audit",
-    d: "On cartographie votre contenu, on isole les angles à plus fort potentiel viral et on fixe un objectif de vues chiffré — avant même de produire le premier clip.",
-  },
-  {
-    ic: "strategy", t: "Stratégie",
-    d: "Un plan de diffusion sur-mesure : formats, cadence, plateformes prioritaires, narratifs. Chaque clip a un rôle précis dans la mécanique de croissance.",
-  },
-  {
-    ic: "prod", t: "Production",
-    d: "Un réseau de clippers et un vrai savoir-faire de montage : découpage, rythme et sous-titres pensés pour la rétention, aux codes natifs de TikTok, Reels, Shorts et Twitch.",
-  },
-  {
-    ic: "distrib", t: "Distribution",
-    d: "Diffusion sur des dizaines de comptes, multi-plateformes, calée sur les fenêtres algo de chaque réseau. La portée n'est jamais laissée au hasard.",
-  },
-  {
-    ic: "track", t: "Tracking",
-    d: "On mesure par contenu, plateforme et thème. On coupe ce qui ne marche pas, on amplifie ce qui performe. Chaque vague de clips nourrit la suivante.",
-  },
-];
 
 const SIGNALS = [
   { k: "Hook < 3 s", v: "Capter avant le scroll" },
@@ -70,7 +33,7 @@ const METHOD = [
 
 const INCLUDED = [
   { t: "Objectif garanti", d: "Un volume de vues chiffré, inscrit au contrat, ou remboursé." },
-  { t: "Multi-plateforme", d: "TikTok, Reels, Shorts et Twitch, aux codes de chacun." },
+  { t: "Multi-plateforme", d: "TikTok, Reels et Shorts, aux codes de chacun." },
   { t: "Sous-titres pro", d: "Montage et sous-titrage pensés pour la rétention." },
   { t: "Reporting clair", d: "Tracking par contenu, plateforme et thème, en continu." },
 ];
@@ -92,17 +55,6 @@ const STYLES = `
   .sv-hero h1{font-family:var(--font-d);font-weight:800;font-size:clamp(2.4rem,6vw,4.4rem);line-height:1.04;letter-spacing:-.03em;margin-bottom:20px}
   .sv-hero .sub{font-size:clamp(1.05rem,1.7vw,1.25rem);color:var(--w70);max-width:640px;margin:0 auto 30px;line-height:1.6}
   .sv-cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap}
-
-  /* Piliers d'expertise */
-  .sx-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  .sx-pillar{position:relative;background:linear-gradient(180deg,var(--glass-2),var(--glass));border:1px solid var(--w14);border-radius:22px;padding:30px 28px;
-    transition:transform .4s,border-color .4s,box-shadow .4s}
-  .sx-pillar:hover{transform:translateY(-5px);border-color:var(--w22);box-shadow:0 34px 70px -44px rgba(10,40,120,.55)}
-  .sx-pillar .ic{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;
-    background:rgba(10,99,255,.1)}
-  .sx-pillar .ic svg{width:24px;height:24px;stroke:var(--sky);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
-  .sx-pillar h3{font-family:var(--font-d);font-weight:800;font-size:1.18rem;letter-spacing:-.01em;color:var(--ink);margin-bottom:10px}
-  .sx-pillar p{color:var(--w70);font-size:.95rem;line-height:1.6}
 
   /* Algorithme — split */
   .sx-algo{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
@@ -185,15 +137,7 @@ export default function ServicesPage() {
               <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Notre savoir-faire</span>
               <h2>Six expertises,<br />un seul service.</h2>
             </div>
-            <div className="sx-pillars stagger">
-              {PILLARS.map((p) => (
-                <div className="sx-pillar" key={p.t}>
-                  <div className="ic"><svg viewBox="0 0 24 24">{ICONS[p.ic]}</svg></div>
-                  <h3>{p.t}</h3>
-                  <p>{p.d}</p>
-                </div>
-              ))}
-            </div>
+            <ServicesPillars />
           </div>
         </section>
 

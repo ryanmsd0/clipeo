@@ -9,11 +9,11 @@ export const SITE = {
 
 export const NAV_LINKS = [
   { label: "Services", href: "/services" },
-  { label: "Pour qui", href: "/pour-qui" },
+  { label: "Pour qui", href: "/#pour-qui" },
   { label: "Tarifs", href: "/tarifs" },
   { label: "Études de cas", href: "/etudes-de-cas" },
   { label: "À propos", href: "/a-propos" },
-  { label: "Blog", href: "/blog" },
+  { label: "Blog", href: "/#blog" },
   { label: "Contact", href: "/contact" },
 ];
 

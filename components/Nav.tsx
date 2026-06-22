@@ -11,7 +11,7 @@ import { CASES } from "@/lib/cases";
    Articles passés en props depuis le layout (lib/posts lit le filesystem). */
 
 type Card = { label: string; desc: string; href: string; icon?: keyof typeof ICONS; ini?: string; img?: string };
-type Item = { label: string; href: string; cols?: number; menu?: Card[]; all?: { label: string; href: string } };
+type Item = { label: string; href: string; cols?: number; colW?: number; menu?: Card[]; all?: { label: string; href: string } };
 type PostLite = { slug: string; title: string; category: string };
 
 const POURQUI: Card[] = [
@@ -42,6 +42,8 @@ const ICONS = {
   live: <><circle cx="12" cy="12" r="3" /><path d="M6 6a8 8 0 0 0 0 12M18 6a8 8 0 0 1 0 12" /></>,
   calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 9h18M8 3v4M16 3v4" /><circle cx="12" cy="15" r="1.6" /></>,
   doc: <><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" /><path d="M14 3v5h5M9 13h6M9 17h6" /></>,
+  compare: <><path d="M12 4v16M8 20h8" /><path d="m4 8 8-3 8 3" /><path d="M4 8l-2.4 5a2.4 2.4 0 0 0 4.8 0L4 8Z" /><path d="M20 8l-2.4 5a2.4 2.4 0 0 0 4.8 0L20 8Z" /></>,
+  rocket: <><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09Z" /><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2Z" /><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" /></>,
   phone: <><path d="M15.5 3h-7A1.5 1.5 0 0 0 7 4.5v15A1.5 1.5 0 0 0 8.5 21h7a1.5 1.5 0 0 0 1.5-1.5v-15A1.5 1.5 0 0 0 15.5 3Z" /><path d="M11 18h2" /></>,
   mail: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m4 7 8 6 8-6" /></>,
 };
@@ -77,13 +79,14 @@ export default function Nav({ posts = [] }: { posts?: PostLite[] }) {
   const [vpLeft, setVpLeft] = useState(0);
   const triggers = useRef<Record<string, HTMLButtonElement | null>>({});
 
-  const BLOG: Card[] = posts.slice(0, 4).map((p) => ({ label: p.title, desc: p.category, href: `/blog/${p.slug}`, icon: "doc" }));
+  const BLOG_ICON: Record<string, keyof typeof ICONS> = { "Stratégie": "compare", "Guide": "rocket", "Playbook": "mic" };
+  const BLOG: Card[] = posts.slice(0, 3).map((p) => ({ label: p.title, desc: p.category, href: `/blog/${p.slug}`, icon: BLOG_ICON[p.category] ?? "doc" }));
 
   const ITEMS: Item[] = [
     { label: "Services", href: "/services" },
-    { label: "Pour qui", href: "/pour-qui", cols: 3, menu: POURQUI, all: { label: "Tous les univers", href: "/pour-qui" } },
+    { label: "Pour qui", href: "/#pour-qui", cols: 3, menu: POURQUI },
     { label: "Études de cas", href: "/etudes-de-cas", cols: 3, menu: CASE_CARDS, all: { label: "Toutes les études de cas", href: "/etudes-de-cas" } },
-    ...(BLOG.length ? [{ label: "Blog", href: "/blog", cols: 2, menu: BLOG, all: { label: "Tout le blog", href: "/blog" } } as Item] : [{ label: "Blog", href: "/blog" } as Item]),
+    ...(BLOG.length ? [{ label: "Blog", href: "/#blog", cols: 3, colW: 250, menu: BLOG } as Item] : [{ label: "Blog", href: "/#blog" } as Item]),
     { label: "À propos", href: "/a-propos" },
   ];
 
@@ -103,7 +106,15 @@ export default function Nav({ posts = [] }: { posts?: PostLite[] }) {
             skipDelayDuration={300}
             onValueChange={(v) => {
               const el = triggers.current[v];
-              if (el) setVpLeft(el.offsetLeft);
+              if (!el) return;
+              const item = ITEMS.find((i) => i.href === v);
+              const cols = item?.cols ?? 1;
+              const colW = item?.colW ?? 236;
+              const menuW = cols * colW + (cols - 1) * 5 + 24; // tracks + gaps + padding
+              const initial = el.offsetLeft;
+              // décale vers la gauche si le dropdown dépasserait le bord droit de l'écran
+              const overflow = el.getBoundingClientRect().left + menuW - (window.innerWidth - 14);
+              setVpLeft(overflow > 0 ? Math.max(0, initial - overflow) : initial);
             }}
           >
             <NM.List className="nm-list">
@@ -115,7 +126,7 @@ export default function Nav({ posts = [] }: { posts?: PostLite[] }) {
                       <svg className="nm-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6" /></svg>
                     </NM.Trigger>
                     <NM.Content className="nm-content">
-                      <div className="nm-grid" style={{ gridTemplateColumns: `repeat(${it.cols}, 236px)` }}>
+                      <div className="nm-grid" style={{ gridTemplateColumns: `repeat(${it.cols}, ${it.colW ?? 236}px)` }}>
                         {it.menu.map((c) => <MegaCard c={c} key={c.label + c.href} />)}
                         {it.all && (
                           <NM.Link asChild>

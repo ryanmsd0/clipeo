@@ -49,8 +49,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
-      { "@type": "ListItem", position: 2, name: "Blog", item: `${SITE.url}/blog` },
-      { "@type": "ListItem", position: 3, name: meta.title, item: `${SITE.url}/blog/${meta.slug}` },
+      { "@type": "ListItem", position: 2, name: meta.title, item: `${SITE.url}/blog/${meta.slug}` },
     ],
   };
 
@@ -62,7 +61,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
       <section className="page-hero" style={{ paddingBottom: 30 }}>
         <div className="container">
           <div className="breadcrumb">
-            <Link href="/">Accueil</Link> <span>/</span> <Link href="/blog">Blog</Link> <span>/</span>{" "}
+            <Link href="/">Accueil</Link> <span>/</span> <Link href="/#blog">Blog</Link> <span>/</span>{" "}
             <span>{meta.category}</span>
           </div>
           <h1 style={{ maxWidth: 820, marginLeft: "auto", marginRight: "auto" }}>{meta.title}</h1>
