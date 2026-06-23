@@ -1,15 +1,148 @@
 import type { Metadata } from "next";
+import { getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import CtaPanel from "@/components/CtaPanel";
 import ScrollParallax from "@/components/ScrollParallax";
 import { Check, ArrowR } from "@/components/Icons";
 
-export const metadata: Metadata = {
-  title: "Tarifs · le modèle CPM, un prix qui suit vos vues",
-  description:
-    "Chez Clipeo, vous payez les vues, pas l'effort. Modèle CPM (coût pour 1000 vues), volume garanti au contrat, ou remboursé. Voici ce qui fait varier le prix et comment on chiffre votre campagne.",
-  alternates: { canonical: "/tarifs" },
-};
+const COPY = {
+  fr: {
+    metaTitle: "Tarifs · le modèle CPM, un prix qui suit vos vues",
+    metaDesc:
+      "Chez Clipeo, vous payez les vues, pas l'effort. Modèle CPM (coût pour 1000 vues), volume garanti au contrat, ou remboursé. Voici ce qui fait varier le prix et comment on chiffre votre campagne.",
+    eyebrowLabel: "Modèle CPM · ",
+    eyebrowStrong: "volume garanti ou remboursé",
+    h1a: "Un prix qui suit vos vues.",
+    h1grad: "Pas vos efforts.",
+    heroSub: (
+      <>
+        Pas de forfait au clip, pas de facture pour du vent. Vous achetez un volume de vues réel,
+        garanti au contrat. Voici comment on le chiffre.
+      </>
+    ),
+    fLab1: "Vous achetez",
+    fBig1: "Des vues",
+    fSm1: "Coût pour 1 000 vues (CPM)",
+    fLab2: "À hauteur de",
+    fBig2: "Votre objectif",
+    fSm2: "Volume garanti au contrat",
+    fLab3: "Vous obtenez",
+    fBig3: "L’omniprésence",
+    fSm3: "Ou remboursé, sinon",
+    factorsLabel: "Ce qui fait le prix",
+    factorsH2a: "Quatre leviers,",
+    factorsH2b: "zéro surprise.",
+    scopeLabel: "Comment on chiffre",
+    scopeH2a: "Votre devis en",
+    scopeH2grad: "trois étapes.",
+    guaranteeLabel: "Notre engagement",
+    guaranteeH2a: "L’objectif est atteint,",
+    guaranteeH2b: "ou on rembourse.",
+    guaranteeP: (
+      <>
+        Le volume de vues est inscrit au contrat. Ce n&apos;est pas une estimation marketing, c&apos;est
+        un engagement chiffré. Le risque est de notre côté, pas du vôtre.
+      </>
+    ),
+    faqH2a: "Questions de prix,",
+    faqH2b: "réponses claires.",
+    draftNote: "Modèle & chiffres — brouillons à valider avec Clipeo.",
+    ctaEyebrow: "Audit gratuit · projection chiffrée",
+    ctaTitle: "Recevez votre projection de vues.",
+    ctaText:
+      "20 minutes pour estimer le potentiel de votre contenu et vous projeter un objectif de vues chiffré, avant tout engagement.",
+    factors: [
+      { n: "01", t: "L'objectif de vues", d: "Le levier principal. Plus le volume garanti est élevé, plus la campagne mobilise de clippers et de comptes." },
+      { n: "02", t: "Les plateformes visées", d: "TikTok, Reels, Shorts : chaque réseau a ses codes et son coût de distribution propre." },
+      { n: "03", t: "La cadence & la durée", d: "Lancement ponctuel autour d'une sortie, ou présence continue dans la durée : le rythme change le périmètre." },
+      { n: "04", t: "Le volume de contenu source", d: "Plus vous avez de contenu long à exploiter, plus on en tire de clips, et meilleur est le coût par vue." },
+    ],
+    scope: [
+      { s: "Étape 1", t: "On audite votre contenu", d: "On analyse votre contenu long, vos plateformes et votre audience pour estimer le potentiel viral réel." },
+      { s: "Étape 2", t: "On fixe l'objectif", d: "On définit ensemble un volume de vues cible et les angles à fort taux de conversion." },
+      { s: "Étape 3", t: "On chiffre la campagne", d: "Vous recevez un budget clair, basé sur le CPM et l'objectif. Volume garanti, inscrit au contrat." },
+    ],
+    faq: [
+      { q: "Pourquoi pas de forfaits affichés ?", a: "Parce qu'un prix au clip ne veut rien dire : 10 clips qui ne sont pas vus n'ont aucune valeur. On facture des vues réelles, pas des livrables. Le prix se cale sur votre objectif." },
+      { q: "C'est quoi le modèle CPM ?", a: "Un coût pour 1 000 vues. Vous achetez un volume de vues garanti au contrat. Si l'objectif n'est pas atteint, on rembourse la différence." },
+      { q: "Quel budget pour démarrer ?", a: "Ça dépend de l'objectif et du périmètre. Le plus simple : un audit gratuit, et on vous projette un volume de vues chiffré avant tout engagement." },
+      { q: "Les vues sont-elles vérifiées ?", a: "Oui. On track par contenu et par plateforme, et vous recevez un reporting détaillé en fin de campagne." },
+    ],
+  },
+  en: {
+    metaTitle: "Pricing · the guaranteed-CPM model, a price that follows your views",
+    metaDesc:
+      "At Clipeo, you pay for views, not effort. A guaranteed-CPM model (cost per 1,000 views), a guaranteed view volume written into your contract, or your money back. Here's what moves the price and how we scope your campaign.",
+    eyebrowLabel: "Guaranteed-CPM model · ",
+    eyebrowStrong: "view volume guaranteed or refunded",
+    h1a: "A price that follows your views.",
+    h1grad: "Not your effort.",
+    heroSub: (
+      <>
+        No per-clip package, no invoice for empty deliverables. You buy a real view volume,
+        guaranteed in your contract. Here's how we scope it.
+      </>
+    ),
+    fLab1: "You buy",
+    fBig1: "Views",
+    fSm1: "Cost per 1,000 views (CPM)",
+    fLab2: "Up to",
+    fBig2: "Your target",
+    fSm2: "A guaranteed view volume, written into your contract",
+    fLab3: "You get",
+    fBig3: "Omnipresence",
+    fSm3: "Or your money back",
+    factorsLabel: "What sets the price",
+    factorsH2a: "Four levers,",
+    factorsH2b: "zero surprises.",
+    scopeLabel: "How we scope it",
+    scopeH2a: "Your quote in",
+    scopeH2grad: "three steps.",
+    guaranteeLabel: "Our commitment",
+    guaranteeH2a: "We hit the target,",
+    guaranteeH2b: "or we refund.",
+    guaranteeP: (
+      <>
+        The view volume is written into your contract. This isn&apos;t a marketing estimate, it&apos;s
+        a number we commit to. The risk sits with us, not with you.
+      </>
+    ),
+    faqH2a: "Pricing questions,",
+    faqH2b: "clear answers.",
+    draftNote: "Model & figures — drafts to validate with Clipeo.",
+    ctaEyebrow: "Free audit · concrete projection",
+    ctaTitle: "Get your view projection.",
+    ctaText:
+      "20 minutes to gauge your content's potential and project a concrete view target, before any commitment.",
+    factors: [
+      { n: "01", t: "The view target", d: "The main lever. The higher the guaranteed volume, the more clippers and accounts the campaign mobilizes." },
+      { n: "02", t: "The platforms in play", d: "TikTok, Reels, Shorts: each has its own codes and its own distribution cost." },
+      { n: "03", t: "Cadence & duration", d: "A one-off push around a release, or a continuous presence over time: the rhythm changes the scope." },
+      { n: "04", t: "The volume of source content", d: "The more long-form content you have to work from, the more clips we pull, and the lower your cost per view." },
+    ],
+    scope: [
+      { s: "Step 1", t: "We audit your content", d: "We analyze your long-form content, your platforms and your audience to gauge real viral potential." },
+      { s: "Step 2", t: "We set the target", d: "Together we define a target view volume and the angles with the highest conversion rate." },
+      { s: "Step 3", t: "We scope the campaign", d: "You get a clear budget, based on the CPM and the target. A guaranteed volume, written into your contract." },
+    ],
+    faq: [
+      { q: "Why no published packages?", a: "Because a per-clip price means nothing: 10 clips nobody watches are worth nothing. We bill real views, not deliverables. The price tracks your target." },
+      { q: "What is the CPM model?", a: "A cost per 1,000 views. You buy a guaranteed view volume, written into your contract. If we miss the target, we refund the difference." },
+      { q: "What budget to start?", a: "It depends on the target and the scope. The simplest path: a free audit, and we project a concrete view volume before any commitment." },
+      { q: "Are the views verified?", a: "Yes. We track by content and by platform, and you get a detailed report at the end of the campaign." },
+    ],
+  },
+} as const;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = (await getLocale()) as keyof typeof COPY;
+  const t = COPY[locale] ?? COPY.fr;
+  return {
+    title: t.metaTitle,
+    description: t.metaDesc,
+    alternates: { canonical: "/tarifs" },
+  };
+}
 
 const STYLES = `
   .tr-hero{position:relative;overflow:hidden;padding:160px 0 60px;text-align:center;isolation:isolate}
@@ -61,27 +194,9 @@ const STYLES = `
   @media(max-width:820px){.tr-factors,.tr-scope{grid-template-columns:1fr}.tr-op{transform:rotate(90deg)}}
 `;
 
-const FACTORS = [
-  { n: "01", t: "L'objectif de vues", d: "Le levier principal. Plus le volume garanti est élevé, plus la campagne mobilise de clippers et de comptes." },
-  { n: "02", t: "Les plateformes visées", d: "TikTok, Reels, Shorts : chaque réseau a ses codes et son coût de distribution propre." },
-  { n: "03", t: "La cadence & la durée", d: "Lancement ponctuel autour d'une sortie, ou présence continue dans la durée : le rythme change le périmètre." },
-  { n: "04", t: "Le volume de contenu source", d: "Plus vous avez de contenu long à exploiter, plus on en tire de clips, et meilleur est le coût par vue." },
-];
-
-const SCOPE = [
-  { s: "Étape 1", t: "On audite votre contenu", d: "On analyse votre contenu long, vos plateformes et votre audience pour estimer le potentiel viral réel." },
-  { s: "Étape 2", t: "On fixe l'objectif", d: "On définit ensemble un volume de vues cible et les angles à fort taux de conversion." },
-  { s: "Étape 3", t: "On chiffre la campagne", d: "Vous recevez un budget clair, basé sur le CPM et l'objectif. Volume garanti, inscrit au contrat." },
-];
-
-const FAQ = [
-  { q: "Pourquoi pas de forfaits affichés ?", a: "Parce qu'un prix au clip ne veut rien dire : 10 clips qui ne sont pas vus n'ont aucune valeur. On facture des vues réelles, pas des livrables. Le prix se cale sur votre objectif." },
-  { q: "C'est quoi le modèle CPM ?", a: "Un coût pour 1 000 vues. Vous achetez un volume de vues garanti au contrat. Si l'objectif n'est pas atteint, on rembourse la différence." },
-  { q: "Quel budget pour démarrer ?", a: "Ça dépend de l'objectif et du périmètre. Le plus simple : un audit gratuit, et on vous projette un volume de vues chiffré avant tout engagement." },
-  { q: "Les vues sont-elles vérifiées ?", a: "Oui. On track par contenu et par plateforme, et vous recevez un reporting détaillé en fin de campagne." },
-];
-
-export default function TarifsPage() {
+export default async function TarifsPage() {
+  const locale = (await getLocale()) as keyof typeof COPY;
+  const t = COPY[locale] ?? COPY.fr;
   return (
     <ScrollParallax>
       <main>
@@ -92,18 +207,17 @@ export default function TarifsPage() {
           <div className="tr-orb a" data-parallax="0.3" />
           <div className="tr-orb b" data-parallax="0.18" />
           <div className="container">
-            <span className="tr-eyebrow">Modèle CPM · <b>volume garanti ou remboursé</b></span>
-            <h1>Un prix qui suit vos vues.<br /><span className="grad">Pas vos efforts.</span></h1>
+            <span className="tr-eyebrow">{t.eyebrowLabel}<b>{t.eyebrowStrong}</b></span>
+            <h1>{t.h1a}<br /><span className="grad">{t.h1grad}</span></h1>
             <p className="sub">
-              Pas de forfait au clip, pas de facture pour du vent. Vous achetez un volume de vues réel,
-              garanti au contrat. Voici comment on le chiffre.
+              {t.heroSub}
             </p>
             <div className="tr-formula" data-parallax="0.08">
-              <div className="tr-fcard"><span className="lab">Vous achetez</span><div className="big">Des vues</div><div className="sm">Coût pour 1 000 vues (CPM)</div></div>
+              <div className="tr-fcard"><span className="lab">{t.fLab1}</span><div className="big">{t.fBig1}</div><div className="sm">{t.fSm1}</div></div>
               <div className="tr-op">×</div>
-              <div className="tr-fcard"><span className="lab">À hauteur de</span><div className="big">Votre objectif</div><div className="sm">Volume garanti au contrat</div></div>
+              <div className="tr-fcard"><span className="lab">{t.fLab2}</span><div className="big">{t.fBig2}</div><div className="sm">{t.fSm2}</div></div>
               <div className="tr-op">=</div>
-              <div className="tr-fcard"><span className="lab">Vous obtenez</span><div className="big grad">L&apos;omniprésence</div><div className="sm">Ou remboursé, sinon</div></div>
+              <div className="tr-fcard"><span className="lab">{t.fLab3}</span><div className="big grad">{t.fBig3}</div><div className="sm">{t.fSm3}</div></div>
             </div>
           </div>
         </section>
@@ -112,11 +226,11 @@ export default function TarifsPage() {
         <section className="sec" style={{ paddingTop: 20 }}>
           <div className="container">
             <div className="sec-head reveal">
-              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Ce qui fait le prix</span>
-              <h2>Quatre leviers,<br />zéro surprise.</h2>
+              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>{t.factorsLabel}</span>
+              <h2>{t.factorsH2a}<br />{t.factorsH2b}</h2>
             </div>
             <div className="tr-factors stagger">
-              {FACTORS.map((f) => (
+              {t.factors.map((f) => (
                 <div className="tr-factor" key={f.n}>
                   <span className="n">{f.n}</span>
                   <div><h3>{f.t}</h3><p>{f.d}</p></div>
@@ -130,11 +244,11 @@ export default function TarifsPage() {
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="container">
             <div className="sec-head reveal">
-              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Comment on chiffre</span>
-              <h2>Votre devis en<br /><span className="grad">trois étapes.</span></h2>
+              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>{t.scopeLabel}</span>
+              <h2>{t.scopeH2a}<br /><span className="grad">{t.scopeH2grad}</span></h2>
             </div>
             <div className="tr-scope stagger">
-              {SCOPE.map((s) => (
+              {t.scope.map((s) => (
                 <div className="tr-sc" key={s.s}>
                   <span className="s">{s.s}</span>
                   <h3>{s.t}</h3>
@@ -149,11 +263,10 @@ export default function TarifsPage() {
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="container">
             <div className="tr-guarantee reveal">
-              <span className="mono-label">Notre engagement</span>
-              <h2>L&apos;objectif est atteint,<br />ou on rembourse.</h2>
+              <span className="mono-label">{t.guaranteeLabel}</span>
+              <h2>{t.guaranteeH2a}<br />{t.guaranteeH2b}</h2>
               <p>
-                Le volume de vues est inscrit au contrat. Ce n&apos;est pas une estimation marketing, c&apos;est
-                un engagement chiffré. Le risque est de notre côté, pas du vôtre.
+                {t.guaranteeP}
               </p>
             </div>
           </div>
@@ -163,10 +276,10 @@ export default function TarifsPage() {
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="container">
             <div className="sec-head reveal">
-              <h2>Questions de prix,<br />réponses claires.</h2>
+              <h2>{t.faqH2a}<br />{t.faqH2b}</h2>
             </div>
             <div className="tr-faq stagger">
-              {FAQ.map((f) => (
+              {t.faq.map((f) => (
                 <div className="tr-q" key={f.q}>
                   <h3>{f.q}</h3>
                   <p>{f.a}</p>
@@ -174,15 +287,15 @@ export default function TarifsPage() {
               ))}
             </div>
             <p style={{ textAlign: "center", marginTop: 22, fontSize: ".82rem", color: "var(--w40)", fontFamily: "var(--font-m)" }}>
-              Modèle &amp; chiffres — brouillons à valider avec Clipeo.
+              {t.draftNote}
             </p>
           </div>
         </section>
 
         <CtaPanel
-          eyebrow="Audit gratuit · projection chiffrée"
-          title="Recevez votre projection de vues."
-          text="20 minutes pour estimer le potentiel de votre contenu et vous projeter un objectif de vues chiffré, avant tout engagement."
+          eyebrow={t.ctaEyebrow}
+          title={t.ctaTitle}
+          text={t.ctaText}
         />
       </main>
     </ScrollParallax>

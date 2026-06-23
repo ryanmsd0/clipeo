@@ -1,7 +1,33 @@
 "use client";
 
+import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import BackgroundRipple from "@/components/BackgroundRipple";
+
+const COPY = {
+  fr: {
+    titleLine1: "L'agence de clipping",
+    titleLine2: "n°1 en France.",
+    sub: "On transforme le contenu long des plus gros créateurs et marques en omniprésence sur le format court. Volume de vues garanti au contrat, ou remboursé.",
+    kViews: "vues générées",
+    kClips: "clips produits",
+    kClients: "clients accompagnés",
+    kCampaigns: "campagnes réalisées",
+    bookAudit: "Réserver un audit",
+    seeCases: "Voir les études de cas",
+  },
+  en: {
+    titleLine1: "France's #1",
+    titleLine2: "clipping agency.",
+    sub: "We turn the long-form content of top creators and brands into omnipresence on short-form. View volume guaranteed in the contract, or your money back.",
+    kViews: "views generated",
+    kClips: "clips produced",
+    kClients: "clients served",
+    kCampaigns: "campaigns delivered",
+    bookAudit: "Book an audit",
+    seeCases: "View case studies",
+  },
+} as const;
 
 /* ------------------------------------------------------------------ *
  *  ClaimHero — affirmation de positionnement « n°1 en France ».
@@ -83,6 +109,9 @@ const STYLES = `
 `;
 
 export default function ClaimHero() {
+  const locale = useLocale() as "fr" | "en";
+  const t = COPY[locale] ?? COPY.fr;
+
   return (
     <section className="clh-sec" aria-labelledby="clh-title">
       <style dangerouslySetInnerHTML={{ __html: STYLES }} />
@@ -90,29 +119,28 @@ export default function ClaimHero() {
 
       <div className="container clh-inner">
         <h2 id="clh-title" className="clh-title reveal">
-          L&apos;agence de clipping<br />
-          <span className="clh-hl">n°1 en France.</span>
+          {t.titleLine1}<br />
+          <span className="clh-hl">{t.titleLine2}</span>
         </h2>
         <p className="clh-sub reveal">
-          On transforme le contenu long des plus gros créateurs et marques en omniprésence sur le format
-          court. Volume de vues garanti au contrat, ou remboursé.
+          {t.sub}
         </p>
 
         <div className="clh-stats stagger">
-          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="620" data-prefix="+" data-suffix=" M">+0 M</span><span className="clh-k">vues générées</span></div></div>
-          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="6.6" data-dec="1" data-prefix="+" data-suffix=" K">+0 K</span><span className="clh-k">clips produits</span></div></div>
-          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="24" data-prefix="+">+0</span><span className="clh-k">clients accompagnés</span></div></div>
-          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="57" data-prefix="+">+0</span><span className="clh-k">campagnes réalisées</span></div></div>
+          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="620" data-prefix="+" data-suffix=" M">+0 M</span><span className="clh-k">{t.kViews}</span></div></div>
+          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="6.6" data-dec="1" data-prefix="+" data-suffix=" K">+0 K</span><span className="clh-k">{t.kClips}</span></div></div>
+          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="24" data-prefix="+">+0</span><span className="clh-k">{t.kClients}</span></div></div>
+          <div className="clh-stat"><div className="clh-stat-in"><span className="clh-num" data-count="57" data-prefix="+">+0</span><span className="clh-k">{t.kCampaigns}</span></div></div>
         </div>
 
         <div className="clh-cta reveal">
           <Link href="/contact" className="clh-btn clh-btn-primary">
-            Réserver un audit
+            {t.bookAudit}
             <span className="clh-btn-arrow" aria-hidden="true">
               <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H8M17 7v9" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </span>
           </Link>
-          <Link href="/etudes-de-cas" className="clh-btn clh-btn-ghost">Voir les études de cas</Link>
+          <Link href="/etudes-de-cas" className="clh-btn clh-btn-ghost">{t.seeCases}</Link>
         </div>
       </div>
     </section>

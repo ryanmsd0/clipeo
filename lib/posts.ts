@@ -3,6 +3,7 @@ import path from "node:path";
 import matter from "gray-matter";
 
 const BLOG_DIR = path.join(process.cwd(), "content", "blog");
+const EN_BLOG_DIR = path.join(BLOG_DIR, "en");
 
 export type PostMeta = {
   slug: string;
@@ -15,20 +16,25 @@ export type PostMeta = {
   keywords?: string;
 };
 
-export function getAllPosts(): PostMeta[] {
-  const files = fs.readdirSync(BLOG_DIR).filter((f) => f.endsWith(".mdx"));
+function blogDir(locale: string): string {
+  return locale === "en" ? EN_BLOG_DIR : BLOG_DIR;
+}
+
+export function getAllPosts(locale: string = "fr"): PostMeta[] {
+  const dir = blogDir(locale);
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith(".mdx"));
   return files
     .map((file) => {
       const slug = file.replace(/\.mdx$/, "");
-      const raw = fs.readFileSync(path.join(BLOG_DIR, file), "utf8");
+      const raw = fs.readFileSync(path.join(dir, file), "utf8");
       const { data } = matter(raw);
       return { slug, ...(data as Omit<PostMeta, "slug">) };
     })
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export function getPost(slug: string): { meta: PostMeta; content: string } | null {
-  const file = path.join(BLOG_DIR, `${slug}.mdx`);
+export function getPost(slug: string, locale: string = "fr"): { meta: PostMeta; content: string } | null {
+  const file = path.join(blogDir(locale), `${slug}.mdx`);
   if (!fs.existsSync(file)) return null;
   const raw = fs.readFileSync(file, "utf8");
   const { data, content } = matter(raw);

@@ -1,11 +1,41 @@
 import type { ReactNode } from "react";
+import { getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import CtaPanel from "@/components/CtaPanel";
 import ScrollParallax from "@/components/ScrollParallax";
 import { Check, ArrowR } from "@/components/Icons";
 import { PlatformTile } from "@/components/BrandLogo";
-import { CAMPAIGN_TYPES, type CampaignType as CT } from "@/lib/campaigns";
+import { getCampaignTypes, type CampaignType as CT, type Locale } from "@/lib/campaigns";
 import { getCase } from "@/lib/cases";
+
+const COPY = {
+  fr: {
+    bookAudit: "Réserver un audit gratuit",
+    seeCases: "Voir les études de cas",
+    mechLabel: "Le mécanisme",
+    flowLabel: "Le déroulé",
+    flowTitle: <>De l&apos;audit à la <span className="grad">croissance.</span></>,
+    faqTitle: "Questions fréquentes.",
+    othersLabel: "Autres univers",
+    othersTitle: "On adresse aussi…",
+    seeCase: <>Voir l&apos;étude de cas complète<ArrowR /></>,
+    ctaTitle: (label: string) => `Une campagne ${label.toLowerCase()} ?`,
+    ctaText: "20 minutes pour auditer votre contenu et vous projeter un objectif de vues chiffré. Sans engagement.",
+  },
+  en: {
+    bookAudit: "Book a free audit",
+    seeCases: "See the case studies",
+    mechLabel: "The mechanism",
+    flowLabel: "The process",
+    flowTitle: <>From audit to <span className="grad">growth.</span></>,
+    faqTitle: "Frequent questions.",
+    othersLabel: "Other use cases",
+    othersTitle: "We also handle…",
+    seeCase: <>See the full case study<ArrowR /></>,
+    ctaTitle: (label: string) => `A ${label.toLowerCase()} campaign?`,
+    ctaText: "20 minutes to audit your content and project a forecasted view target. No commitment.",
+  },
+} as const;
 
 const STYLES = `
   .ct-hero{position:relative;overflow:hidden;padding:160px 0 56px;isolation:isolate}
@@ -120,17 +150,30 @@ const UNIV_ICON: Record<string, ReactNode> = {
   twitch: <><circle cx="12" cy="12" r="3" /><path d="M6 6a8 8 0 0 0 0 12M18 6a8 8 0 0 1 0 12" /></>,
   evenements: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 9h18M8 3v4M16 3v4" /><circle cx="12" cy="15" r="1.6" /></>,
 };
-const UNIV_DESC: Record<string, string> = {
-  createurs: "Vos vidéos longues en flux de clips.",
-  marques: "Une présence permanente, sans équipe.",
-  podcasts: "Chaque épisode, une machine à croissance.",
-  cinema: "Créez l'intention avant la sortie.",
-  twitch: "Vos lives, découpés et partout.",
-  evenements: "Le jour J, partout en temps réel.",
+const UNIV_DESC: Record<Locale, Record<string, string>> = {
+  fr: {
+    createurs: "Vos vidéos longues en flux de clips.",
+    marques: "Une présence permanente, sans équipe.",
+    podcasts: "Chaque épisode, une machine à croissance.",
+    cinema: "Créez l'intention avant la sortie.",
+    twitch: "Vos lives, découpés et partout.",
+    evenements: "Le jour J, partout en temps réel.",
+  },
+  en: {
+    createurs: "Your long videos into a stream of clips.",
+    marques: "A permanent presence, with no team.",
+    podcasts: "Every episode, a growth engine.",
+    cinema: "Build the intent before the release.",
+    twitch: "Your livestreams, cut down and everywhere.",
+    evenements: "On the day, everywhere in real time.",
+  },
 };
 
-export default function CampaignType({ data }: { data: CT }) {
-  const others = CAMPAIGN_TYPES.filter((c) => c.slug !== data.slug).slice(0, 4);
+export default async function CampaignType({ data }: { data: CT }) {
+  const locale = (await getLocale()) as Locale;
+  const t = COPY[locale] ?? COPY.fr;
+  const desc = UNIV_DESC[locale] ?? UNIV_DESC.fr;
+  const others = getCampaignTypes(locale).filter((c) => c.slug !== data.slug).slice(0, 4);
   const hs = data.heroStat;
   const pp = getCase(data.caseSlug)?.img; // photo de profil = créateur de l'étude de cas liée
 
@@ -150,8 +193,8 @@ export default function CampaignType({ data }: { data: CT }) {
                 <h1>{data.h1}<br /><span className="grad">{data.h1grad}</span></h1>
                 <p className="sub">{data.sub}</p>
                 <div className="ct-cta">
-                  <Link href="/contact" className="btn btn-primary"><span>Réserver un audit gratuit</span><ArrowR /></Link>
-                  <Link href="/etudes-de-cas" className="btn"><span>Voir les études de cas</span></Link>
+                  <Link href="/contact" className="btn btn-primary"><span>{t.bookAudit}</span><ArrowR /></Link>
+                  <Link href="/etudes-de-cas" className="btn"><span>{t.seeCases}</span></Link>
                 </div>
               </div>
               <div className="ct-visual" aria-hidden="true">
@@ -179,7 +222,7 @@ export default function CampaignType({ data }: { data: CT }) {
         <section className="sec" style={{ paddingTop: 20 }}>
           <div className="container">
             <div className="sec-head reveal">
-              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Le mécanisme</span>
+              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>{t.mechLabel}</span>
               <h2>{data.mechTitle}</h2>
               <p>{data.mechSub}</p>
             </div>
@@ -199,8 +242,8 @@ export default function CampaignType({ data }: { data: CT }) {
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="container">
             <div className="sec-head reveal">
-              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Le déroulé</span>
-              <h2>De l&apos;audit à la <span className="grad">croissance.</span></h2>
+              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>{t.flowLabel}</span>
+              <h2>{t.flowTitle}</h2>
             </div>
             <div className="ct-flow reveal">
               {data.workflow.map((w, i) => (
@@ -252,7 +295,7 @@ export default function CampaignType({ data }: { data: CT }) {
                   <span><b>{data.proof.name}</b><span>{data.proof.cat}</span></span>
                 </div>
                 <Link href={`/etudes-de-cas/${data.caseSlug}`} className="ct-proof-cta">
-                  Voir l&apos;étude de cas complète<ArrowR />
+                  {t.seeCase}
                 </Link>
               </div>
             </div>
@@ -263,7 +306,7 @@ export default function CampaignType({ data }: { data: CT }) {
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="container">
             <div className="sec-head reveal">
-              <h2>Questions fréquentes.</h2>
+              <h2>{t.faqTitle}</h2>
             </div>
             <div className="ct-faq stagger">
               {data.faq.map((f) => (
@@ -277,14 +320,14 @@ export default function CampaignType({ data }: { data: CT }) {
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="container">
             <div className="sec-head reveal" style={{ marginBottom: 32 }}>
-              <span className="mono-label" style={{ marginBottom: 18, display: "block" }}>Autres univers</span>
-              <h2>On adresse aussi…</h2>
+              <span className="mono-label" style={{ marginBottom: 18, display: "block" }}>{t.othersLabel}</span>
+              <h2>{t.othersTitle}</h2>
             </div>
             <div className="ct-others stagger">
               {others.map((o) => (
                 <Link href={`/campagnes/${o.slug}`} className="ct-other" key={o.slug}>
                   <span className="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">{UNIV_ICON[o.slug]}</svg></span>
-                  <span className="tx"><b>{o.label}</b><span>{UNIV_DESC[o.slug]}</span></span>
+                  <span className="tx"><b>{o.label}</b><span>{desc[o.slug]}</span></span>
                   <svg className="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
                 </Link>
               ))}
@@ -293,8 +336,8 @@ export default function CampaignType({ data }: { data: CT }) {
         </section>
 
         <CtaPanel
-          title={`Une campagne ${data.label.toLowerCase()} ?`}
-          text="20 minutes pour auditer votre contenu et vous projeter un objectif de vues chiffré. Sans engagement."
+          title={t.ctaTitle(data.label)}
+          text={t.ctaText}
         />
       </main>
     </ScrollParallax>

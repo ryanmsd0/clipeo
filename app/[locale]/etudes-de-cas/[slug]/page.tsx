@@ -1,12 +1,50 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import { getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
 import CtaPanel from "@/components/CtaPanel";
 import { Check, ArrowR } from "@/components/Icons";
 import { PlatformTile } from "@/components/BrandLogo";
-import { CASES, getCase } from "@/lib/cases";
+import { CASES, getCase, type Locale } from "@/lib/cases";
 import { SITE } from "@/lib/site";
+
+const COPY = {
+  fr: {
+    metaTitle: (client: string, bigNum: string) => `${client}, ${bigNum} de vues`,
+    ogTitle: (client: string) => `${client}, étude de cas Clipeo`,
+    articleHeadline: (client: string) => `${client}, étude de cas`,
+    breadcrumbHome: "Accueil",
+    breadcrumbCases: "Études de cas",
+    coverAlt: (client: string) => `Campagne de clipping ${client}`,
+    bookAudit: "Réserver un audit gratuit",
+    allCases: "Toutes les études de cas",
+    viewsTitleA: "Où les vues",
+    viewsTitleB: "ont été générées.",
+    challengeTitle: "Le défi",
+    approachTitle: "Notre approche",
+    resultsTitle: "Les résultats",
+    ctaTitle: "Votre campagne peut faire la même chose.",
+    ctaText: "On part de votre contenu, on fixe un objectif de vues chiffré, et on le garantit au contrat.",
+  },
+  en: {
+    metaTitle: (client: string, bigNum: string) => `${client}, ${bigNum} views`,
+    ogTitle: (client: string) => `${client}, a Clipeo case study`,
+    articleHeadline: (client: string) => `${client}, case study`,
+    breadcrumbHome: "Home",
+    breadcrumbCases: "Case studies",
+    coverAlt: (client: string) => `${client} clipping campaign`,
+    bookAudit: "Book a free audit",
+    allCases: "See all case studies",
+    viewsTitleA: "Where the views",
+    viewsTitleB: "came from.",
+    challengeTitle: "The challenge",
+    approachTitle: "Our approach",
+    resultsTitle: "The results",
+    ctaTitle: "Your campaign can do the same.",
+    ctaText: "We start from your content, set a concrete view target, and write it into your contract.",
+  },
+} as const;
 
 export function generateStaticParams() {
   return CASES.map((c) => ({ slug: c.slug }));
@@ -14,13 +52,15 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const c = getCase(slug);
+  const locale = (await getLocale()) as Locale;
+  const t = COPY[locale] ?? COPY.fr;
+  const c = getCase(slug, locale);
   if (!c) return {};
   return {
-    title: `${c.client}, ${c.bigNum} de vues`,
+    title: t.metaTitle(c.client, c.bigNum),
     description: c.excerpt,
     alternates: { canonical: `/etudes-de-cas/${c.slug}` },
-    openGraph: { title: `${c.client}, étude de cas Clipeo`, description: c.excerpt },
+    openGraph: { title: t.ogTitle(c.client), description: c.excerpt },
   };
 }
 
@@ -81,14 +121,16 @@ function pct(value: string, max: number) {
 
 export default async function CaseDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const c = getCase(slug);
+  const locale = (await getLocale()) as Locale;
+  const t = COPY[locale] ?? COPY.fr;
+  const c = getCase(slug, locale);
   if (!c) notFound();
 
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "Article",
-      headline: `${c.client}, étude de cas`,
+      headline: t.articleHeadline(c.client),
       description: c.excerpt,
       image: `${SITE.url}${c.img}`,
       author: { "@type": "Organization", name: SITE.name },
@@ -99,8 +141,8 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
       "@context": "https://schema.org",
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
-        { "@type": "ListItem", position: 2, name: "Études de cas", item: `${SITE.url}/etudes-de-cas` },
+        { "@type": "ListItem", position: 1, name: t.breadcrumbHome, item: SITE.url },
+        { "@type": "ListItem", position: 2, name: t.breadcrumbCases, item: `${SITE.url}/etudes-de-cas` },
         { "@type": "ListItem", position: 3, name: c.client, item: `${SITE.url}/etudes-de-cas/${c.slug}` },
       ],
     },
@@ -119,7 +161,7 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
       <section className="page-hero" style={{ paddingBottom: 30 }}>
         <div className="container">
           <div className="cd-hero">
-            <div className="cd-cover reveal"><Image src={c.img} alt={`Campagne de clipping ${c.client}`} fill sizes="(max-width:860px) 340px, 30vw" style={{ objectFit: "cover", objectPosition: "center top" }} priority /></div>
+            <div className="cd-cover reveal"><Image src={c.img} alt={t.coverAlt(c.client)} fill sizes="(max-width:860px) 340px, 30vw" style={{ objectFit: "cover", objectPosition: "center top" }} priority /></div>
             <div className="cd-info reveal">
               <span className="cd-cat mono-label">{c.category}</span>
               <h1>{c.client}</h1>
@@ -132,8 +174,8 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
                 <div className="cd-obj"><b>{c.objective.line}</b> <span className="up">{c.objective.up}</span></div>
               )}
               <div className="cd-cta">
-                <Link href="/contact" className="btn btn-primary"><span>Réserver un audit gratuit</span><ArrowR /></Link>
-                <Link href="/etudes-de-cas" className="btn"><span>Toutes les études de cas</span></Link>
+                <Link href="/contact" className="btn btn-primary"><span>{t.bookAudit}</span><ArrowR /></Link>
+                <Link href="/etudes-de-cas" className="btn"><span>{t.allCases}</span></Link>
               </div>
             </div>
           </div>
@@ -155,7 +197,7 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
       {c.platforms && (
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="container">
-            <div className="sec-head reveal"><h2>Où les vues<br />ont été générées.</h2></div>
+            <div className="sec-head reveal"><h2>{t.viewsTitleA}<br />{t.viewsTitleB}</h2></div>
             <div className="cd-plats reveal">
               {c.platforms.map((p) => (
                 <div className="cd-plat" key={p.abbr}>
@@ -180,27 +222,24 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
           <div className="cd-narr">
             <div className="cd-block reveal">
               <span className="num">01</span>
-              <h2>Le défi</h2>
+              <h2>{t.challengeTitle}</h2>
               <p>{c.challenge}</p>
             </div>
             <div className="cd-block reveal">
               <span className="num">02</span>
-              <h2>Notre approche</h2>
+              <h2>{t.approachTitle}</h2>
               <ul>{c.approach.map((a, i) => <li key={i}><Check />{a}</li>)}</ul>
             </div>
             <div className="cd-block reveal">
               <span className="num">03</span>
-              <h2>Les résultats</h2>
+              <h2>{t.resultsTitle}</h2>
               <p>{c.results}</p>
             </div>
           </div>
         </div>
       </section>
 
-      <CtaPanel
-        title="Votre campagne peut faire la même chose."
-        text="On part de votre contenu, on fixe un objectif de vues chiffré, et on le garantit au contrat."
-      />
+      <CtaPanel title={t.ctaTitle} text={t.ctaText} />
     </main>
   );
 }

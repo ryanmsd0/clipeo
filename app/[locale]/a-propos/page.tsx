@@ -1,16 +1,20 @@
 import type { Metadata } from "next";
+import { getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
 import CtaPanel from "@/components/CtaPanel";
 import { PlatformTile } from "@/components/BrandLogo";
 import { TRUST_BAR } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "À propos · l'équipe qui rend votre contenu impossible à manquer",
-  description:
-    "L'équipe derrière des centaines de millions de vues sur le format court. Notre méthode, notre modèle garanti, et pourquoi les marques et créateurs restent campagne après campagne.",
-  alternates: { canonical: "/a-propos" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = (await getLocale()) as keyof typeof COPY;
+  const t = (COPY[locale] ?? COPY.fr).meta;
+  return {
+    title: t.title,
+    description: t.description,
+    alternates: { canonical: "/a-propos" },
+  };
+}
 
 /* Refonte premium : rythme visuel par alternance de traitements (hero éditorial,
    marquee, bande de stats, cartes équipe, timeline process, panneau sombre
@@ -133,46 +137,153 @@ const STYLES = `
   }
 `;
 
-const STATS = [
-  { v: "+0M", count: "620", prefix: "+", suffix: "M", k: "Vues générées · 6 mois" },
-  { v: "+6,6K", k: "Clips produits" },
-  { v: "+0", count: "57", prefix: "+", k: "Campagnes réalisées" },
-  { v: "+0", count: "24", prefix: "+", k: "Créateurs accompagnés" },
-];
+/* Données structurelles, indépendantes de la langue (icônes, slugs, compteurs). */
+const STAT_DATA = [
+  { count: "620", prefix: "+", suffix: "M" },
+  {},
+  { count: "57", prefix: "+" },
+  { count: "24", prefix: "+" },
+] as const;
+const TEAM_IC: IconName[] = ["compass", "scissors", "broadcast", "trending"];
+const TEAM_INI = ["01", "02", "03", "04"];
+const STAGE_IC: IconName[] = ["search", "broadcast", "trending"];
+const CONVICTION_N = ["01", "02", "03"];
+const REASON_IC: IconName[] = ["target", "network", "repeat", "bars"];
+const PLATFORM_SLUG = ["tiktok", "youtube", "instagram"];
 
-const TEAM: { ini: string; ic: IconName; t: string; bio: string }[] = [
-  { ini: "01", ic: "compass", t: "Stratégie & Audit", bio: "On cartographie votre contenu et on fixe l'objectif de vues, dès le départ." },
-  { ini: "02", ic: "scissors", t: "Production de clips", bio: "On pilote le réseau de clippers et la qualité des montages." },
-  { ini: "03", ic: "broadcast", t: "Distribution", bio: "On orchestre la diffusion multi-comptes et l'algo de chaque plateforme." },
-  { ini: "04", ic: "trending", t: "Performance", bio: "On suit le tracking, les vues et l'optimisation des vagues suivantes." },
-];
+const COPY = {
+  fr: {
+    meta: {
+      title: "À propos · l'équipe qui rend votre contenu impossible à manquer",
+      description:
+        "L'équipe derrière des centaines de millions de vues sur le format court. Notre méthode, notre modèle garanti, et pourquoi les marques et créateurs restent campagne après campagne.",
+    },
+    heroEyebrow: "À propos · Clipeo",
+    heroH1a: "L'équipe derrière",
+    heroH1grad: "+620M de vues",
+    heroH1b: "sur le format court.",
+    heroLead:
+      "Clipeo transforme le contenu long des plus gros créateurs et marques en omniprésence sur le format court. Une méthode, un réseau de clippers, et un volume de vues garanti au contrat.",
+    heroCtaPrimary: "Réserver un audit gratuit",
+    heroCtaSecondary: "Voir les études de cas",
+    marquee: "+620 M de vues générées pour eux",
+    statsK: ["Vues générées · 6 mois", "Clips produits", "Campagnes réalisées", "Créateurs accompagnés"],
+    statsV: ["+0M", "+6,6K", "+0", "+0"],
+    teamEyebrow: "L'équipe",
+    teamH2a: "Une équipe resserrée,",
+    teamH2b: "quatre",
+    teamH2grad: "expertises.",
+    teamLead: "Spécialisée sur une seule chose : rendre votre contenu impossible à manquer.",
+    team: [
+      { t: "Stratégie & Audit", bio: "On cartographie votre contenu et on fixe l'objectif de vues, dès le départ." },
+      { t: "Production de clips", bio: "On pilote le réseau de clippers et la qualité des montages." },
+      { t: "Distribution", bio: "On orchestre la diffusion multi-comptes et l'algo de chaque plateforme." },
+      { t: "Performance", bio: "On suit le tracking, les vues et l'optimisation des vagues suivantes." },
+    ],
+    methodEyebrow: "La méthode",
+    methodH2a: "De l'audit à la croissance,",
+    methodH2b: "en",
+    methodH2grad: "trois temps.",
+    stages: [
+      { s: "Étape 01", t: "Audit & stratégie", p: "On cartographie votre contenu long, on fixe un objectif de vues chiffré et les angles à fort potentiel. Tout part d'un audit gratuit." },
+      { s: "Étape 02", t: "Production & distribution", p: "Le réseau de clippers produit des centaines de clips aux codes de chaque plateforme, diffusés sur des dizaines de comptes." },
+      { s: "Étape 03", t: "Optimisation & scale", p: "On mesure, on coupe, on amplifie. Chaque vague nourrit la suivante jusqu'à saturer la recommandation de votre audience." },
+    ],
+    manifestoEyebrow: "Notre conviction",
+    manifestoH2a: "L'omniprésence,",
+    manifestoH2b: "pas la",
+    manifestoH2grad: "viralité.",
+    manifestoLead:
+      "La viralité est un coup de chance. L'omniprésence est une stratégie. Voilà comment on pense la distribution à la performance, sur chaque campagne.",
+    convictions: [
+      { t: "La performance d'abord", p: "On ne vend pas des « posts » ni des « impressions ». On vend des vues réelles, garanties au contrat, et une redirection mesurable." },
+      { t: "Pensé pour l'échelle", p: "On ne mise pas sur LE clip qui explose. On sature la recommandation de dizaines de clips, sur dizaines de comptes." },
+      { t: "Un modèle aligné", p: "Vous payez les vues, pas l'effort. Le volume est garanti au contrat. Objectif non atteint ? On rembourse la différence." },
+    ],
+    reasonsH2a: "Pourquoi nos clients restent",
+    reasonsH2b: "après la première campagne.",
+    reasonsLead: "Pas de promesses floues. Une méthode mesurable, un engagement contractuel, une obsession du résultat.",
+    reasons: [
+      { t: "Une direction experte", p: "Vous parlez à des gens qui pensent stratégie, pas à un sous-traitant. La ligne édito et l'objectif de vues sont posés dès l'audit." },
+      { t: "Le réseau géré pour vous", p: "Des dizaines de clippers et de comptes, mais un seul interlocuteur. On absorbe la complexité, vous gardez la main sur votre image." },
+      { t: "On teste, on itère", p: "Chaque vague de clips est analysée. Ce qui marche est amplifié, ce qui ne marche pas est coupé. La campagne s'améliore en continu." },
+      { t: "Un reporting actionnable", p: "Tracking par contenu, plateforme et thème. Vous savez exactement ce qui ramène des vues, et pourquoi." },
+    ],
+    platformsEyebrow: "La distribution",
+    platformsH3: "Présents là où votre audience scrolle.",
+    platformLabels: ["TikTok", "YouTube Shorts", "Instagram Reels"],
+    ctaTitle: "Discutons de votre prochaine campagne.",
+    ctaText: "20 minutes, sans préparation. On audite votre contenu et on vous projette un objectif de vues chiffré.",
+  },
+  en: {
+    meta: {
+      title: "About · the team that makes your content impossible to miss",
+      description:
+        "The team behind hundreds of millions of short-form views. Our method, our guaranteed model, and why brands and creators stay campaign after campaign.",
+    },
+    heroEyebrow: "About · Clipeo",
+    heroH1a: "The team behind",
+    heroH1grad: "+620M views",
+    heroH1b: "in short form.",
+    heroLead:
+      "Clipeo turns the long-form content of the biggest creators and brands into omnipresence in short form. One method, a network of clippers, and a view volume guaranteed in the contract.",
+    heroCtaPrimary: "Book a free audit",
+    heroCtaSecondary: "See the case studies",
+    marquee: "+620M views generated for them",
+    statsK: ["Views generated · 6 months", "Clips produced", "Campaigns delivered", "Creators served"],
+    statsV: ["+0M", "+6.6K", "+0", "+0"],
+    teamEyebrow: "The team",
+    teamH2a: "A tight team,",
+    teamH2b: "four",
+    teamH2grad: "specialties.",
+    teamLead: "Focused on one thing only: making your content impossible to miss.",
+    team: [
+      { t: "Strategy & Audit", bio: "We map your content and set the view target from day one." },
+      { t: "Clip production", bio: "We run the network of clippers and the quality of every edit." },
+      { t: "Distribution", bio: "We orchestrate multi-account distribution and each platform's algorithm." },
+      { t: "Performance", bio: "We track views, measure results, and optimize the next waves." },
+    ],
+    methodEyebrow: "The method",
+    methodH2a: "From audit to growth,",
+    methodH2b: "in",
+    methodH2grad: "three moves.",
+    stages: [
+      { s: "Step 01", t: "Audit & strategy", p: "We map your long-form content, set a hard view target, and find the highest-potential angles. It all starts with a free audit." },
+      { s: "Step 02", t: "Production & distribution", p: "The network of clippers produces hundreds of clips built for each platform's codes, distributed across dozens of accounts." },
+      { s: "Step 03", t: "Optimization & scale", p: "We measure, we cut, we amplify. Each wave feeds the next until we saturate your audience's recommendations." },
+    ],
+    manifestoEyebrow: "What we believe",
+    manifestoH2a: "Omnipresence,",
+    manifestoH2b: "not",
+    manifestoH2grad: "virality.",
+    manifestoLead:
+      "Virality is luck. Omnipresence is a strategy. Here is how we approach performance distribution on every campaign.",
+    convictions: [
+      { t: "Performance first", p: "We don't sell “posts” or “impressions.” We sell real views, guaranteed in the contract, and measurable redirection." },
+      { t: "Built for scale", p: "We don't bet on the one clip that blows up. We saturate recommendations with dozens of clips, across dozens of accounts." },
+      { t: "An aligned model", p: "You pay for views, not effort. The volume is guaranteed in the contract. Target missed? We refund the difference." },
+    ],
+    reasonsH2a: "Why our clients stay",
+    reasonsH2b: "after the first campaign.",
+    reasonsLead: "No vague promises. A measurable method, a contractual commitment, an obsession with results.",
+    reasons: [
+      { t: "Expert direction", p: "You talk to people who think strategy, not a subcontractor. The editorial line and the view target are set at the audit." },
+      { t: "The network managed for you", p: "Dozens of clippers and accounts, but a single point of contact. We absorb the complexity, you keep control of your image." },
+      { t: "We test, we iterate", p: "Every wave of clips is analyzed. What works gets amplified, what doesn't gets cut. The campaign improves continuously." },
+      { t: "Reporting you can act on", p: "Tracking by content, platform, and theme. You know exactly what brings views, and why." },
+    ],
+    platformsEyebrow: "Distribution",
+    platformsH3: "Present wherever your audience scrolls.",
+    platformLabels: ["TikTok", "YouTube Shorts", "Instagram Reels"],
+    ctaTitle: "Let's talk about your next campaign.",
+    ctaText: "20 minutes, no prep. We audit your content and project a hard view target for you.",
+  },
+} as const;
 
-const STAGES: { s: string; ic: IconName; t: string; p: string }[] = [
-  { s: "Étape 01", ic: "search", t: "Audit & stratégie", p: "On cartographie votre contenu long, on fixe un objectif de vues chiffré et les angles à fort potentiel. Tout part d'un audit gratuit." },
-  { s: "Étape 02", ic: "broadcast", t: "Production & distribution", p: "Le réseau de clippers produit des centaines de clips aux codes de chaque plateforme, diffusés sur des dizaines de comptes." },
-  { s: "Étape 03", ic: "trending", t: "Optimisation & scale", p: "On mesure, on coupe, on amplifie. Chaque vague nourrit la suivante jusqu'à saturer la recommandation de votre audience." },
-];
+export default async function AProposPage() {
+  const locale = (await getLocale()) as keyof typeof COPY;
+  const t = COPY[locale] ?? COPY.fr;
 
-const CONVICTIONS = [
-  { n: "01", t: "La performance d'abord", p: "On ne vend pas des « posts » ni des « impressions ». On vend des vues réelles, garanties au contrat, et une redirection mesurable." },
-  { n: "02", t: "Pensé pour l'échelle", p: "On ne mise pas sur LE clip qui explose. On sature la recommandation de dizaines de clips, sur dizaines de comptes." },
-  { n: "03", t: "Un modèle aligné", p: "Vous payez les vues, pas l'effort. Le volume est garanti au contrat. Objectif non atteint ? On rembourse la différence." },
-];
-
-const REASONS: { ic: IconName; t: string; p: string }[] = [
-  { ic: "target", t: "Une direction experte", p: "Vous parlez à des gens qui pensent stratégie, pas à un sous-traitant. La ligne édito et l'objectif de vues sont posés dès l'audit." },
-  { ic: "network", t: "Le réseau géré pour vous", p: "Des dizaines de clippers et de comptes, mais un seul interlocuteur. On absorbe la complexité, vous gardez la main sur votre image." },
-  { ic: "repeat", t: "On teste, on itère", p: "Chaque vague de clips est analysée. Ce qui marche est amplifié, ce qui ne marche pas est coupé. La campagne s'améliore en continu." },
-  { ic: "bars", t: "Un reporting actionnable", p: "Tracking par contenu, plateforme et thème. Vous savez exactement ce qui ramène des vues, et pourquoi." },
-];
-
-const PLATFORMS = [
-  { p: "tiktok", label: "TikTok" },
-  { p: "youtube", label: "YouTube Shorts" },
-  { p: "instagram", label: "Instagram Reels" },
-];
-
-export default function AProposPage() {
   return (
     <main>
       <style dangerouslySetInnerHTML={{ __html: STYLES }} />
@@ -180,25 +291,22 @@ export default function AProposPage() {
       {/* HERO */}
       <section className="page-hero">
         <div className="container">
-          <span className="mono-label" style={{ display: "block", marginBottom: 20 }}>À propos · Clipeo</span>
+          <span className="mono-label" style={{ display: "block", marginBottom: 20 }}>{t.heroEyebrow}</span>
           <h1>
-            L&apos;équipe derrière<br />
-            <span className="grad">+620M de vues</span> sur le format court.
+            {t.heroH1a}<br />
+            <span className="grad">{t.heroH1grad}</span> {t.heroH1b}
           </h1>
-          <p>
-            Clipeo transforme le contenu long des plus gros créateurs et marques en omniprésence sur le
-            format court. Une méthode, un réseau de clippers, et un volume de vues garanti au contrat.
-          </p>
+          <p>{t.heroLead}</p>
           <div className="ap-hero-cta">
-            <Link href="/contact" className="btn btn-primary"><span>Réserver un audit gratuit</span></Link>
-            <Link href="/etudes-de-cas" className="btn"><span>Voir les études de cas</span></Link>
+            <Link href="/contact" className="btn btn-primary"><span>{t.heroCtaPrimary}</span></Link>
+            <Link href="/etudes-de-cas" className="btn"><span>{t.heroCtaSecondary}</span></Link>
           </div>
         </div>
       </section>
 
       {/* PREUVE VISUELLE — marquee des créateurs */}
       <div className="logos">
-        <span className="mono-label">+620 M de vues générées pour eux</span>
+        <span className="mono-label">{t.marquee}</span>
         <div className="mq"><div className="mq-track">
           {[...Array(2)].map((_, k) => (
             <span key={k} style={{ display: "contents" }}>
@@ -217,10 +325,10 @@ export default function AProposPage() {
       <section className="sec">
         <div className="container">
           <div className="ap-statband reveal">
-            {STATS.map((s) => (
-              <div className="ap-gs" key={s.k}>
-                <div className="v" {...(s.count ? { "data-count": s.count, "data-prefix": s.prefix ?? "", "data-suffix": s.suffix ?? "" } : {})}>{s.v}</div>
-                <div className="k">{s.k}</div>
+            {STAT_DATA.map((s, i) => (
+              <div className="ap-gs" key={t.statsK[i]}>
+                <div className="v" {...("count" in s && s.count ? { "data-count": s.count, "data-prefix": s.prefix ?? "", "data-suffix": ("suffix" in s ? s.suffix : "") ?? "" } : {})}>{t.statsV[i]}</div>
+                <div className="k">{t.statsK[i]}</div>
               </div>
             ))}
           </div>
@@ -231,15 +339,15 @@ export default function AProposPage() {
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="container">
           <div className="sec-head reveal">
-            <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>L&apos;équipe</span>
-            <h2>Une équipe resserrée,<br />quatre <span className="grad">expertises.</span></h2>
-            <p>Spécialisée sur une seule chose : rendre votre contenu impossible à manquer.</p>
+            <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>{t.teamEyebrow}</span>
+            <h2>{t.teamH2a}<br />{t.teamH2b} <span className="grad">{t.teamH2grad}</span></h2>
+            <p>{t.teamLead}</p>
           </div>
           <div className="ap-team stagger">
-            {TEAM.map((m) => (
-              <div className="ap-member" key={m.ini}>
-                <div className="ap-avatar" aria-hidden="true"><Glyph name={m.ic} /></div>
-                <span className="ap-mnum">{m.ini}</span>
+            {t.team.map((m, i) => (
+              <div className="ap-member" key={TEAM_INI[i]}>
+                <div className="ap-avatar" aria-hidden="true"><Glyph name={TEAM_IC[i]} /></div>
+                <span className="ap-mnum">{TEAM_INI[i]}</span>
                 <h3>{m.t}</h3>
                 <p>{m.bio}</p>
               </div>
@@ -252,13 +360,13 @@ export default function AProposPage() {
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="container">
           <div className="sec-head reveal">
-            <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>La méthode</span>
-            <h2>De l&apos;audit à la croissance,<br />en <span className="grad">trois temps.</span></h2>
+            <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>{t.methodEyebrow}</span>
+            <h2>{t.methodH2a}<br />{t.methodH2b} <span className="grad">{t.methodH2grad}</span></h2>
           </div>
           <div className="ap-timeline stagger">
-            {STAGES.map((s) => (
+            {t.stages.map((s, i) => (
               <div className="ap-tl" key={s.s}>
-                <div className="node" aria-hidden="true"><Glyph name={s.ic} /></div>
+                <div className="node" aria-hidden="true"><Glyph name={STAGE_IC[i]} /></div>
                 <span className="step">{s.s}</span>
                 <h3>{s.t}</h3>
                 <p>{s.p}</p>
@@ -274,16 +382,13 @@ export default function AProposPage() {
           <div className="ap-manifesto reveal">
             {/* eslint-disable-next-line @next/next/no-img-element -- filigrane décoratif */}
             <img className="ap-mf-wm" src="/img/logo-mark-white.png" alt="" aria-hidden="true" />
-            <span className="ap-mf-eye">Notre conviction</span>
-            <h2>L&apos;omniprésence,<br />pas la <span className="hl">viralité.</span></h2>
-            <p className="ap-mf-lead">
-              La viralité est un coup de chance. L&apos;omniprésence est une stratégie. Voilà comment on pense
-              la distribution à la performance, sur chaque campagne.
-            </p>
+            <span className="ap-mf-eye">{t.manifestoEyebrow}</span>
+            <h2>{t.manifestoH2a}<br />{t.manifestoH2b} <span className="hl">{t.manifestoH2grad}</span></h2>
+            <p className="ap-mf-lead">{t.manifestoLead}</p>
             <div className="ap-mf-list">
-              {CONVICTIONS.map((c) => (
-                <div className="ap-mf-item" key={c.n}>
-                  <span className="n">{c.n}</span>
+              {t.convictions.map((c, i) => (
+                <div className="ap-mf-item" key={CONVICTION_N[i]}>
+                  <span className="n">{CONVICTION_N[i]}</span>
                   <h3>{c.t}</h3>
                   <p>{c.p}</p>
                 </div>
@@ -297,13 +402,13 @@ export default function AProposPage() {
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="container">
           <div className="sec-head reveal">
-            <h2>Pourquoi nos clients restent<br />après la première campagne.</h2>
-            <p>Pas de promesses floues. Une méthode mesurable, un engagement contractuel, une obsession du résultat.</p>
+            <h2>{t.reasonsH2a}<br />{t.reasonsH2b}</h2>
+            <p>{t.reasonsLead}</p>
           </div>
           <div className="ap-reasons reveal">
-            {REASONS.map((r) => (
+            {t.reasons.map((r, i) => (
               <div className="ap-reason" key={r.t}>
-                <div className="ap-ic" aria-hidden="true"><Glyph name={r.ic} /></div>
+                <div className="ap-ic" aria-hidden="true"><Glyph name={REASON_IC[i]} /></div>
                 <h3>{r.t}</h3>
                 <p>{r.p}</p>
               </div>
@@ -317,14 +422,14 @@ export default function AProposPage() {
         <div className="container">
           <div className="ap-plat reveal">
             <div className="ap-plat-head">
-              <span className="mono-label">La distribution</span>
-              <h3>Présents là où votre audience scrolle.</h3>
+              <span className="mono-label">{t.platformsEyebrow}</span>
+              <h3>{t.platformsH3}</h3>
             </div>
             <div className="ap-plat-logos">
-              {PLATFORMS.map((pf) => (
-                <span className="ap-plat-item" key={pf.p}>
-                  <PlatformTile p={pf.p} size={34} />
-                  {pf.label}
+              {PLATFORM_SLUG.map((slug, i) => (
+                <span className="ap-plat-item" key={slug}>
+                  <PlatformTile p={slug} size={34} />
+                  {t.platformLabels[i]}
                 </span>
               ))}
             </div>
@@ -333,8 +438,8 @@ export default function AProposPage() {
       </section>
 
       <CtaPanel
-        title="Discutons de votre prochaine campagne."
-        text="20 minutes, sans préparation. On audite votre contenu et on vous projette un objectif de vues chiffré."
+        title={t.ctaTitle}
+        text={t.ctaText}
       />
     </main>
   );

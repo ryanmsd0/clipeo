@@ -8,7 +8,7 @@ import Grain from "@/components/Grain";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ScrollFX from "@/components/ScrollFX";
-import { SITE } from "@/lib/site";
+import { SITE, getSiteMeta } from "@/lib/site";
 import { getAllPosts } from "@/lib/posts";
 import { routing } from "@/i18n/routing";
 
@@ -19,27 +19,43 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE.url),
-  title: {
-    default: `${SITE.name} · ${SITE.tagline}`,
-    template: `%s · ${SITE.name}`,
-  },
-  description: SITE.description,
-  applicationName: SITE.name,
-  openGraph: {
-    type: "website",
-    siteName: SITE.name,
-    title: `${SITE.name} · ${SITE.tagline}`,
-    description: SITE.description,
-    url: SITE.url,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${SITE.name} · ${SITE.tagline}`,
-    description: SITE.description,
-  },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const loc = (locale === "en" ? "en" : "fr") as "fr" | "en";
+  const { tagline, description } = getSiteMeta(loc);
+  const homeUrl = loc === "en" ? `${SITE.url}/en` : SITE.url;
+  return {
+    metadataBase: new URL(SITE.url),
+    title: {
+      default: `${SITE.name} · ${tagline}`,
+      template: `%s · ${SITE.name}`,
+    },
+    description,
+    applicationName: SITE.name,
+    openGraph: {
+      type: "website",
+      locale: loc === "en" ? "en_US" : "fr_FR",
+      alternateLocale: loc === "en" ? "fr_FR" : "en_US",
+      siteName: SITE.name,
+      title: `${SITE.name} · ${tagline}`,
+      description,
+      url: homeUrl,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${SITE.name} · ${tagline}`,
+      description,
+    },
+    alternates: {
+      canonical: homeUrl,
+      languages: {
+        fr: SITE.url,
+        en: `${SITE.url}/en`,
+        "x-default": SITE.url,
+      },
+    },
+  };
+}
 
 export const viewport: Viewport = {
   themeColor: "#060f33",
@@ -63,7 +79,7 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
-  const navPosts = getAllPosts().slice(0, 4).map((p) => ({ slug: p.slug, title: p.title, category: p.category }));
+  const navPosts = getAllPosts(locale).slice(0, 4).map((p) => ({ slug: p.slug, title: p.title, category: p.category }));
 
   return (
     <html lang={locale} className={montserrat.variable}>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
+import { useLocale } from "next-intl";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { ArrowR, Check, CheckCircle } from "@/components/Icons";
@@ -11,7 +12,232 @@ import ClaimHero from "@/components/ClaimHero";
 import { BrandLogo } from "@/components/BrandLogo";
 import { TRUST_BAR } from "@/lib/site";
 
+const COPY = {
+  fr: {
+    hero: { tagline1: "Votre contenu long", tagline2: "vous rend omniprésent." },
+    trustBar: "+620 M de vues générées pour eux",
+
+    process: { h1: "Le clipping, ", h2: "à grande échelle.", p1: "Notre méthode en ", pBold: "3 grandes étapes", p2: "." },
+
+    omni: {
+      h1: "Le processus", h2: "d’omniprésence.",
+      p: "Vous occupez la For You Page de votre audience par la répétition. Plus votre marque y apparaît, plus elle s’ancre, jusqu’à la redirection naturelle vers votre contenu long.",
+      steps: [
+        { t: "Répétition", p: "Vos clips reviennent plusieurs fois par jour dans la For You Page de votre cible, sur des dizaines de comptes, jour après jour." },
+        { t: "Mémorisation", p: "À force de revoir le même visage, votre marque s’ancre durablement dans l’esprit de l’audience." },
+        { t: "Confiance", p: "La familiarité crée la confiance : un lien s’installe, et le spectateur passif devient abonné ou client." },
+        { t: "Redirection", p: "L’audience se redirige naturellement vers votre contenu long : chaîne, podcast, film, live." },
+      ],
+      ruleLabel: "La règle d’or",
+      ruleA: "Mieux vaut être vu ", ruleBold: "10 fois par 1 million", ruleB: " de personnes qu’", ruleDim: "une fois par 10 millions", ruleC: ".",
+      ctaCases: "Voir les études de cas", ctaWhat: "C’est quoi le clipping ?",
+    },
+
+    pricing: {
+      h1: "Vous payez les vues.", h2: "Pas l’effort.",
+      pA: "Grâce à notre modèle CPM, ", pBold: "vous ne prenez aucun risque", pB: " : soit on atteint l’objectif, soit on vous rembourse la différence.",
+      cards: [
+        { t: "Objectif et Engagement", p: "Un volume de vues est garanti à l’avance grâce à notre modèle CPM (coût pour 1000 vues). Aucun hasard." },
+        { t: "Distribution et Tracking", p: "On construit votre omniprésence sur le format court. Vous recevez vos millions de vues, plus la surperformance." },
+        { t: "Performance et Reporting", p: "Vous recevez un rapport détaillé en fin de campagne. Vous savez ce qui a fonctionné, et pourquoi." },
+      ],
+      cta: "Réserver mon audit gratuit",
+    },
+
+    who: {
+      h1: "Pour qui on ", h2: "travaille",
+      p: "Créateurs, marques, podcasts, cinéma, Twitch : si votre croissance passe par le format court, c’est pour vous.",
+      names: {
+        "01": "Créateurs YouTube",
+        "02": "Marques & grands comptes",
+        "03": "Podcasts",
+        "04": "Cinéma & sorties",
+        "05": "Émissions & Twitch",
+        "06": "Événements",
+      } as Record<string, string>,
+      viewCampaigns: "Voir les campagnes",
+      views: "vues générées", clips: "clips produits",
+    },
+
+    faq: {
+      h1: "Questions fréquentes",
+      p: "Tout ce qu’il faut savoir avant de se lancer.",
+      pills: [
+        { v: "+620M", k: "vues générées" },
+        { v: "+6,6K", k: "clips produits" },
+        { v: "1–2 j", k: "avant le lancement" },
+      ],
+      items: [
+        { q: "Qu’est-ce que Clipeo ?", a: "Une agence de clipping managée pour marques, créateurs et sorties. On active un réseau de clippers pour créer et publier des montages orientés performance sur TikTok, Reels et Shorts." },
+        { q: "Comment fonctionne le process ?", a: "On démarre par un court appel. Vous venez avec votre vision, et on gère la stratégie, le setup du lancement et l’exécution hebdomadaire de la campagne." },
+        { q: "En combien de temps peut-on lancer ?", a: "La plupart des campagnes se lancent en 1 à 2 jours après l’appel. Notre onboarding est conçu pour la vitesse." },
+        { q: "Avec qui travaillez-vous ?", a: "Des créateurs, des marques, des podcasts, des sorties cinéma et des émissions. Si votre croissance dépend du format court, on construit un modèle de campagne autour de votre contenu." },
+        { q: "Comment fonctionne le modèle CPM ?", a: "Vous payez un coût pour 1000 vues, avec un volume garanti au contrat. Si l’objectif n’est pas atteint, on rembourse la différence. Vous payez les vues, pas l’effort." },
+        { q: "Combien ça coûte de démarrer ?", a: "Le prix dépend du périmètre et de l’objectif de vues. On commence par un audit gratuit et une projection chiffrée, avant tout engagement." },
+      ],
+      sideLabel: "Avant de lancer",
+      sideH: "Des réponses claires, des décisions plus rapides.",
+      sideSub: "Process, fit, timing et prix au même endroit pour lancer en confiance.",
+      sideList: [
+        "Onboarding rapide, campagne lancée en 1–2 jours",
+        "Clipping multi-plateforme : TikTok, Reels, Shorts",
+        "Reporting transparent et suivi des performances",
+      ],
+      bookAudit: "Réserver un audit",
+      writeTeam: "Écrire à l’équipe",
+    },
+
+    cta: {
+      eye: "Audit gratuit · avant tout engagement",
+      h1: "On audite votre contenu.", h2: "Gratuitement.",
+      sub: "On identifie vos meilleurs angles, on vous projette un volume de vues chiffré, et vous décidez ensuite. Le risque est de notre côté, pas du vôtre.",
+      btn: "Réserver mon audit gratuit",
+      cardTitle: "Ce que vous recevez",
+      cardList: [
+        "Vos meilleurs angles à fort potentiel viral",
+        "Une projection de vues chiffrée pour votre campagne",
+        "Un plan clair, et zéro engagement",
+      ],
+    },
+
+    blog: {
+      h1: "Les dernières du ", h2: "Blog",
+      p: "Guides, décryptages et playbooks de l’équipe derrière +620M de vues.",
+      read: "Lire l’article",
+      feat: {
+        cat: "Stratégie",
+        hA: "Générateurs de clips IA ", hB: "vs agence de clipping.",
+        p: "Opus, Vizard et les autres découpent très bien vos vidéos. Le problème n’a jamais été le découpage. On vous montre où se gagnent vraiment les vues.",
+        min: "9 min",
+      },
+      launch: {
+        cat: "Guide",
+        hA: "Se lancer dans le ", hB: "clipping en 2026.",
+        min: "10 min",
+      },
+      podcast: {
+        cat: "Playbook",
+        hA: "Marketing de podcast : ", hB: "faire grandir une émission.",
+        p: "Un bon podcast ne grandit pas tout seul. L’audio ne circule pas, la vidéo si. On montre comment transformer chaque épisode en moteur de découverte.",
+        min: "7 min",
+      },
+    },
+  },
+  en: {
+    hero: { tagline1: "Your long-form content,", tagline2: "everywhere at once." },
+    trustBar: "+620M views generated for them",
+
+    process: { h1: "Clipping, ", h2: "at scale.", p1: "Our method in ", pBold: "3 main steps", p2: "." },
+
+    omni: {
+      h1: "The omnipresence", h2: "process.",
+      p: "You take over your audience’s For You feed through repetition. The more your brand shows up there, the deeper it sticks, until viewers naturally turn to your long-form content.",
+      steps: [
+        { t: "Repetition", p: "Your clips come back several times a day in your target’s For You feed, across dozens of accounts, day after day." },
+        { t: "Recall", p: "Seeing the same face again and again, your brand sticks for good in your audience’s mind." },
+        { t: "Trust", p: "Familiarity builds trust: a bond forms, and the passive viewer becomes a follower or a customer." },
+        { t: "Redirection", p: "Your audience naturally turns to your long-form content: channel, podcast, film, live." },
+      ],
+      ruleLabel: "The golden rule",
+      ruleA: "Better to be seen ", ruleBold: "10 times by 1 million", ruleB: " people than ", ruleDim: "once by 10 million", ruleC: ".",
+      ctaCases: "See the case studies", ctaWhat: "What is clipping?",
+    },
+
+    pricing: {
+      h1: "You pay for views.", h2: "Not effort.",
+      pA: "With our CPM model, ", pBold: "you take no risk", pB: ": either we hit the target, or we refund the difference.",
+      cards: [
+        { t: "Target & Commitment", p: "A view volume is guaranteed up front through our CPM model (cost per 1,000 views). Nothing left to chance." },
+        { t: "Distribution & Tracking", p: "We build your omnipresence in short-form. You get your millions of views, plus the overperformance." },
+        { t: "Performance & Reporting", p: "You get a detailed report at the end of the campaign. You know what worked, and why." },
+      ],
+      cta: "Book my free audit",
+    },
+
+    who: {
+      h1: "Who we ", h2: "work for",
+      p: "Creators, brands, podcasts, film, Twitch: if your growth runs through short-form, this is for you.",
+      names: {
+        "01": "YouTube creators",
+        "02": "Brands & enterprises",
+        "03": "Podcasts",
+        "04": "Film & releases",
+        "05": "Shows & Twitch",
+        "06": "Events",
+      } as Record<string, string>,
+      viewCampaigns: "See the campaigns",
+      views: "views generated", clips: "clips produced",
+    },
+
+    faq: {
+      h1: "Frequently asked questions",
+      p: "Everything you need to know before getting started.",
+      pills: [
+        { v: "+620M", k: "views generated" },
+        { v: "+6.6K", k: "clips produced" },
+        { v: "1–2 days", k: "before launch" },
+      ],
+      items: [
+        { q: "What is Clipeo?", a: "A managed clipping agency for brands, creators and releases. We activate a network of clippers to create and post performance-driven edits on TikTok, Reels and Shorts." },
+        { q: "How does the process work?", a: "We start with a short call. You bring your vision, and we handle the strategy, the launch setup and the weekly execution of the campaign." },
+        { q: "How fast can you launch?", a: "Most campaigns go live 1 to 2 days after the call. Our onboarding is built for speed." },
+        { q: "Who do you work with?", a: "Creators, brands, podcasts, film releases and shows. If your growth depends on short-form, we build a campaign model around your content." },
+        { q: "How does the CPM model work?", a: "You pay a cost per 1,000 views, with a guaranteed view volume written into your contract. If we miss the target, we refund the difference. You pay for views, not effort." },
+        { q: "How much does it cost to start?", a: "Pricing depends on the scope and the view target. We start with a free audit and a numbers-backed projection, before any commitment." },
+      ],
+      sideLabel: "Before you launch",
+      sideH: "Clear answers, faster decisions.",
+      sideSub: "Process, fit, timing and pricing in one place so you launch with confidence.",
+      sideList: [
+        "Fast onboarding, campaign live in 1–2 days",
+        "Multi-platform clipping: TikTok, Reels, Shorts",
+        "Transparent reporting and performance tracking",
+      ],
+      bookAudit: "Book an audit",
+      writeTeam: "Email the team",
+    },
+
+    cta: {
+      eye: "Free audit · before any commitment",
+      h1: "We audit your content.", h2: "For free.",
+      sub: "We pinpoint your strongest angles, project a numbers-backed view volume, and then you decide. The risk is on our side, not yours.",
+      btn: "Book my free audit",
+      cardTitle: "What you get",
+      cardList: [
+        "Your strongest angles with high viral potential",
+        "A numbers-backed view projection for your campaign",
+        "A clear plan, and zero commitment",
+      ],
+    },
+
+    blog: {
+      h1: "From the ", h2: "blog",
+      p: "Guides, breakdowns and playbooks from the team behind +620M views.",
+      read: "Read the article",
+      feat: {
+        cat: "Strategy",
+        hA: "AI clip generators ", hB: "vs a clipping agency.",
+        p: "Opus, Vizard and the rest cut your videos just fine. Cutting was never the problem. We show you where the views are actually won.",
+        min: "9 min",
+      },
+      launch: {
+        cat: "Guide",
+        hA: "Getting started with ", hB: "clipping in 2026.",
+        min: "10 min",
+      },
+      podcast: {
+        cat: "Playbook",
+        hA: "Podcast marketing: ", hB: "growing a show.",
+        p: "A good podcast doesn’t grow on its own. Audio doesn’t travel, video does. We show how to turn every episode into a discovery engine.",
+        min: "7 min",
+      },
+    },
+  },
+} as const;
+
 export default function HomeSections() {
+  const locale = useLocale() as "fr" | "en";
+  const t = COPY[locale] ?? COPY.fr;
   const rootRef = useRef<HTMLDivElement>(null);
   // « Pour qui » sur mobile : accordéon (clic = déroule la carte client)
   const [openWho, setOpenWho] = useState<string | null>(null);
@@ -146,7 +372,7 @@ export default function HomeSections() {
     <div ref={rootRef}>
       {/* HERO — expérience cinématique V6 (le Nav global porte déjà le CTA permanent) */}
       <div id="top">
-        <CinematicHeroV6 showFixedCta={false} tagline1="Votre contenu long" tagline2="vous rend omniprésent." />
+        <CinematicHeroV6 showFixedCta={false} tagline1={t.hero.tagline1} tagline2={t.hero.tagline2} />
       </div>
 
       {/* AFFIRMATION DE POSITIONNEMENT — « n°1 en France » */}
@@ -154,7 +380,7 @@ export default function HomeSections() {
 
       {/* TRUST BAR — marques clientes, cliquables vers les études de cas */}
       <div className="logos">
-        <span className="mono-label">+620 M de vues générées pour eux</span>
+        <span className="mono-label">{t.trustBar}</span>
         <div className="mq"><div className="mq-track">
           {[...Array(2)].map((_, k) => (
             <span key={k} style={{ display: "contents" }}>
@@ -173,8 +399,8 @@ export default function HomeSections() {
       <section className="sec" id="process">
         <div className="container">
           <div className="sec-head reveal">
-            <h2>Le clipping, <span className="grad">à grande échelle.</span></h2>
-            <p>Notre méthode en <b>3 grandes étapes</b>.</p>
+            <h2>{t.process.h1}<span className="grad">{t.process.h2}</span></h2>
+            <p>{t.process.p1}<b>{t.process.pBold}</b>{t.process.p2}</p>
           </div>
           <ProcessSticky images={false} />
         </div>
@@ -184,48 +410,48 @@ export default function HomeSections() {
       <section className="sec" id="comment">
         <div className="container">
           <div className="sec-head reveal">
-            <h2>Le processus<br /><span className="grad">d&apos;omniprésence.</span></h2>
-            <p>Vous occupez la For You Page de votre audience par la répétition. Plus votre marque y apparaît, plus elle s&apos;ancre, jusqu&apos;à la redirection naturelle vers votre contenu long.</p>
+            <h2>{t.omni.h1}<br /><span className="grad">{t.omni.h2}</span></h2>
+            <p>{t.omni.p}</p>
           </div>
           <div className="omni-steps stagger">
             <div className="omni-step">
               <div className="omni-node"><svg viewBox="0 0 24 24"><path d="M17 2l4 4-4 4" /><path d="M3 11V9a4 4 0 0 1 4-4h14" /><path d="M7 22l-4-4 4-4" /><path d="M21 13v2a4 4 0 0 1-4 4H3" /></svg></div>
               <div className="omni-txt">
-                <h3>Répétition</h3>
-                <p>Vos clips reviennent plusieurs fois par jour dans la For You Page de votre cible, sur des dizaines de comptes, jour après jour.</p>
+                <h3>{t.omni.steps[0].t}</h3>
+                <p>{t.omni.steps[0].p}</p>
               </div>
             </div>
             <div className="omni-step">
               <div className="omni-node"><svg viewBox="0 0 24 24"><path d="M9.5 2a4.5 4.5 0 0 0-4.5 4.5c0 .5-.3 1-.7 1.4A4 4 0 0 0 6 15a3.5 3.5 0 0 0 7 0V6.5A4.5 4.5 0 0 0 9.5 2z" /><path d="M14.5 2A4.5 4.5 0 0 1 19 6.5c0 .5.3 1 .7 1.4A4 4 0 0 1 18 15a3.5 3.5 0 0 1-7 0" /></svg></div>
               <div className="omni-txt">
-                <h3>Mémorisation</h3>
-                <p>À force de revoir le même visage, votre marque s&apos;ancre durablement dans l&apos;esprit de l&apos;audience.</p>
+                <h3>{t.omni.steps[1].t}</h3>
+                <p>{t.omni.steps[1].p}</p>
               </div>
             </div>
             <div className="omni-step">
               <div className="omni-node"><svg viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="m9 12 2 2 4-4" /></svg></div>
               <div className="omni-txt">
-                <h3>Confiance</h3>
-                <p>La familiarité crée la confiance&nbsp;: un lien s&apos;installe, et le spectateur passif devient abonné ou client.</p>
+                <h3>{t.omni.steps[2].t}</h3>
+                <p>{t.omni.steps[2].p}</p>
               </div>
             </div>
             <div className="omni-step">
               <div className="omni-node"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3" /><path d="m10 9 5 3-5 3z" /></svg></div>
               <div className="omni-txt">
-                <h3>Redirection</h3>
-                <p>L&apos;audience se redirige naturellement vers votre contenu long&nbsp;: chaîne, podcast, film, live.</p>
+                <h3>{t.omni.steps[3].t}</h3>
+                <p>{t.omni.steps[3].p}</p>
               </div>
             </div>
           </div>
 
           <div className="omni-rule reveal">
-            <span className="mono-label">La règle d&apos;or</span>
-            <p>Mieux vaut être vu <b className="grad">10 fois par 1 million</b> de personnes qu&apos;<span className="omni-dim">une fois par 10 millions</span>.</p>
+            <span className="mono-label">{t.omni.ruleLabel}</span>
+            <p>{t.omni.ruleA}<b className="grad">{t.omni.ruleBold}</b>{t.omni.ruleB}<span className="omni-dim">{t.omni.ruleDim}</span>{t.omni.ruleC}</p>
           </div>
 
           <div className="how-btns reveal" style={{ justifyContent: "center", marginTop: 32 }}>
-            <Link href="/etudes-de-cas" className="btn btn-sky"><span>Voir les études de cas</span></Link>
-            <Link href="/#blog" className="btn"><span>C&apos;est quoi le clipping ?</span></Link>
+            <Link href="/etudes-de-cas" className="btn btn-sky"><span>{t.omni.ctaCases}</span></Link>
+            <Link href="/#blog" className="btn"><span>{t.omni.ctaWhat}</span></Link>
           </div>
         </div>
       </section>
@@ -234,14 +460,14 @@ export default function HomeSections() {
       <section className="sec" id="tarification">
         <div className="container">
           <div className="sec-head reveal">
-            <h2>Vous payez les vues.<br />Pas l&apos;effort.</h2>
-            <p>Grâce à notre modèle CPM, <b>vous ne prenez aucun risque</b> : soit on atteint l&apos;objectif, soit on vous rembourse la différence.</p>
+            <h2>{t.pricing.h1}<br />{t.pricing.h2}</h2>
+            <p>{t.pricing.pA}<b>{t.pricing.pBold}</b>{t.pricing.pB}</p>
           </div>
           <div className="research-grid pricing-grid stagger">
             {[
-              { v: "01", cls: "grad", t: "Objectif et Engagement", p: "Un volume de vues est garanti à l'avance grâce à notre modèle CPM (coût pour 1000 vues). Aucun hasard." },
-              { v: "02", cls: "grad", t: "Distribution et Tracking", p: "On construit votre omniprésence sur le format court. Vous recevez vos millions de vues, plus la surperformance." },
-              { v: "03", cls: "grad", t: "Performance et Reporting", p: "Vous recevez un rapport détaillé en fin de campagne. Vous savez ce qui a fonctionné, et pourquoi." },
+              { v: "01", cls: "grad", t: t.pricing.cards[0].t, p: t.pricing.cards[0].p },
+              { v: "02", cls: "grad", t: t.pricing.cards[1].t, p: t.pricing.cards[1].p },
+              { v: "03", cls: "grad", t: t.pricing.cards[2].t, p: t.pricing.cards[2].p },
             ].map((c) => (
               <BorderGlow key={c.v}>
                 <div className="rc" style={{ background: "transparent", border: "none", boxShadow: "none", transform: "none" }}>
@@ -254,7 +480,7 @@ export default function HomeSections() {
           </div>
           <div className="cta-sec" style={{ padding: "34px 0 0" }}>
             <div style={{ textAlign: "center" }}>
-              <Link href="/contact" className="btn btn-primary"><span>Réserver mon audit gratuit</span><ArrowR /></Link>
+              <Link href="/contact" className="btn btn-primary"><span>{t.pricing.cta}</span><ArrowR /></Link>
             </div>
           </div>
         </div>
@@ -264,8 +490,8 @@ export default function HomeSections() {
       <section className="global" id="pour-qui">
         <div className="container">
           <div className="sec-head left reveal pull-left" style={{ marginTop: 0, marginBottom: 30 }}>
-            <h2>Pour qui on <span className="blue">travaille</span></h2>
-            <p>Créateurs, marques, podcasts, cinéma, Twitch : si votre croissance passe par le format court, c&apos;est pour vous.</p>
+            <h2>{t.who.h1}<span className="blue">{t.who.h2}</span></h2>
+            <p>{t.who.p}</p>
           </div>
           <div className="who-list stagger pull-left" data-who-list>
             {[
@@ -298,10 +524,10 @@ export default function HomeSections() {
                       }}
                     >
                       <span className="ix">{w.ix}</span>
-                      <span className="name">{w.name}</span>
+                      <span className="name">{t.who.names[w.ix]}</span>
                     </Link>
                     {/* Bouton → toutes les campagnes de cette catégorie */}
-                    <Link href={campaignHref} className="view">Voir les campagnes <ArrowR /></Link>
+                    <Link href={campaignHref} className="view">{t.who.viewCampaigns} <ArrowR /></Link>
                     <span className="who-caret" aria-hidden="true">
                       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
                     </span>
@@ -311,8 +537,8 @@ export default function HomeSections() {
                       {/* eslint-disable-next-line @next/next/no-img-element -- chemin avec espaces, hover lazy */}
                       <img src={cover} alt={w.client} loading="lazy" width={320} height={180} />
                       <div className="who-drop-stats">
-                        <span><b>{w.views}</b><i>vues générées</i></span>
-                        <span><b>{w.clips}</b><i>clips produits</i></span>
+                        <span><b>{w.views}</b><i>{t.who.views}</i></span>
+                        <span><b>{w.clips}</b><i>{t.who.clips}</i></span>
                       </div>
                     </Link>
                   </div>
@@ -327,8 +553,8 @@ export default function HomeSections() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img alt="" width={320} height={180} />
           <span className="who-follow-cap">
-            <span className="wf-stat"><b className="who-follow-views"></b><i>vues générées</i></span>
-            <span className="wf-stat"><b className="who-follow-clips"></b><i>clips produits</i></span>
+            <span className="wf-stat"><b className="who-follow-views"></b><i>{t.who.views}</i></span>
+            <span className="wf-stat"><b className="who-follow-clips"></b><i>{t.who.clips}</i></span>
           </span>
         </div>
       </section>
@@ -337,35 +563,32 @@ export default function HomeSections() {
       <section className="sec" id="faq">
         <div className="container">
           <div className="sec-head reveal">
-            <h2>Questions fréquentes</h2>
-            <p>Tout ce qu&apos;il faut savoir avant de se lancer.</p>
+            <h2>{t.faq.h1}</h2>
+            <p>{t.faq.p}</p>
           </div>
           <div className="faq-pills reveal">
-            <div className="faq-pill"><span className="v grad">+620M</span><span className="k">vues générées</span></div>
-            <div className="faq-pill"><span className="v grad">+6,6K</span><span className="k">clips produits</span></div>
-            <div className="faq-pill"><span className="v grad">1–2 j</span><span className="k">avant le lancement</span></div>
+            {t.faq.pills.map((pill) => (
+              <div className="faq-pill" key={pill.k}><span className="v grad">{pill.v}</span><span className="k">{pill.k}</span></div>
+            ))}
           </div>
           <div className="faq-layout">
             <div className="faq-list reveal">
-              <div className="qitem"><span className="qn">01</span><div><h3>Qu&apos;est-ce que Clipeo ?</h3><p>Une agence de clipping managée pour marques, créateurs et sorties. On active un réseau de clippers pour créer et publier des montages orientés performance sur TikTok, Reels et Shorts.</p></div></div>
-              <div className="qitem"><span className="qn">02</span><div><h3>Comment fonctionne le process ?</h3><p>On démarre par un court appel. Vous venez avec votre vision, et on gère la stratégie, le setup du lancement et l&apos;exécution hebdomadaire de la campagne.</p></div></div>
-              <div className="qitem"><span className="qn">03</span><div><h3>En combien de temps peut-on lancer ?</h3><p>La plupart des campagnes se lancent en 1 à 2 jours après l&apos;appel. Notre onboarding est conçu pour la vitesse.</p></div></div>
-              <div className="qitem"><span className="qn">04</span><div><h3>Avec qui travaillez-vous ?</h3><p>Des créateurs, des marques, des podcasts, des sorties cinéma et des émissions. Si votre croissance dépend du format court, on construit un modèle de campagne autour de votre contenu.</p></div></div>
-              <div className="qitem"><span className="qn">05</span><div><h3>Comment fonctionne le modèle CPM ?</h3><p>Vous payez un coût pour 1000 vues, avec un volume garanti au contrat. Si l&apos;objectif n&apos;est pas atteint, on rembourse la différence. Vous payez les vues, pas l&apos;effort.</p></div></div>
-              <div className="qitem"><span className="qn">06</span><div><h3>Combien ça coûte de démarrer ?</h3><p>Le prix dépend du périmètre et de l&apos;objectif de vues. On commence par un audit gratuit et une projection chiffrée, avant tout engagement.</p></div></div>
+              {t.faq.items.map((item, i) => (
+                <div className="qitem" key={item.q}><span className="qn">{String(i + 1).padStart(2, "0")}</span><div><h3>{item.q}</h3><p>{item.a}</p></div></div>
+              ))}
             </div>
             <aside className="faq-side reveal">
-              <span className="mono-label">Avant de lancer</span>
-              <h3>Des réponses claires, des décisions plus rapides.</h3>
-              <p className="sub">Process, fit, timing et prix au même endroit pour lancer en confiance.</p>
+              <span className="mono-label">{t.faq.sideLabel}</span>
+              <h3>{t.faq.sideH}</h3>
+              <p className="sub">{t.faq.sideSub}</p>
               <ul>
-                <li><CheckCircle />Onboarding rapide, campagne lancée en 1–2 jours</li>
-                <li><CheckCircle />Clipping multi-plateforme : TikTok, Reels, Shorts</li>
-                <li><CheckCircle />Reporting transparent et suivi des performances</li>
+                {t.faq.sideList.map((li) => (
+                  <li key={li}><CheckCircle />{li}</li>
+                ))}
               </ul>
               <div className="btns">
-                <Link href="/contact" className="btn btn-primary"><span>Réserver un audit</span></Link>
-                <a href="mailto:contact@agenceclipeo.com" className="btn"><span>Écrire à l&apos;équipe</span></a>
+                <Link href="/contact" className="btn btn-primary"><span>{t.faq.bookAudit}</span></Link>
+                <a href="mailto:contact@agenceclipeo.com" className="btn"><span>{t.faq.writeTeam}</span></a>
               </div>
             </aside>
           </div>
@@ -379,22 +602,18 @@ export default function HomeSections() {
             {/* eslint-disable-next-line @next/next/no-img-element -- filigrane décoratif */}
             <img className="cta2-wm" src="/img/logo-mark-white.png" alt="" aria-hidden="true" />
             <div className="cta2-copy">
-              <span className="cta2-eye">Audit gratuit · avant tout engagement</span>
-              <h2>On audite votre contenu.<br /><span className="hl">Gratuitement.</span></h2>
-              <p className="cta2-sub">On identifie vos meilleurs angles, on vous projette un volume de vues chiffré, et vous décidez ensuite. Le risque est de notre côté, pas du vôtre.</p>
+              <span className="cta2-eye">{t.cta.eye}</span>
+              <h2>{t.cta.h1}<br /><span className="hl">{t.cta.h2}</span></h2>
+              <p className="cta2-sub">{t.cta.sub}</p>
               <Link href="/contact" className="cta2-btn">
-                Réserver mon audit gratuit
+                {t.cta.btn}
                 <span className="a" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H8M17 7v9" strokeLinecap="round" strokeLinejoin="round" /></svg></span>
               </Link>
             </div>
             <div className="cta2-card">
-              <span className="t">Ce que vous recevez</span>
+              <span className="t">{t.cta.cardTitle}</span>
               <ul>
-                {[
-                  "Vos meilleurs angles à fort potentiel viral",
-                  "Une projection de vues chiffrée pour votre campagne",
-                  "Un plan clair, et zéro engagement",
-                ].map((item) => (
+                {t.cta.cardList.map((item) => (
                   <li key={item}>
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="rgba(134,210,255,.18)" /><path d="m7.4 12.4 3 3 6.2-6.6" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     {item}
@@ -411,8 +630,8 @@ export default function HomeSections() {
         <div className="blog-wm">BLOG</div>
         <div className="container">
           <div className="sec-head left reveal" style={{ marginBottom: 44 }}>
-            <h2>Les dernières du <span className="blue">Blog</span></h2>
-            <p>Guides, décryptages et playbooks de l&apos;équipe derrière +620M de vues.</p>
+            <h2>{t.blog.h1}<span className="blue">{t.blog.h2}</span></h2>
+            <p>{t.blog.p}</p>
           </div>
           <div className="bento-blog stagger">
             {/* Article vedette — large */}
@@ -435,10 +654,10 @@ export default function HomeSections() {
                   </svg>
               </div>
               <div className="bb-in">
-                <span className="bb-cat">Stratégie</span>
-                <h3>Générateurs de clips IA <span className="bb-ac">vs agence de clipping.</span></h3>
-                <p>Opus, Vizard et les autres découpent très bien vos vidéos. Le problème n&apos;a jamais été le découpage. On vous montre où se gagnent vraiment les vues.</p>
-                <span className="bb-foot"><span className="bb-go">Lire l&apos;article <ArrowR /></span><span className="bb-min">9 min</span></span>
+                <span className="bb-cat">{t.blog.feat.cat}</span>
+                <h3>{t.blog.feat.hA}<span className="bb-ac">{t.blog.feat.hB}</span></h3>
+                <p>{t.blog.feat.p}</p>
+                <span className="bb-foot"><span className="bb-go">{t.blog.read} <ArrowR /></span><span className="bb-min">{t.blog.feat.min}</span></span>
               </div>
             </Link>
 
@@ -451,9 +670,9 @@ export default function HomeSections() {
                 <BrandLogo name="instagram" className="p3" />
               </div>
               <div className="bb-in">
-                <span className="bb-cat">Guide</span>
-                <h3>Se lancer dans le <span className="bb-ac">clipping en 2026.</span></h3>
-                <span className="bb-foot"><span className="bb-go">Lire l&apos;article <ArrowR /></span><span className="bb-min">10 min</span></span>
+                <span className="bb-cat">{t.blog.launch.cat}</span>
+                <h3>{t.blog.launch.hA}<span className="bb-ac">{t.blog.launch.hB}</span></h3>
+                <span className="bb-foot"><span className="bb-go">{t.blog.read} <ArrowR /></span><span className="bb-min">{t.blog.launch.min}</span></span>
               </div>
             </Link>
 
@@ -471,10 +690,10 @@ export default function HomeSections() {
                 </svg>
               </div>
               <div className="bb-in">
-                <span className="bb-cat">Playbook</span>
-                <h3>Marketing de podcast : <span className="bb-ac">faire grandir une émission.</span></h3>
-                <p>Un bon podcast ne grandit pas tout seul. L&apos;audio ne circule pas, la vidéo si. On montre comment transformer chaque épisode en moteur de découverte.</p>
-                <span className="bb-foot"><span className="bb-go">Lire l&apos;article <ArrowR /></span><span className="bb-min">7 min</span></span>
+                <span className="bb-cat">{t.blog.podcast.cat}</span>
+                <h3>{t.blog.podcast.hA}<span className="bb-ac">{t.blog.podcast.hB}</span></h3>
+                <p>{t.blog.podcast.p}</p>
+                <span className="bb-foot"><span className="bb-go">{t.blog.read} <ArrowR /></span><span className="bb-min">{t.blog.podcast.min}</span></span>
               </div>
             </Link>
           </div>

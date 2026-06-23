@@ -1,24 +1,65 @@
 import type { Metadata } from "next";
+import { getLocale } from "next-intl/server";
 import ContactForm from "@/components/ContactForm";
 import { SITE } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Contact, réservez votre audit gratuit",
-  description:
-    "Parlons de votre prochaine campagne de clipping. Audit gratuit, projection de vues chiffrée et sans engagement. Réponse sous 24h.",
-  alternates: { canonical: "/contact" },
-};
+const COPY = {
+  fr: {
+    metaTitle: "Contact, réservez votre audit gratuit",
+    metaDesc:
+      "Parlons de votre prochaine campagne de clipping. Audit gratuit, projection de vues chiffrée et sans engagement. Réponse sous 24h.",
+    h1a: "Audit gratuit.",
+    h1b: "Projection chiffrée.",
+    lead:
+      "On audite votre contenu long, on identifie ce qui peut cartonner, et on vous projette un objectif de vues, avant tout engagement.",
+    asideTitle: "Parlez-nous de votre projet",
+    emailLabel: "Email",
+    callLabel: "Appel découverte",
+    callValue: "20 minutes, sans préparation.",
+    commitLabel: "Notre engagement",
+    commitValue: "Volume de vues garanti au contrat, remboursé si non atteint.",
+    replyLabel: "Réponse",
+    replyValue: "Sous 24h ouvrées.",
+  },
+  en: {
+    metaTitle: "Contact, book your free audit",
+    metaDesc:
+      "Let's talk about your next clipping campaign. Free audit, a hard view projection, no commitment. Reply within 24h.",
+    h1a: "Free audit.",
+    h1b: "A view projection.",
+    lead:
+      "We audit your long-form content, pinpoint what can break out, and project a view target for you, before any commitment.",
+    asideTitle: "Tell us about your project",
+    emailLabel: "Email",
+    callLabel: "Discovery call",
+    callValue: "20 minutes, no prep needed.",
+    commitLabel: "Our commitment",
+    commitValue: "View volume guaranteed in the contract, refunded if we fall short.",
+    replyLabel: "Reply",
+    replyValue: "Within 24 business hours.",
+  },
+} as const;
 
-export default function ContactPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = (await getLocale()) as keyof typeof COPY;
+  const t = COPY[locale] ?? COPY.fr;
+  return {
+    title: t.metaTitle,
+    description: t.metaDesc,
+    alternates: { canonical: "/contact" },
+  };
+}
+
+export default async function ContactPage() {
+  const locale = (await getLocale()) as keyof typeof COPY;
+  const t = COPY[locale] ?? COPY.fr;
+
   return (
     <main>
       <section className="page-hero" style={{ paddingBottom: 30 }}>
         <div className="container">
-          <h1>Audit gratuit.<br /><span className="grad">Projection chiffrée.</span></h1>
-          <p>
-            On audite votre contenu long, on identifie ce qui peut cartonner, et on vous projette un objectif
-            de vues, avant tout engagement.
-          </p>
+          <h1>{t.h1a}<br /><span className="grad">{t.h1b}</span></h1>
+          <p>{t.lead}</p>
         </div>
       </section>
 
@@ -29,29 +70,29 @@ export default function ContactPage() {
               <ContactForm />
             </div>
             <aside className="contact-aside reveal">
-              <h3>Parlez-nous de votre projet</h3>
+              <h3>{t.asideTitle}</h3>
               <div className="line">
                 <div>
-                  <b>Email</b>
+                  <b>{t.emailLabel}</b>
                   <a href={`mailto:${SITE.email}`} style={{ color: "var(--sky-bright)" }}>{SITE.email}</a>
                 </div>
               </div>
               <div className="line">
                 <div>
-                  <b>Appel découverte</b>
-                  20 minutes, sans préparation.
+                  <b>{t.callLabel}</b>
+                  {t.callValue}
                 </div>
               </div>
               <div className="line">
                 <div>
-                  <b>Notre engagement</b>
-                  Volume de vues garanti au contrat, remboursé si non atteint.
+                  <b>{t.commitLabel}</b>
+                  {t.commitValue}
                 </div>
               </div>
               <div className="line">
                 <div>
-                  <b>Réponse</b>
-                  Sous 24h ouvrées.
+                  <b>{t.replyLabel}</b>
+                  {t.replyValue}
                 </div>
               </div>
             </aside>

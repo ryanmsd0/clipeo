@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import CtaPanel from "@/components/CtaPanel";
 import ScrollParallax from "@/components/ScrollParallax";
@@ -6,37 +7,162 @@ import ServicesPillars from "@/components/ServicesPillars";
 import { Check, ArrowR } from "@/components/Icons";
 import { PlatformTile } from "@/components/BrandLogo";
 
-export const metadata: Metadata = {
-  title: "Le service Clipeo · audit, algorithme, production, distribution, tracking",
-  description:
-    "Un seul service qui réunit tout notre savoir-faire : compréhension fine de l'algorithme, audit, stratégie, production de clips, distribution multi-comptes et tracking. De votre contenu long à des vues qui comptent.",
-  alternates: { canonical: "/services" },
-};
+const COPY = {
+  fr: {
+    metaTitle: "Le service Clipeo · audit, algorithme, production, distribution, tracking",
+    metaDesc:
+      "Un seul service qui réunit tout notre savoir-faire : compréhension fine de l'algorithme, audit, stratégie, production de clips, distribution multi-comptes et tracking. De votre contenu long à des vues qui comptent.",
+    eyebrowLabel: "Le service Clipeo · ",
+    eyebrowStrong: "+620 M de vues générées",
+    h1a: "Un seul service.",
+    h1b: "Toute la chaîne, ",
+    h1grad: "maîtrisée.",
+    heroSub: (
+      <>
+        Audit, stratégie, compréhension fine de l&apos;algorithme, production, distribution
+        et tracking. Tout est réuni dans un service unique, pensé pour transformer votre
+        contenu long en vues qui comptent — avec un objectif chiffré, garanti au contrat.
+      </>
+    ),
+    ctaPrimary: "Réserver un audit gratuit",
+    ctaSecondary: "Voir les études de cas",
+    pillarsLabel: "Notre savoir-faire",
+    pillarsH2a: "Six expertises,",
+    pillarsH2b: "un seul service.",
+    algoLabel: "Le cœur du métier",
+    algoH2a: "On ne devine pas",
+    algoH2b: "l’algorithme. ",
+    algoH2grad: "On le comprend.",
+    algoLede: (
+      <>
+        La différence entre un clip à 2 000 vues et un clip à 2 millions ne tient pas à la
+        chance. Elle tient à une lecture précise des signaux que chaque plateforme valorise —
+        et à la discipline de s&apos;y plier, contenu après contenu.
+      </>
+    ),
+    algoPt1: "Chaque format est calé sur les codes natifs du réseau.",
+    algoPt2: "Chaque publication vise une fenêtre algo précise.",
+    algoPt3: "Chaque clip est jugé sur la rétention, pas sur l’esthétique.",
+    panelHead: "Ce qu’on optimise",
+    methodLabel: "La méthode",
+    methodH2a: "De l’audit à la ",
+    methodH2grad: "croissance.",
+    inclH2a: "Toujours inclus,",
+    inclH2b: "sans option cachée.",
+    statViews: "Vues générées · 6 mois",
+    statClips: "Clips produits",
+    statClipsVal: "+6,6K",
+    statCampaigns: "Campagnes réalisées",
+    statLaunch: "Pour lancer une campagne",
+    ctaTitle: "On audite votre contenu. Gratuitement.",
+    ctaText:
+      "20 minutes pour identifier vos meilleurs angles et vous projeter un objectif de vues chiffré. Sans engagement.",
+    signals: [
+      { k: "Hook < 3 s", v: "Capter avant le scroll" },
+      { k: "Rétention & watch-time", v: "Le signal n°1 des plateformes" },
+      { k: "Fenêtres de publication", v: "Le bon moment, réseau par réseau" },
+      { k: "Format & ratio natifs", v: "Aux codes de chaque plateforme" },
+      { k: "Sous-titres & rythme", v: "Pensés pour aller au bout" },
+      { k: "Signaux d'engagement", v: "Commentaires, partages, replays" },
+    ],
+    method: [
+      { n: "1", t: "Audit", d: "On analyse votre contenu et on fixe un objectif de vues chiffré." },
+      { n: "2", t: "Stratégie", d: "Plan de diffusion : formats, cadence, plateformes, narratifs." },
+      { n: "3", t: "Production", d: "Le réseau de clippers produit des centaines de clips orientés rétention." },
+      { n: "4", t: "Distribution", d: "Diffusion multi-comptes, calée sur les fenêtres algo de chaque réseau." },
+      { n: "5", t: "Tracking", d: "Mesure par contenu, plateforme et thème, en continu." },
+      { n: "6", t: "Optimisation", d: "On coupe, on amplifie. Chaque vague nourrit la suivante." },
+    ],
+    included: [
+      { t: "Objectif garanti", d: "Un volume de vues chiffré, inscrit au contrat, ou remboursé." },
+      { t: "Multi-plateforme", d: "TikTok, Reels et Shorts, aux codes de chacun." },
+      { t: "Sous-titres pro", d: "Montage et sous-titrage pensés pour la rétention." },
+      { t: "Reporting clair", d: "Tracking par contenu, plateforme et thème, en continu." },
+    ],
+  },
+  en: {
+    metaTitle: "The Clipeo service · audit, algorithm, production, distribution, tracking",
+    metaDesc:
+      "One service that brings together everything we do: a deep read of the algorithm, audit, strategy, clip production, multi-account distribution and tracking. From your long-form content to views that count.",
+    eyebrowLabel: "The Clipeo service · ",
+    eyebrowStrong: "+620M views generated",
+    h1a: "One service.",
+    h1b: "The whole chain, ",
+    h1grad: "handled.",
+    heroSub: (
+      <>
+        Audit, strategy, a deep read of the algorithm, production, distribution and tracking.
+        It all lives in a single service, built to turn your long-form content into views that
+        count — with a guaranteed view volume, written into your contract.
+      </>
+    ),
+    ctaPrimary: "Book a free audit",
+    ctaSecondary: "See the case studies",
+    pillarsLabel: "What we do",
+    pillarsH2a: "Six skills,",
+    pillarsH2b: "one service.",
+    algoLabel: "The core of the craft",
+    algoH2a: "We don’t guess",
+    algoH2b: "the algorithm. ",
+    algoH2grad: "We read it.",
+    algoLede: (
+      <>
+        The gap between a clip at 2,000 views and one at 2 million isn&apos;t luck. It comes
+        from reading the exact signals each platform rewards — and the discipline to follow
+        them, clip after clip.
+      </>
+    ),
+    algoPt1: "Every format is built to each platform's native codes.",
+    algoPt2: "Every post targets a precise algorithmic window.",
+    algoPt3: "Every clip is judged on retention, not on looks.",
+    panelHead: "What we optimize",
+    methodLabel: "The method",
+    methodH2a: "From audit to ",
+    methodH2grad: "growth.",
+    inclH2a: "Always included,",
+    inclH2b: "no hidden options.",
+    statViews: "Views generated · 6 months",
+    statClips: "Clips produced",
+    statClipsVal: "+6.6K",
+    statCampaigns: "Campaigns delivered",
+    statLaunch: "To launch a campaign",
+    ctaTitle: "We audit your content. For free.",
+    ctaText:
+      "20 minutes to pinpoint your best angles and project a concrete view target. No commitment.",
+    signals: [
+      { k: "Hook < 3s", v: "Catch them before the scroll" },
+      { k: "Retention & watch-time", v: "The platforms' number-one signal" },
+      { k: "Publishing windows", v: "The right moment, platform by platform" },
+      { k: "Native format & ratio", v: "To each platform's codes" },
+      { k: "Captions & pacing", v: "Built to keep them watching" },
+      { k: "Engagement signals", v: "Comments, shares, replays" },
+    ],
+    method: [
+      { n: "1", t: "Audit", d: "We analyze your content and set a concrete view target." },
+      { n: "2", t: "Strategy", d: "Distribution plan: formats, cadence, platforms, narratives." },
+      { n: "3", t: "Production", d: "Our clipper network produces hundreds of retention-first clips." },
+      { n: "4", t: "Distribution", d: "Multi-account posting, timed to each platform's algorithmic windows." },
+      { n: "5", t: "Tracking", d: "Measured by content, platform and theme, continuously." },
+      { n: "6", t: "Optimization", d: "We cut what fails, we double down on what works. Each wave feeds the next." },
+    ],
+    included: [
+      { t: "Guaranteed target", d: "A concrete view volume, written into your contract, or your money back." },
+      { t: "Multi-platform", d: "TikTok, Reels and Shorts, to each platform's codes." },
+      { t: "Pro captions", d: "Editing and captioning built for retention." },
+      { t: "Clear reporting", d: "Tracking by content, platform and theme, continuously." },
+    ],
+  },
+} as const;
 
-const SIGNALS = [
-  { k: "Hook < 3 s", v: "Capter avant le scroll" },
-  { k: "Rétention & watch-time", v: "Le signal n°1 des plateformes" },
-  { k: "Fenêtres de publication", v: "Le bon moment, réseau par réseau" },
-  { k: "Format & ratio natifs", v: "Aux codes de chaque plateforme" },
-  { k: "Sous-titres & rythme", v: "Pensés pour aller au bout" },
-  { k: "Signaux d'engagement", v: "Commentaires, partages, replays" },
-];
-
-const METHOD = [
-  { n: "1", t: "Audit", d: "On analyse votre contenu et on fixe un objectif de vues chiffré." },
-  { n: "2", t: "Stratégie", d: "Plan de diffusion : formats, cadence, plateformes, narratifs." },
-  { n: "3", t: "Production", d: "Le réseau de clippers produit des centaines de clips orientés rétention." },
-  { n: "4", t: "Distribution", d: "Diffusion multi-comptes, calée sur les fenêtres algo de chaque réseau." },
-  { n: "5", t: "Tracking", d: "Mesure par contenu, plateforme et thème, en continu." },
-  { n: "6", t: "Optimisation", d: "On coupe, on amplifie. Chaque vague nourrit la suivante." },
-];
-
-const INCLUDED = [
-  { t: "Objectif garanti", d: "Un volume de vues chiffré, inscrit au contrat, ou remboursé." },
-  { t: "Multi-plateforme", d: "TikTok, Reels et Shorts, aux codes de chacun." },
-  { t: "Sous-titres pro", d: "Montage et sous-titrage pensés pour la rétention." },
-  { t: "Reporting clair", d: "Tracking par contenu, plateforme et thème, en continu." },
-];
+export async function generateMetadata(): Promise<Metadata> {
+  const locale = (await getLocale()) as keyof typeof COPY;
+  const t = COPY[locale] ?? COPY.fr;
+  return {
+    title: t.metaTitle,
+    description: t.metaDesc,
+    alternates: { canonical: "/services" },
+  };
+}
 
 const STYLES = `
   .sv-hero{position:relative;overflow:hidden;padding:160px 0 60px;text-align:center;isolation:isolate}
@@ -100,7 +226,9 @@ const STYLES = `
   }
 `;
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const locale = (await getLocale()) as keyof typeof COPY;
+  const t = COPY[locale] ?? COPY.fr;
   return (
     <ScrollParallax>
       <main>
@@ -116,16 +244,14 @@ export default function ServicesPage() {
             <div className="sv-chip c3" data-parallax="0.42"><PlatformTile p="instagram" size={24} />Reels</div>
           </div>
           <div className="container">
-            <span className="sv-eyebrow">Le service Clipeo · <b>+620 M de vues générées</b></span>
-            <h1>Un seul service.<br />Toute la chaîne, <span className="grad">maîtrisée.</span></h1>
+            <span className="sv-eyebrow">{t.eyebrowLabel}<b>{t.eyebrowStrong}</b></span>
+            <h1>{t.h1a}<br />{t.h1b}<span className="grad">{t.h1grad}</span></h1>
             <p className="sub">
-              Audit, stratégie, compréhension fine de l&apos;algorithme, production, distribution
-              et tracking. Tout est réuni dans un service unique, pensé pour transformer votre
-              contenu long en vues qui comptent — avec un objectif chiffré, garanti au contrat.
+              {t.heroSub}
             </p>
             <div className="sv-cta">
-              <Link href="/contact" className="btn btn-primary"><span>Réserver un audit gratuit</span><ArrowR /></Link>
-              <Link href="/etudes-de-cas" className="btn"><span>Voir les études de cas</span></Link>
+              <Link href="/contact" className="btn btn-primary"><span>{t.ctaPrimary}</span><ArrowR /></Link>
+              <Link href="/etudes-de-cas" className="btn"><span>{t.ctaSecondary}</span></Link>
             </div>
           </div>
         </section>
@@ -134,8 +260,8 @@ export default function ServicesPage() {
         <section className="sec" style={{ paddingTop: 20 }}>
           <div className="container">
             <div className="sec-head reveal">
-              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Notre savoir-faire</span>
-              <h2>Six expertises,<br />un seul service.</h2>
+              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>{t.pillarsLabel}</span>
+              <h2>{t.pillarsH2a}<br />{t.pillarsH2b}</h2>
             </div>
             <ServicesPillars />
           </div>
@@ -146,22 +272,20 @@ export default function ServicesPage() {
           <div className="container">
             <div className="sx-algo">
               <div className="reveal">
-                <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>Le cœur du métier</span>
-                <h2>On ne devine pas<br />l&apos;algorithme. <span className="grad">On le comprend.</span></h2>
+                <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>{t.algoLabel}</span>
+                <h2>{t.algoH2a}<br />{t.algoH2b}<span className="grad">{t.algoH2grad}</span></h2>
                 <p className="lede">
-                  La différence entre un clip à 2 000 vues et un clip à 2 millions ne tient pas à la
-                  chance. Elle tient à une lecture précise des signaux que chaque plateforme valorise —
-                  et à la discipline de s&apos;y plier, contenu après contenu.
+                  {t.algoLede}
                 </p>
                 <ul className="pts">
-                  <li><Check />Chaque format est calé sur les codes natifs du réseau.</li>
-                  <li><Check />Chaque publication vise une fenêtre algo précise.</li>
-                  <li><Check />Chaque clip est jugé sur la rétention, pas sur l&apos;esthétique.</li>
+                  <li><Check />{t.algoPt1}</li>
+                  <li><Check />{t.algoPt2}</li>
+                  <li><Check />{t.algoPt3}</li>
                 </ul>
               </div>
               <div className="sx-panel reveal">
-                <span className="ph">Ce qu&apos;on optimise</span>
-                {SIGNALS.map((s) => (
+                <span className="ph">{t.panelHead}</span>
+                {t.signals.map((s) => (
                   <div className="sx-sig" key={s.k}>
                     <span className="sk">{s.k}</span>
                     <span className="sv">{s.v}</span>
@@ -176,11 +300,11 @@ export default function ServicesPage() {
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="container">
             <div className="sec-head reveal">
-              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>La méthode</span>
-              <h2>De l&apos;audit à la <span className="grad">croissance.</span></h2>
+              <span className="mono-label" style={{ marginBottom: 22, display: "block" }}>{t.methodLabel}</span>
+              <h2>{t.methodH2a}<span className="grad">{t.methodH2grad}</span></h2>
             </div>
             <div className="sx-method stagger">
-              {METHOD.map((m) => (
+              {t.method.map((m) => (
                 <div className="sx-mc" key={m.n}>
                   <span className="n">{m.n}</span>
                   <h4>{m.t}</h4>
@@ -195,10 +319,10 @@ export default function ServicesPage() {
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="container">
             <div className="sec-head reveal">
-              <h2>Toujours inclus,<br />sans option cachée.</h2>
+              <h2>{t.inclH2a}<br />{t.inclH2b}</h2>
             </div>
             <div className="sv-incl stagger">
-              {INCLUDED.map((i) => (
+              {t.included.map((i) => (
                 <div className="sv-inc" key={i.t}>
                   <div className="ic"><Check /></div>
                   <h4>{i.t}</h4>
@@ -213,17 +337,17 @@ export default function ServicesPage() {
         <section className="sec" style={{ paddingTop: 0 }}>
           <div className="container">
             <div className="global-stats reveal" style={{ marginTop: 0 }}>
-              <div className="gstat"><div className="v grad" data-count="620" data-prefix="+" data-suffix="M">+0M</div><div className="k">Vues générées · 6 mois</div></div>
-              <div className="gstat"><div className="v grad">+6,6K</div><div className="k">Clips produits</div></div>
-              <div className="gstat"><div className="v grad" data-count="57" data-prefix="+">+0</div><div className="k">Campagnes réalisées</div></div>
-              <div className="gstat"><div className="v accent" data-count="48" data-suffix="h">0h</div><div className="k">Pour lancer une campagne</div></div>
+              <div className="gstat"><div className="v grad" data-count="620" data-prefix="+" data-suffix="M">+0M</div><div className="k">{t.statViews}</div></div>
+              <div className="gstat"><div className="v grad">{t.statClipsVal}</div><div className="k">{t.statClips}</div></div>
+              <div className="gstat"><div className="v grad" data-count="57" data-prefix="+">+0</div><div className="k">{t.statCampaigns}</div></div>
+              <div className="gstat"><div className="v accent" data-count="48" data-suffix="h">0h</div><div className="k">{t.statLaunch}</div></div>
             </div>
           </div>
         </section>
 
         <CtaPanel
-          title="On audite votre contenu. Gratuitement."
-          text="20 minutes pour identifier vos meilleurs angles et vous projeter un objectif de vues chiffré. Sans engagement."
+          title={t.ctaTitle}
+          text={t.ctaText}
         />
       </main>
     </ScrollParallax>

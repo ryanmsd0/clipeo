@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import { useLocale } from "next-intl";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -72,6 +73,53 @@ export const STEPS: Step[] = [
     phLabel: "Distribution multi-comptes",
   },
 ];
+
+const STEPS_EN: Step[] = [
+  {
+    num: "01",
+    title: "We find your gold.",
+    lead: "It starts with a free audit of your long-form content. Across your videos, podcasts and lives, we hunt for the moments that can go viral, and we set the target before a single clip goes out.",
+    bullets: [
+      "We isolate the 30 seconds that can pull millions of views, where others just see an ordinary video.",
+      "We agree on a concrete view target with you, written into the contract. Not a vague promise.",
+      "We define the angles that truly land with your audience, never a clip posted at random.",
+    ],
+    img: "/img/process/etape-1.png",
+    alt: "Content audit: analyzing the viral potential of the video library",
+    ph: "linear-gradient(135deg,#eef3fc,#dbe6f8)",
+    phLabel: "Content audit",
+  },
+  {
+    num: "02",
+    title: "We multiply them.",
+    lead: "Once the angles are validated, our network of clippers moves into production. One long-form video becomes dozens of short-form clips, each edited to break through on its platform.",
+    bullets: [
+      "Cutting, editing and captions tuned to the codes of TikTok, Reels and Shorts, platform by platform.",
+      "A hook in the first 3 seconds, tight pacing, vertical format: everything is built for retention.",
+      "You sign off on the editorial line, we handle the volume. Your image stays in control, clip after clip.",
+    ],
+    img: "/img/process/etape-2.png",
+    alt: "Cutting long-form content into clips by the clippers",
+    ph: "linear-gradient(135deg,#e7eefb,#cfdcf6)",
+    phLabel: "Cutting & editing",
+  },
+  {
+    num: "03",
+    title: "We make you omnipresent.",
+    lead: "Clips ship continuously across dozens of accounts, until you own your audience's For You feed. It's the repetition that builds the brand, then drives back to your long-form content.",
+    bullets: [
+      "Always-on distribution across TikTok, Reels and Shorts, day after day, without interruption.",
+      "Every view is tracked, by clip, by platform and by angle: no spend in the dark.",
+      "At the end of the campaign, a clear report: what hit, what we cut, and where we scale next.",
+    ],
+    img: "/img/process/etape-3.png",
+    alt: "Distributing clips across dozens of multi-platform accounts",
+    ph: "linear-gradient(135deg,#dbe6f8,#bcd2f1)",
+    phLabel: "Multi-account distribution",
+  },
+];
+
+const STEPS_COPY = { fr: STEPS, en: STEPS_EN } as const;
 
 /* Serpentin symétrique : 3 lignes horizontales reliées par des
    demi-cercles parfaits (rayon = moitié de l'écart entre lignes = 220).
@@ -191,7 +239,10 @@ function Shot({ step, eager = false }: { step: Step; eager?: boolean }) {
   );
 }
 
-export default function ProcessSticky({ labelMode = false, images = true, steps = STEPS }: { labelMode?: boolean; images?: boolean; steps?: Step[] }) {
+export default function ProcessSticky({ labelMode = false, images = true, steps }: { labelMode?: boolean; images?: boolean; steps?: Step[] }) {
+  const locale = useLocale() as keyof typeof STEPS_COPY;
+  const resolvedSteps = steps ?? STEPS_COPY[locale] ?? STEPS_COPY.fr;
+  const stepWord = locale === "en" ? "Step" : "Étape";
   const wrapRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -245,16 +296,16 @@ export default function ProcessSticky({ labelMode = false, images = true, steps 
         </svg>
       </div>
 
-      {steps.map((s, i) => (
+      {resolvedSteps.map((s, i) => (
         <div key={i} className={`psl-row psl-row-${i}`}>
           {!labelMode && <span className="psl-big" aria-hidden="true">{s.num}</span>}
           <div className={`psl-item${!images || labelMode ? " psl-item-text" : ""}`}>
             {images && !labelMode && <Shot step={s} eager={i === 0} />}
             <div className="psl-text">
               {labelMode ? (
-                <span className="psl-step">Étape {i + 1}</span>
+                <span className="psl-step">{stepWord} {i + 1}</span>
               ) : (
-                <span className="psl-num">Étape {s.num}</span>
+                <span className="psl-num">{stepWord} {s.num}</span>
               )}
               <h3>{s.title}</h3>
               <p className="psl-lead">{s.lead}</p>

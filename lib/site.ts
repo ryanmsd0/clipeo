@@ -7,6 +7,24 @@ export const SITE = {
     "Clipeo construit votre omniprésence sur le format court. +620M de vues générées, modèle CPM garanti, audit gratuit et projection chiffrée avant tout engagement.",
 };
 
+/* Métadonnées localisées (titre + description) pour le SEO bilingue. */
+export const SITE_META = {
+  fr: {
+    tagline: "L'agence de clipping pour grands comptes",
+    description:
+      "Clipeo construit votre omniprésence sur le format court. +620M de vues générées, modèle CPM garanti, audit gratuit et projection chiffrée avant tout engagement.",
+  },
+  en: {
+    tagline: "The clipping agency for major brands and creators",
+    description:
+      "Clipeo builds your omnipresence on short-form video. 620M+ views generated, a guaranteed-CPM model, and a free audit with a forecasted view target before you commit.",
+  },
+} as const;
+
+export function getSiteMeta(locale: "fr" | "en") {
+  return SITE_META[locale] ?? SITE_META.fr;
+}
+
 export const NAV_LINKS = [
   { label: "Services", href: "/services" },
   { label: "Pour qui", href: "/#pour-qui" },

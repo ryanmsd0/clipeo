@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import { useLocale } from "next-intl";
 
 /* Section « 6 expertises, un seul service » — variante onglets (process v5)
    adaptée : 3 onglets à gauche · carte dynamique au centre · 3 onglets à droite. */
@@ -14,7 +15,7 @@ const ICONS: Record<string, ReactNode> = {
   track: <><path d="M4 19V5M4 19h16" /><path d="m7 15 3.5-4 3 2.5L20 7" /><path d="M20 11V7h-4" /></>,
 };
 
-const PILLARS = [
+const PILLARS_FR = [
   {
     ic: "algo", tag: "Algorithme", t: "Compréhension de l'algorithme",
     d: "On connaît les codes de chaque plateforme : fenêtres de publication, signaux de rétention, hooks, watch-time. On publie quand et comme l'algorithme récompense — pas au hasard.",
@@ -46,6 +47,41 @@ const PILLARS = [
     bullets: ["Mesure par contenu, plateforme et thème", "On coupe ce qui ne marche pas, on amplifie le reste", "Chaque vague de clips nourrit la suivante"],
   },
 ];
+
+const PILLARS_EN: typeof PILLARS_FR = [
+  {
+    ic: "algo", tag: "Algorithm", t: "Reading the algorithm",
+    d: "We know the codes of each platform: posting windows, retention signals, hooks, watch-time. We post when and how the algorithm rewards — never at random.",
+    bullets: ["Posting windows tuned to each platform", "A hook in the first 3 seconds, retention at the core of every edit", "Watch-time and engagement signals optimized"],
+  },
+  {
+    ic: "audit", tag: "Audit", t: "Audit",
+    d: "We map your content, isolate the highest-potential viral angles and set a concrete view target — before we produce the first clip.",
+    bullets: ["A full map of your existing content", "The highest-potential angles, identified", "A concrete view target, written into the contract"],
+  },
+  {
+    ic: "strategy", tag: "Strategy", t: "Strategy",
+    d: "A tailored distribution plan: formats, cadence, priority platforms, narratives. Every clip plays a precise role in the growth engine.",
+    bullets: ["Distribution plan: formats × cadence × platforms", "Narratives built for your audience", "Every clip has a role in the growth"],
+  },
+  {
+    ic: "prod", tag: "Production", t: "Production",
+    d: "A network of clippers and real editing craft: cutting, pacing and captions built for retention, in the native codes of TikTok, Reels and Shorts.",
+    bullets: ["A network of clippers, on demand", "Editing, pacing and captions built for retention", "In the native codes of each platform"],
+  },
+  {
+    ic: "distrib", tag: "Distribution", t: "Distribution",
+    d: "Multi-account distribution across dozens of accounts, multi-platform, timed to each platform's algorithm windows. Reach is never left to chance.",
+    bullets: ["Distribution across dozens of accounts", "Multi-platform, timed to the algorithm windows", "Reach you control, never at random"],
+  },
+  {
+    ic: "track", tag: "Tracking", t: "Tracking",
+    d: "We measure by content, platform and theme. We cut what doesn't work, we amplify what performs. Every wave of clips feeds the next.",
+    bullets: ["Measured by content, platform and theme", "We cut what doesn't work, we amplify the rest", "Every wave of clips feeds the next"],
+  },
+];
+
+const PILLARS_COPY = { fr: PILLARS_FR, en: PILLARS_EN } as const;
 
 const CSS = `
   .sxt-wrap{display:grid;grid-template-columns:1fr 1.46fr 1fr;gap:18px;align-items:stretch}
@@ -81,6 +117,8 @@ const CSS = `
 `;
 
 export default function ServicesPillars() {
+  const locale = useLocale() as keyof typeof PILLARS_COPY;
+  const PILLARS = PILLARS_COPY[locale] ?? PILLARS_COPY.fr;
   const [active, setActive] = useState(0);
   const p = PILLARS[active];
 

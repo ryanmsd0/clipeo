@@ -2,8 +2,9 @@
 
 import { Link } from "@/i18n/navigation";
 import { useRef, useState } from "react";
+import { useLocale } from "next-intl";
 import * as NM from "@radix-ui/react-navigation-menu";
-import { CASES } from "@/lib/cases";
+import { getCases } from "@/lib/cases";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 /* Nav avec mega-menus animés (Radix NavigationMenu) : viewport partagé qui se
@@ -15,21 +16,48 @@ type Card = { label: string; desc: string; href: string; icon?: keyof typeof ICO
 type Item = { label: string; href: string; cols?: number; colW?: number; menu?: Card[]; all?: { label: string; href: string } };
 type PostLite = { slug: string; title: string; category: string };
 
-const POURQUI: Card[] = [
-  { label: "Créateurs YouTube", desc: "Vos vidéos longues en flux de clips.", href: "/campagnes/createurs", icon: "play" },
-  { label: "Marques & grands comptes", desc: "Une présence permanente, sans équipe.", href: "/campagnes/marques", icon: "brand" },
-  { label: "Podcasts", desc: "Chaque épisode, une machine à croissance.", href: "/campagnes/podcasts", icon: "mic" },
-  { label: "Cinéma & sorties", desc: "Créez l'intention avant la sortie.", href: "/campagnes/cinema", icon: "film" },
-  { label: "Émissions & Twitch", desc: "Vos lives, découpés et partout.", href: "/campagnes/twitch", icon: "live" },
-  { label: "Événements", desc: "Le jour J, partout en temps réel.", href: "/campagnes/evenements", icon: "calendar" },
-];
-
-const CASE_CARDS: Card[] = CASES.slice(0, 6).map((c) => {
-  const name = c.client.split(",")[0].trim();
-  const ini = name.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
-  const cat = c.category.split("·")[0].trim();
-  return { label: name, desc: `${c.bigNum} de vues · ${cat}`, href: `/etudes-de-cas/${c.slug}`, ini, img: c.img };
-});
+const COPY = {
+  fr: {
+    pourqui: [
+      { label: "Créateurs YouTube", desc: "Vos vidéos longues en flux de clips.", href: "/campagnes/createurs", icon: "play" },
+      { label: "Marques & grands comptes", desc: "Une présence permanente, sans équipe.", href: "/campagnes/marques", icon: "brand" },
+      { label: "Podcasts", desc: "Chaque épisode, une machine à croissance.", href: "/campagnes/podcasts", icon: "mic" },
+      { label: "Cinéma & sorties", desc: "Créez l'intention avant la sortie.", href: "/campagnes/cinema", icon: "film" },
+      { label: "Émissions & Twitch", desc: "Vos lives, découpés et partout.", href: "/campagnes/twitch", icon: "live" },
+      { label: "Événements", desc: "Le jour J, partout en temps réel.", href: "/campagnes/evenements", icon: "calendar" },
+    ] as Card[],
+    services: "Services",
+    pourquiLabel: "Pour qui",
+    cases: "Études de cas",
+    blog: "Blog",
+    about: "À propos",
+    allCases: "Toutes les études de cas",
+    bookAudit: "Réserver un audit",
+    home: "Accueil",
+    menu: "Menu",
+    viewsSep: "de vues",
+  },
+  en: {
+    pourqui: [
+      { label: "YouTube creators", desc: "Your long-form videos turned into a stream of clips.", href: "/campagnes/createurs", icon: "play" },
+      { label: "Brands & enterprises", desc: "An always-on presence, with no team to run it.", href: "/campagnes/marques", icon: "brand" },
+      { label: "Podcasts", desc: "Every episode becomes a growth engine.", href: "/campagnes/podcasts", icon: "mic" },
+      { label: "Film & releases", desc: "Build intent before the release.", href: "/campagnes/cinema", icon: "film" },
+      { label: "Shows & Twitch", desc: "Your livestreams, cut down and everywhere.", href: "/campagnes/twitch", icon: "live" },
+      { label: "Events", desc: "On the day, everywhere, in real time.", href: "/campagnes/evenements", icon: "calendar" },
+    ] as Card[],
+    services: "Services",
+    pourquiLabel: "Who it's for",
+    cases: "Case studies",
+    blog: "Blog",
+    about: "About",
+    allCases: "All case studies",
+    bookAudit: "Book an audit",
+    home: "Home",
+    menu: "Menu",
+    viewsSep: "views",
+  },
+} as const;
 
 const ICONS = {
   layers: <><path d="M12 3 3 8l9 5 9-5-9-5Z" /><path d="m3 14 9 5 9-5" /></>,
@@ -75,20 +103,29 @@ function MegaCard({ c }: { c: Card }) {
 }
 
 export default function Nav({ posts = [] }: { posts?: PostLite[] }) {
+  const locale = useLocale() as keyof typeof COPY;
+  const t = COPY[locale] ?? COPY.fr;
   const [open, setOpen] = useState(false);
   // alignement du dropdown : coin gauche sous l'item survolé
   const [vpLeft, setVpLeft] = useState(0);
   const triggers = useRef<Record<string, HTMLButtonElement | null>>({});
 
+  const CASE_CARDS: Card[] = getCases(locale).slice(0, 6).map((c) => {
+    const name = c.client.split(",")[0].trim();
+    const ini = name.split(" ").filter(Boolean).slice(0, 2).map((w) => w[0]).join("").toUpperCase();
+    const cat = c.category.split("·")[0].trim();
+    return { label: name, desc: `${c.bigNum} ${t.viewsSep} · ${cat}`, href: `/etudes-de-cas/${c.slug}`, ini, img: c.img };
+  });
+
   const BLOG_ICON: Record<string, keyof typeof ICONS> = { "Stratégie": "compare", "Guide": "rocket", "Playbook": "mic" };
   const BLOG: Card[] = posts.slice(0, 3).map((p) => ({ label: p.title, desc: p.category, href: `/blog/${p.slug}`, icon: BLOG_ICON[p.category] ?? "doc" }));
 
   const ITEMS: Item[] = [
-    { label: "Services", href: "/services" },
-    { label: "Pour qui", href: "/#pour-qui", cols: 3, menu: POURQUI },
-    { label: "Études de cas", href: "/etudes-de-cas", cols: 3, menu: CASE_CARDS, all: { label: "Toutes les études de cas", href: "/etudes-de-cas" } },
-    ...(BLOG.length ? [{ label: "Blog", href: "/#blog", cols: 3, colW: 250, menu: BLOG } as Item] : [{ label: "Blog", href: "/#blog" } as Item]),
-    { label: "À propos", href: "/a-propos" },
+    { label: t.services, href: "/services" },
+    { label: t.pourquiLabel, href: "/#pour-qui", cols: 3, menu: t.pourqui },
+    { label: t.cases, href: "/etudes-de-cas", cols: 3, menu: CASE_CARDS, all: { label: t.allCases, href: "/etudes-de-cas" } },
+    ...(BLOG.length ? [{ label: t.blog, href: "/#blog", cols: 3, colW: 250, menu: BLOG } as Item] : [{ label: t.blog, href: "/#blog" } as Item]),
+    { label: t.about, href: "/a-propos" },
   ];
 
   return (
@@ -158,17 +195,17 @@ export default function Nav({ posts = [] }: { posts?: PostLite[] }) {
 
           <LanguageSwitcher />
           <Link href="/contact" className="nav-cta">
-            Réserver un audit
+            {t.bookAudit}
             <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H8M17 7v9" /></svg>
           </Link>
-          <button className="nav-toggle" aria-label="Menu" aria-expanded={open} onClick={() => setOpen((v) => !v)}>
+          <button className="nav-toggle" aria-label={t.menu} aria-expanded={open} onClick={() => setOpen((v) => !v)}>
             <span></span><span></span><span></span>
           </button>
         </div>
       </nav>
 
       <div className={`mobile-menu${open ? " open" : ""}`}>
-        <Link href="/" onClick={() => setOpen(false)}>Accueil</Link>
+        <Link href="/" onClick={() => setOpen(false)}>{t.home}</Link>
         {ITEMS.map((it) => (
           <div key={it.href} className="mm-group">
             <Link href={it.href} onClick={() => setOpen(false)}>{it.label}</Link>
@@ -186,7 +223,7 @@ export default function Nav({ posts = [] }: { posts?: PostLite[] }) {
           </div>
         ))}
         <Link href="/contact" className="btn btn-primary" onClick={() => setOpen(false)}>
-          <span>Réserver un audit</span>
+          <span>{t.bookAudit}</span>
         </Link>
       </div>
     </>

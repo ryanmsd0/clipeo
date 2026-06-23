@@ -1,10 +1,56 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import { useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+
+const COPY = {
+  fr: {
+    tagline1: "Un contenu long,",
+    tagline2: "100 clips viraux.",
+    cardHeading: "Le clipping, industrialisé.",
+    cardDescription: (
+      <>
+        <span style={{ color: "#fff", fontWeight: 600 }}>Clipeo</span> découpe votre
+        contenu long en dizaines de clips courts, publiés en continu sur TikTok, Shorts
+        et Reels par un réseau de clippers.
+      </>
+    ),
+    metricLabel: "vues générées",
+    bookAudit: "Réserver un audit",
+    live: "En direct",
+    views: "vues",
+    reachValue: "+620 M vues",
+    reachLabel: "Portée délivrée",
+    platformsValue: "3 plateformes",
+    platformsLabel: "Une seule prod",
+    today: "▲ +1,2 M aujourd'hui",
+  },
+  en: {
+    tagline1: "One long-form video,",
+    tagline2: "100 viral clips.",
+    cardHeading: "Clipping, industrialized.",
+    cardDescription: (
+      <>
+        <span style={{ color: "#fff", fontWeight: 600 }}>Clipeo</span> cuts your
+        long-form content into dozens of short clips, published nonstop on TikTok, Shorts
+        and Reels by a network of clippers.
+      </>
+    ),
+    metricLabel: "views generated",
+    bookAudit: "Book an audit",
+    live: "Live",
+    views: "views",
+    reachValue: "+620M views",
+    reachLabel: "Reach delivered",
+    platformsValue: "3 platforms",
+    platformsLabel: "One production",
+    today: "▲ +1.2M today",
+  },
+} as const;
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -273,21 +319,22 @@ function formatViews(n: number) {
 
 export default function CinematicHeroV6({
   brandName = "Clipeo",
-  tagline1 = "Un contenu long,",
-  tagline2 = "100 clips viraux.",
-  cardHeading = "Le clipping, industrialisé.",
-  cardDescription = (
-    <>
-      <span style={{ color: "#fff", fontWeight: 600 }}>Clipeo</span> découpe votre
-      contenu long en dizaines de clips courts, publiés en continu sur TikTok, Shorts
-      et Reels par un réseau de clippers.
-    </>
-  ),
+  tagline1,
+  tagline2,
+  cardHeading,
+  cardDescription,
   metricValue = 2_400_000,
-  metricLabel = "vues générées",
+  metricLabel,
   bookingHref = "/contact",
   showFixedCta = true,
 }: CinematicHeroV6Props) {
+  const locale = useLocale() as "fr" | "en";
+  const t = COPY[locale] ?? COPY.fr;
+  const tagline1Text = tagline1 ?? t.tagline1;
+  const tagline2Text = tagline2 ?? t.tagline2;
+  const cardHeadingText = cardHeading ?? t.cardHeading;
+  const cardDescriptionNode = cardDescription ?? t.cardDescription;
+  const metricLabelText = metricLabel ?? t.metricLabel;
   const containerRef = useRef<HTMLDivElement>(null);
   const mainCardRef = useRef<HTMLDivElement>(null);
   const mockupRef = useRef<HTMLDivElement>(null);
@@ -387,7 +434,7 @@ export default function CinematicHeroV6({
 
       {showFixedCta && (
         <Link href={bookingHref} className="ch-fixed-cta">
-          Réserver un audit
+          {t.bookAudit}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
             <path d="M7 17L17 7M17 7H8M17 7v9" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -395,8 +442,8 @@ export default function CinematicHeroV6({
       )}
 
       <div className="ch-hero-wrap">
-        <h1 className="ch-text-track ch-tag1">{tagline1}</h1>
-        <p className="ch-text-days ch-tag2">{tagline2}</p>
+        <h1 className="ch-text-track ch-tag1">{tagline1Text}</h1>
+        <p className="ch-text-days ch-tag2">{tagline2Text}</p>
       </div>
 
       <div className="ch-card-layer">
@@ -420,7 +467,7 @@ export default function CinematicHeroV6({
                     <div className="mc-glare" aria-hidden="true" />
                     <div className="mc-plat"><PlatformLogo name="instagram" /></div>
                     <div className="mc-play" />
-                    <div className="mc-views">312 K vues</div>
+                    <div className="mc-views">312 K {t.views}</div>
                   </div>
                   <div className="mc-island" aria-hidden="true" />
                 </div>
@@ -430,7 +477,7 @@ export default function CinematicHeroV6({
                     <div className="mc-glare" aria-hidden="true" />
                     <div className="mc-plat"><PlatformLogo name="youtube" /></div>
                     <div className="mc-play" />
-                    <div className="mc-views">88 K vues</div>
+                    <div className="mc-views">88 K {t.views}</div>
                   </div>
                   <div className="mc-island" aria-hidden="true" />
                 </div>
@@ -444,7 +491,7 @@ export default function CinematicHeroV6({
 
                   <div className="ch-screen">
                     <div className="ch-glare" aria-hidden="true" />
-                    <div className="ch-island ch-widget"><i /><span>En direct</span></div>
+                    <div className="ch-island ch-widget"><i /><span>{t.live}</span></div>
 
                     <div className="ch-clip" aria-hidden="true" />
                     <div className="ch-platform ch-widget"><PlatformLogo name="tiktok" /> TikTok</div>
@@ -452,7 +499,7 @@ export default function CinematicHeroV6({
                     {/* Compteur viral + sparkline */}
                     <div className="ch-viral ch-widget">
                       <div className="ch-counter"><span ref={counterRef}>0</span></div>
-                      <div className="ch-views-lab">{metricLabel}</div>
+                      <div className="ch-views-lab">{metricLabelText}</div>
                       <div className="ch-spark-wrap">
                         <svg width="128" height="34" viewBox="0 0 128 34" fill="none" aria-hidden="true">
                           <defs>
@@ -466,7 +513,7 @@ export default function CinematicHeroV6({
                           <circle className="ch-spark-dot" cx="126" cy="3" r="3" />
                         </svg>
                       </div>
-                      <div className="ch-trend">▲ +1,2 M aujourd&apos;hui</div>
+                      <div className="ch-trend">{t.today}</div>
                     </div>
 
                     <div className="ch-clip-play ch-widget" aria-hidden="true" />
@@ -488,8 +535,8 @@ export default function CinematicHeroV6({
               <div className="ch-badge ch-badge-tl">
                 <div className="ico">🔥</div>
                 <div>
-                  <p className="t">+620 M vues</p>
-                  <p className="s">Portée délivrée</p>
+                  <p className="t">{t.reachValue}</p>
+                  <p className="s">{t.reachLabel}</p>
                 </div>
               </div>
               <div className="ch-badge ch-badge-br">
@@ -499,16 +546,16 @@ export default function CinematicHeroV6({
                   <PlatformLogo name="instagram" />
                 </div>
                 <div>
-                  <p className="t">3 plateformes</p>
-                  <p className="s">Une seule prod</p>
+                  <p className="t">{t.platformsValue}</p>
+                  <p className="s">{t.platformsLabel}</p>
                 </div>
               </div>
             </div>
 
             {/* ACCROCHE */}
             <div className="ch-left ch-reveal ch-left-cell">
-              <h3>{cardHeading}</h3>
-              <p>{cardDescription}</p>
+              <h3>{cardHeadingText}</h3>
+              <p>{cardDescriptionNode}</p>
             </div>
 
           </div>

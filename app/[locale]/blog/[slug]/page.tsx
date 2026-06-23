@@ -5,13 +5,19 @@ import CtaPanel from "@/components/CtaPanel";
 import { getAllPosts, getPost } from "@/lib/posts";
 import { SITE } from "@/lib/site";
 
+const HOME_NAME = { fr: "Accueil", en: "Home" } as const;
+
 export function generateStaticParams() {
   return getAllPosts().map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
-  const post = getPost(slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const post = getPost(slug, locale);
   if (!post) return {};
   return {
     title: post.meta.title,
@@ -27,11 +33,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
-export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const post = getPost(slug);
+export default async function BlogPost({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  const post = getPost(slug, locale);
   if (!post) notFound();
   const { meta, content } = post;
+  const homeName = locale === "en" ? HOME_NAME.en : HOME_NAME.fr;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -47,7 +54,7 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Accueil", item: SITE.url },
+      { "@type": "ListItem", position: 1, name: homeName, item: SITE.url },
       { "@type": "ListItem", position: 2, name: meta.title, item: `${SITE.url}/blog/${meta.slug}` },
     ],
   };
