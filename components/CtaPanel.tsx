@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 /* CTA partagé (pages intérieures) — même design que la CTA finale de la home
    (panneau bleu, layout asymétrique + carte « ce que vous recevez »).

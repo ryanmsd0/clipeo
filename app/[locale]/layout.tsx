@@ -1,12 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
-import "./globals.css";
+import { notFound } from "next/navigation";
+import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { setRequestLocale } from "next-intl/server";
+import "../globals.css";
 import Grain from "@/components/Grain";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ScrollFX from "@/components/ScrollFX";
 import { SITE } from "@/lib/site";
 import { getAllPosts } from "@/lib/posts";
+import { routing } from "@/i18n/routing";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -14,6 +18,7 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   display: "swap",
 });
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
@@ -24,7 +29,6 @@ export const metadata: Metadata = {
   applicationName: SITE.name,
   openGraph: {
     type: "website",
-    locale: "fr_FR",
     siteName: SITE.name,
     title: `${SITE.name} · ${SITE.tagline}`,
     description: SITE.description,
@@ -35,7 +39,6 @@ export const metadata: Metadata = {
     title: `${SITE.name} · ${SITE.tagline}`,
     description: SITE.description,
   },
-  alternates: { canonical: "/" },
 };
 
 export const viewport: Viewport = {
@@ -45,16 +48,33 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export default async function LocaleLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) notFound();
+  setRequestLocale(locale);
+
   const navPosts = getAllPosts().slice(0, 4).map((p) => ({ slug: p.slug, title: p.title, category: p.category }));
+
   return (
-    <html lang="fr" className={montserrat.variable}>
+    <html lang={locale} className={montserrat.variable}>
       <body>
-        <Grain />
-        <ScrollFX />
-        <Nav posts={navPosts} />
-        {children}
-        <Footer />
+        <NextIntlClientProvider>
+          <Grain />
+          <ScrollFX />
+          <Nav posts={navPosts} />
+          {children}
+          <Footer />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

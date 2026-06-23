@@ -1,25 +1,21 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Page introuvable",
-  robots: { index: false, follow: true },
-};
-
-export default function NotFound() {
+/* 404 global (hors locale reconnue) — fournit son propre <html> car il est rendu
+   en dehors du layout [locale]. Les 404 « in-app » utilisent app/[locale]/not-found.tsx. */
+export default function GlobalNotFound() {
   return (
-    <main>
-      <section className="page-hero" style={{ minHeight: "70vh", display: "flex", alignItems: "center" }}>
-        <div className="container">
-          <span className="mono-label" style={{ display: "block", marginBottom: 18 }}>Erreur 404</span>
-          <h1>Cette page<br /><span className="grad">n&apos;existe pas.</span></h1>
-          <p>Le lien est peut-être cassé, ou la page a été déplacée. Repartons du bon contenu.</p>
-          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 30 }}>
-            <Link href="/" className="btn btn-primary"><span>Retour à l&apos;accueil</span></Link>
-            <Link href="/etudes-de-cas" className="btn"><span>Voir les études de cas</span></Link>
+    <html lang="fr">
+      <body>
+        <main style={{ minHeight: "100dvh", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "40px" }}>
+          <div>
+            <h1 style={{ fontSize: "2rem", marginBottom: "12px" }}>Page introuvable / Page not found</h1>
+            <p style={{ marginBottom: "24px", opacity: 0.7 }}>
+              Cette page n&apos;existe pas. / This page doesn&apos;t exist.
+            </p>
+            <a href="/" style={{ color: "#0a63ff", fontWeight: 700 }}>← Accueil / Home</a>
           </div>
-        </div>
-      </section>
-    </main>
+        </main>
+      </body>
+    </html>
   );
 }

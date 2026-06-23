@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { useRef, useState } from "react";
 import * as NM from "@radix-ui/react-navigation-menu";
 import { CASES } from "@/lib/cases";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 /* Nav avec mega-menus animés (Radix NavigationMenu) : viewport partagé qui se
    redimensionne en douceur d'un menu à l'autre, slide + fade + indicateur.
@@ -155,6 +156,7 @@ export default function Nav({ posts = [] }: { posts?: PostLite[] }) {
             </div>
           </NM.Root>
 
+          <LanguageSwitcher />
           <Link href="/contact" className="nav-cta">
             Réserver un audit
             <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H8M17 7v9" /></svg>
