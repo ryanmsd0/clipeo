@@ -3,13 +3,33 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { SITE } from "@/lib/site";
 
-export const alt = `${SITE.name} · agence de clipping · réservez un audit gratuit`;
+export const alt = `${SITE.name} · clipping agency · book a free audit`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 const font = (w: string) => readFile(join(process.cwd(), `assets/fonts/montserrat-${w}.ttf`));
 
-export default async function OgImage() {
+const COPY = {
+  fr: {
+    badge: "Agence de clipping",
+    line1: "Votre contenu long,",
+    line2: "des millions de vues.",
+    proof: "+620 M de vues générées · CPM garanti au contrat · audit gratuit",
+    cta: "Réserver un audit gratuit",
+  },
+  en: {
+    badge: "Clipping agency",
+    line1: "Your long-form content,",
+    line2: "millions of views.",
+    proof: "620M+ views generated · guaranteed CPM · free audit",
+    cta: "Book a free audit",
+  },
+} as const;
+
+export default async function OgImage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = COPY[(locale === "en" ? "en" : "fr") as keyof typeof COPY];
+
   const [logoBuf, m400, m700, m800] = await Promise.all([
     readFile(join(process.cwd(), "public/img/logo-mark-white.png")),
     font("400"),
@@ -61,18 +81,18 @@ export default async function OgImage() {
               color: "rgba(255,255,255,0.92)",
             }}
           >
-            Agence de clipping
+            {t.badge}
           </div>
         </div>
 
         {/* Accroche + preuve */}
         <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
           <div style={{ display: "flex", flexDirection: "column", fontSize: 78, fontWeight: 800, lineHeight: 1.03, letterSpacing: -2.5 }}>
-            <div style={{ display: "flex" }}>Votre contenu long,</div>
-            <div style={{ display: "flex", color: "#9bd0ff" }}>des millions de vues.</div>
+            <div style={{ display: "flex" }}>{t.line1}</div>
+            <div style={{ display: "flex", color: "#9bd0ff" }}>{t.line2}</div>
           </div>
           <div style={{ display: "flex", fontSize: 29, fontWeight: 400, color: "rgba(255,255,255,0.74)" }}>
-            +620 M de vues générées · CPM garanti au contrat · audit gratuit
+            {t.proof}
           </div>
         </div>
 
@@ -91,7 +111,7 @@ export default async function OgImage() {
               fontWeight: 700,
             }}
           >
-            Réserver un audit gratuit
+            {t.cta}
             <div
               style={{
                 display: "flex",
