@@ -1,15 +1,14 @@
 import { ImageResponse } from "next/og";
-import { readFile } from "node:fs/promises";
-import { join } from "node:path";
 import { SITE } from "@/lib/site";
+import { LOGO_WHITE_B64, FONT_400_B64, FONT_700_B64, FONT_800_B64 } from "@/lib/og-assets";
 
 export const alt = `${SITE.name} · clipping agency · book a free audit`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-/* Chemins STATIQUES littéraux : nécessaires pour que le bundler Vercel trace et
-   inclue ces fichiers dans la fonction serverless (un chemin dynamique casse en prod).
-   Le logo est lu depuis assets/ (et non public/, non bundlé sur Vercel). */
+/* Assets inlinés en base64 (lib/og-assets) : aucune lecture fs, donc fiable sur
+   Vercel serverless (process.cwd non tracé, new URL(import.meta.url) non lisible). */
+const b64 = (s: string) => Buffer.from(s, "base64");
 
 const COPY = {
   fr: {
@@ -32,13 +31,7 @@ export default async function OgImage({ params }: { params: Promise<{ locale: st
   const { locale } = await params;
   const t = COPY[(locale === "en" ? "en" : "fr") as keyof typeof COPY];
 
-  const [logoBuf, m400, m700, m800] = await Promise.all([
-    readFile(join(process.cwd(), "assets/logo-mark-white.png")),
-    readFile(join(process.cwd(), "assets/fonts/montserrat-400.ttf")),
-    readFile(join(process.cwd(), "assets/fonts/montserrat-700.ttf")),
-    readFile(join(process.cwd(), "assets/fonts/montserrat-800.ttf")),
-  ]);
-  const logoSrc = `data:image/png;base64,${logoBuf.toString("base64")}`;
+  const logoSrc = `data:image/png;base64,${LOGO_WHITE_B64}`;
   const domain = SITE.url.replace(/^https?:\/\/(www\.)?/, "");
 
   return new ImageResponse(
@@ -137,9 +130,9 @@ export default async function OgImage({ params }: { params: Promise<{ locale: st
     {
       ...size,
       fonts: [
-        { name: "Montserrat", data: m400, weight: 400, style: "normal" },
-        { name: "Montserrat", data: m700, weight: 700, style: "normal" },
-        { name: "Montserrat", data: m800, weight: 800, style: "normal" },
+        { name: "Montserrat", data: b64(FONT_400_B64), weight: 400, style: "normal" },
+        { name: "Montserrat", data: b64(FONT_700_B64), weight: 700, style: "normal" },
+        { name: "Montserrat", data: b64(FONT_800_B64), weight: 800, style: "normal" },
       ],
     },
   );
