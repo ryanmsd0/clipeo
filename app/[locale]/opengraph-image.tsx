@@ -7,7 +7,9 @@ export const alt = `${SITE.name} · clipping agency · book a free audit`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const font = (w: string) => readFile(join(process.cwd(), `assets/fonts/montserrat-${w}.ttf`));
+/* Chemins STATIQUES littéraux : nécessaires pour que le bundler Vercel trace et
+   inclue ces fichiers dans la fonction serverless (un chemin dynamique casse en prod).
+   Le logo est lu depuis assets/ (et non public/, non bundlé sur Vercel). */
 
 const COPY = {
   fr: {
@@ -31,10 +33,10 @@ export default async function OgImage({ params }: { params: Promise<{ locale: st
   const t = COPY[(locale === "en" ? "en" : "fr") as keyof typeof COPY];
 
   const [logoBuf, m400, m700, m800] = await Promise.all([
-    readFile(join(process.cwd(), "public/img/logo-mark-white.png")),
-    font("400"),
-    font("700"),
-    font("800"),
+    readFile(join(process.cwd(), "assets/logo-mark-white.png")),
+    readFile(join(process.cwd(), "assets/fonts/montserrat-400.ttf")),
+    readFile(join(process.cwd(), "assets/fonts/montserrat-700.ttf")),
+    readFile(join(process.cwd(), "assets/fonts/montserrat-800.ttf")),
   ]);
   const logoSrc = `data:image/png;base64,${logoBuf.toString("base64")}`;
   const domain = SITE.url.replace(/^https?:\/\/(www\.)?/, "");
