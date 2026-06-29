@@ -101,7 +101,6 @@ const CSS = `
   .sxt-card{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--w14);
     background:radial-gradient(700px 360px at 82% -20%,rgba(10,99,255,.1),transparent 60%),linear-gradient(180deg,#f7faff,#eef4fe);
     padding:40px 42px;display:flex;flex-direction:column;justify-content:center;height:460px;overflow:hidden}
-  .sxt-card .ic-big{position:absolute;top:26px;right:30px;width:122px;height:122px;stroke:rgba(10,99,255,.1);fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
   .sxt-in{animation:sxtIn .5s cubic-bezier(.32,.72,0,1)}
   @keyframes sxtIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
   .sxt-card .tag{font-family:var(--font-m);font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--royal);display:block;margin-bottom:11px}
@@ -148,7 +147,6 @@ export default function ServicesPillars() {
       <div className="sxt-col">{[0, 1, 2].map(renderTab)}</div>
 
       <div className="sxt-card">
-        <svg className="ic-big" viewBox="0 0 24 24" aria-hidden="true">{ICONS[p.ic]}</svg>
         <div className="sxt-in" key={active}>
           <span className="tag">{p.tag}</span>
           <h3>{p.t}</h3>
