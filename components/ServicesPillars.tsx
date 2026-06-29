@@ -1,18 +1,20 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { useLocale } from "next-intl";
+import { Radar, ScanSearch, Target, Scissors, Share2, TrendingUp, type LucideIcon } from "lucide-react";
 
 /* Section « 6 expertises, un seul service » — variante onglets (process v5)
-   adaptée : 3 onglets à gauche · carte dynamique au centre · 3 onglets à droite. */
+   adaptée : 3 onglets à gauche · carte dynamique au centre · 3 onglets à droite.
+   Icônes : lucide-react (vraies icônes, pas du SVG custom). */
 
-const ICONS: Record<string, ReactNode> = {
-  algo: <><circle cx="12" cy="12" r="2.4" /><path d="M5 8a8 8 0 0 0 0 8M19 8a8 8 0 0 1 0 8M8.5 10.5a4 4 0 0 0 0 3M15.5 10.5a4 4 0 0 1 0 3" /></>,
-  audit: <><circle cx="11" cy="11" r="6.5" /><path d="m20 20-3.6-3.6M11 8v6M8 11h6" /></>,
-  strategy: <><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="4.6" /><circle cx="12" cy="12" r="1" /><path d="M12 1v3M12 20v3M1 12h3M20 12h3" /></>,
-  prod: <><circle cx="6" cy="6" r="2.6" /><circle cx="6" cy="18" r="2.6" /><path d="M20 4 8.4 15.6M14.4 14.4 20 20M8.4 8.4 12 12" /></>,
-  distrib: <><circle cx="6" cy="12" r="2.6" /><circle cx="18" cy="6" r="2.6" /><circle cx="18" cy="18" r="2.6" /><path d="M8.3 10.8 15.7 7.2M8.3 13.2l7.4 3.6" /></>,
-  track: <><path d="M4 19V5M4 19h16" /><path d="m7 15 3.5-4 3 2.5L20 7" /><path d="M20 11V7h-4" /></>,
+const ICONS: Record<string, LucideIcon> = {
+  algo: Radar,
+  audit: ScanSearch,
+  strategy: Target,
+  prod: Scissors,
+  distrib: Share2,
+  track: TrendingUp,
 };
 
 const PILLARS_FR = [
@@ -126,6 +128,7 @@ export default function ServicesPillars() {
 
   const renderTab = (i: number) => {
     const t = PILLARS[i];
+    const Ic = ICONS[t.ic];
     return (
       <button
         key={t.t}
@@ -134,7 +137,7 @@ export default function ServicesPillars() {
         onClick={() => setActive(i)}
         aria-pressed={i === active}
       >
-        <span className="ic"><svg viewBox="0 0 24 24">{ICONS[t.ic]}</svg></span>
+        <span className="ic"><Ic /></span>
         <span className="tt">{t.t}</span>
       </button>
     );
