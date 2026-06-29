@@ -18,8 +18,8 @@ const ICONS: Record<string, ReactNode> = {
 const PILLARS_FR = [
   {
     ic: "algo", tag: "Algorithme", t: "Compréhension de l'algorithme",
-    d: "On connaît les codes de chaque plateforme : fenêtres de publication, signaux de rétention, hooks, watch-time. On publie quand et comme l'algorithme récompense — pas au hasard.",
-    bullets: ["Fenêtres de publication calées sur chaque réseau", "Hook < 3 s et rétention au cœur de chaque montage", "Watch-time et signaux d'engagement optimisés"],
+    d: "On connaît les codes de chaque plateforme — fenêtres de publication, rétention, hooks, watch-time — et on publie quand l'algorithme récompense.",
+    bullets: ["Fenêtres de publication calées par réseau", "Hook < 3 s, rétention au cœur du montage", "Watch-time et engagement optimisés"],
   },
   {
     ic: "audit", tag: "Audit", t: "Audit",
@@ -51,8 +51,8 @@ const PILLARS_FR = [
 const PILLARS_EN: typeof PILLARS_FR = [
   {
     ic: "algo", tag: "Algorithm", t: "Reading the algorithm",
-    d: "We know the codes of each platform: posting windows, retention signals, hooks, watch-time. We post when and how the algorithm rewards — never at random.",
-    bullets: ["Posting windows tuned to each platform", "A hook in the first 3 seconds, retention at the core of every edit", "Watch-time and engagement signals optimized"],
+    d: "We know the codes of each platform — posting windows, retention signals, hooks, watch-time — and we post when the algorithm rewards.",
+    bullets: ["Posting windows tuned to each platform", "A 3-second hook, retention at the core", "Watch-time and engagement signals optimized"],
   },
   {
     ic: "audit", tag: "Audit", t: "Audit",
@@ -86,7 +86,7 @@ const PILLARS_COPY = { fr: PILLARS_FR, en: PILLARS_EN } as const;
 const CSS = `
   .sxt-wrap{display:grid;grid-template-columns:1fr 1.46fr 1fr;gap:18px;align-items:stretch}
   .sxt-col{display:flex;flex-direction:column;gap:14px;justify-content:center}
-  .sxt-tab{display:flex;align-items:center;gap:14px;text-align:left;width:100%;padding:17px 18px;border-radius:16px;cursor:pointer;
+  .sxt-tab{flex:1;display:flex;align-items:center;gap:14px;text-align:left;width:100%;padding:17px 18px;border-radius:16px;cursor:pointer;
     background:var(--glass);border:1px solid var(--w08);transition:background .35s,border-color .35s,transform .35s cubic-bezier(.32,.72,0,1),box-shadow .35s}
   .sxt-tab:hover{transform:translateY(-2px)}
   .sxt-tab.on{background:linear-gradient(180deg,rgba(10,99,255,.1),rgba(10,99,255,.03));border-color:rgba(10,99,255,.3);box-shadow:0 14px 30px -18px rgba(10,99,255,.5)}
@@ -98,7 +98,7 @@ const CSS = `
 
   .sxt-card{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--w14);
     background:radial-gradient(700px 360px at 82% -20%,rgba(10,99,255,.1),transparent 60%),linear-gradient(180deg,#f7faff,#eef4fe);
-    padding:40px 42px;display:flex;flex-direction:column;justify-content:center;min-height:360px}
+    padding:40px 42px;display:flex;flex-direction:column;justify-content:center;height:460px;overflow:hidden}
   .sxt-card .ic-big{position:absolute;top:26px;right:30px;width:122px;height:122px;stroke:rgba(10,99,255,.1);fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
   .sxt-in{animation:sxtIn .5s cubic-bezier(.32,.72,0,1)}
   @keyframes sxtIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
@@ -112,7 +112,8 @@ const CSS = `
   @media(max-width:900px){
     .sxt-wrap{grid-template-columns:1fr;gap:14px}
     .sxt-col{justify-content:flex-start}
-    .sxt-card{order:3;min-height:0}
+    .sxt-tab{flex:initial}
+    .sxt-card{order:3;height:auto;overflow:visible}
   }
 `;
 
