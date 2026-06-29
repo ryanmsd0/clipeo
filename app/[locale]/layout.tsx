@@ -83,7 +83,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={montserrat.variable}>
-      <body>
+      <body className="pal-live">
         <NextIntlClientProvider>
           <Grain />
           <ScrollFX />

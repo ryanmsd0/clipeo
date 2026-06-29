@@ -235,12 +235,53 @@ const COPY = {
   },
 } as const;
 
+/* Par univers : la liste des covers (clients réels) qui DÉFILENT au survol
+   (seule l'image bouge) + le TOTAL vues/clips de la catégorie, affiché FIXE.
+   `views`/`clips` = SOMME RÉELLE des stats de tous les clients de la catégorie
+   (chiffres dashboard Clipeo, cf. [[stats-reelles-clipeo]] ; budgets € = internes,
+   jamais affichés). Catégories à 1 cover : pas de défilement. */
+const WHO_EXAMPLES: Record<string, { covers: string[]; views: string; clips: string }> = {
+  // 17 créateurs YouTube — covers triées par vues décroissantes ; total = somme réelle
+  createurs: { covers: ["Charles_et_Melanie", "Antoine", "La_Compagnie", "Joyca", "Mister_V", "Michou", "FastGoodCuisine", "Inoxtag", "Daetienne", "ImSolal", "Flamby", "Max_Laulom", "Ben_Nevert", "Misha_et_Alex", "Cossi", "Simon_Puech", "Le_Corbz"], views: "+491,6 M", clips: "5 404" },
+  // Marine Nationale comptée ×2 (consigne Ryan) + LEGO
+  marques: { covers: ["La_Marine_Nationale", "RAAPACE_x_Le_Portrait_LEGO"], views: "+7,5 M", clips: "245" },
+  podcasts: { covers: ["Kyan_Khojandi"], views: "+23,1 M", clips: "144" },
+  cinema: { covers: ["Film_Plus_Fort_que_Moi"], views: "+44 M", clips: "358" },
+  twitch: { covers: ["Zebro_et_Leow"], views: "+20,2 M", clips: "210" },
+  evenements: { covers: ["Crunch_Creator"], views: "+39 M", clips: "292" },
+};
+const coverPath = (c: string) => `/img/Clipeo%20covers%20campagnes/${c}.png`;
+
 export default function HomeSections() {
   const locale = useLocale() as "fr" | "en";
   const t = COPY[locale] ?? COPY.fr;
   const rootRef = useRef<HTMLDivElement>(null);
   // « Pour qui » sur mobile : accordéon (clic = déroule la carte client)
   const [openWho, setOpenWho] = useState<string | null>(null);
+
+  // Mobile : quand un accordéon est ouvert, la cover défile à travers les
+  // clients de la catégorie (équivalent tactile du défilement au survol desktop).
+  // Les stats restent le TOTAL fixe de la catégorie.
+  useEffect(() => {
+    if (openWho == null) return;
+    const root = rootRef.current;
+    const item = root?.querySelector<HTMLElement>(".who-item.open");
+    const row = item?.querySelector<HTMLElement>(".who-row");
+    const img = item?.querySelector<HTMLImageElement>(".who-drop-in img");
+    const dropIn = item?.querySelector<HTMLElement>(".who-drop-in");
+    if (!row || !img || !dropIn) return;
+    const covers = (WHO_EXAMPLES[row.dataset.campaign || ""]?.covers ?? []).map(coverPath);
+    if (covers.length <= 1) return;
+    let i = 0;
+    img.src = covers[0]; // repart de la cover principale à chaque ouverture
+    const timer = window.setInterval(() => {
+      i = (i + 1) % covers.length;
+      dropIn.classList.add("wd-swap");
+      img.src = covers[i];
+      window.setTimeout(() => dropIn.classList.remove("wd-swap"), 80);
+    }, 1500);
+    return () => { window.clearInterval(timer); dropIn.classList.remove("wd-swap"); };
+  }, [openWho]);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -282,6 +323,7 @@ export default function HomeSections() {
       const followClips = follow.querySelector(".who-follow-clips") as HTMLElement | null;
       const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0, active = false, onButton = false;
+      let cycleTimer = 0; // défilement des exemples au survol d'une case
       let currentBtn: HTMLElement | null = null;
 
       const render = () => {
@@ -302,7 +344,10 @@ export default function HomeSections() {
       const REACH_X = 100, REACH_Y = 45;
       const section = whoList.closest("section");
       const sync = () => {
+        // sur une case loin du bouton : cover visible + curseur masqué.
+        // près du bouton « Voir les campagnes » : cover cachée + curseur réaffiché.
         follow.classList.toggle("on", active && !onButton);
+        whoList.classList.toggle("cursor-shown", active && onButton);
       };
       const onMove = (e: MouseEvent) => {
         tx = e.clientX; ty = e.clientY;
@@ -333,6 +378,7 @@ export default function HomeSections() {
         active = false;
         onButton = false;
         currentBtn = null;
+        if (cycleTimer) { clearInterval(cycleTimer); cycleTimer = 0; }
         sync();
       };
       const rows = Array.from(whoList.querySelectorAll<HTMLElement>(".who-row"));
@@ -340,10 +386,30 @@ export default function HomeSections() {
         const btn = rowEl.querySelector<HTMLElement>(".view");
         const h = () => {
           currentBtn = btn;
-          const cover = rowEl.dataset.cover;
-          if (cover && followImg && followImg.getAttribute("src") !== cover) followImg.src = cover;
-          if (followViews) followViews.textContent = rowEl.dataset.views || "";
-          if (followClips) followClips.textContent = rowEl.dataset.clips || "";
+          if (cycleTimer) { clearInterval(cycleTimer); cycleTimer = 0; }
+          const data = WHO_EXAMPLES[rowEl.dataset.campaign || ""];
+          // Stats = TOTAL de la catégorie, affiché FIXE (ne change pas pendant le défilement).
+          if (followViews) followViews.textContent = data ? data.views : (rowEl.dataset.views || "");
+          if (followClips) followClips.textContent = data ? data.clips : (rowEl.dataset.clips || "");
+          const covers = (data?.covers ?? []).map(coverPath);
+          if (!covers.length) {
+            const cover = rowEl.dataset.cover;
+            if (cover && followImg && followImg.getAttribute("src") !== cover) followImg.src = cover;
+            return;
+          }
+          // Seule la COVER défile (toutes les ~1,5 s, avec un léger fondu).
+          const showCover = (src: string) => {
+            if (followImg && followImg.getAttribute("src") !== src) {
+              follow.classList.add("wf-swap");
+              followImg.src = src;
+              window.setTimeout(() => follow.classList.remove("wf-swap"), 70);
+            }
+          };
+          let i = 0;
+          showCover(covers[0]);
+          if (covers.length > 1) {
+            cycleTimer = window.setInterval(() => { i = (i + 1) % covers.length; showCover(covers[i]); }, 1500);
+          }
         };
         rowEl.addEventListener("mouseenter", h);
         return () => rowEl.removeEventListener("mouseenter", h);
@@ -360,6 +426,7 @@ export default function HomeSections() {
         leaveZone.removeEventListener("mouseleave", onLeave);
         rowHandlers.forEach((c) => c());
         if (raf) cancelAnimationFrame(raf);
+        if (cycleTimer) clearInterval(cycleTimer);
       });
     }
 
@@ -407,7 +474,7 @@ export default function HomeSections() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section className="sec" id="comment">
+      <section className="sec" id="comment" style={{ paddingBottom: 40 }}>
         <div className="container">
           <div className="sec-head reveal">
             <h2>{t.omni.h1}<br /><span className="grad">{t.omni.h2}</span></h2>
@@ -457,7 +524,7 @@ export default function HomeSections() {
       </section>
 
       {/* PRICING — LE MODÈLE CPM GARANTI */}
-      <section className="sec" id="tarification">
+      <section className="sec" id="tarification" style={{ paddingTop: 40 }}>
         <div className="container">
           <div className="sec-head reveal">
             <h2>{t.pricing.h1}<br />{t.pricing.h2}</h2>
@@ -507,9 +574,20 @@ export default function HomeSections() {
               const cover = `/img/Clipeo%20covers%20campagnes/${w.cover}.png`;
               const caseHref = w.caseSlug ? `/etudes-de-cas/${w.caseSlug}` : "/etudes-de-cas";
               const campaignHref = `/campagnes/${w.campaign}`;
+              // total catégorie (cohérent desktop hover ⇄ mobile accordéon)
+              const ex = WHO_EXAMPLES[w.campaign];
+              const totViews = ex?.views ?? w.views;
+              const totClips = ex?.clips ?? w.clips;
               return (
                 <div className={`who-item${open ? " open" : ""}`} key={w.ix}>
-                  <div className="who-row" data-cover={cover} data-client={w.client} data-views={w.views} data-clips={w.clips}>
+                  <div
+                    className="who-row"
+                    data-cover={cover}
+                    data-client={w.client}
+                    data-views={w.views}
+                    data-clips={w.clips}
+                    data-campaign={w.campaign}
+                  >
                     {/* Clic sur la ligne / la cover → étude de cas du créateur affiché */}
                     <Link
                       href={caseHref}
@@ -528,17 +606,24 @@ export default function HomeSections() {
                     </Link>
                     {/* Bouton → toutes les campagnes de cette catégorie */}
                     <Link href={campaignHref} className="view">{t.who.viewCampaigns} <ArrowR /></Link>
-                    <span className="who-caret" aria-hidden="true">
+                    {/* Mobile : chevron cliquable qui déroule l'aperçu (cover + stats) */}
+                    <button
+                      type="button"
+                      className="who-caret"
+                      aria-label={open ? "Réduire l'aperçu" : "Voir l'aperçu"}
+                      aria-expanded={open}
+                      onClick={() => setOpenWho(open ? null : w.ix)}
+                    >
                       <svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" /></svg>
-                    </span>
+                    </button>
                   </div>
                   <div className="who-drop">
                     <Link href={caseHref} className="who-drop-in">
                       {/* eslint-disable-next-line @next/next/no-img-element -- chemin avec espaces, hover lazy */}
                       <img src={cover} alt={w.client} loading="lazy" width={320} height={180} />
                       <div className="who-drop-stats">
-                        <span><b>{w.views}</b><i>{t.who.views}</i></span>
-                        <span><b>{w.clips}</b><i>{t.who.clips}</i></span>
+                        <span><b>{totViews}</b><i>{t.who.views}</i></span>
+                        <span><b>{totClips}</b><i>{t.who.clips}</i></span>
                       </div>
                     </Link>
                   </div>

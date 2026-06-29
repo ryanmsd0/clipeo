@@ -184,8 +184,8 @@ const CSS = `
     .psl-big{display:block;position:absolute;top:0;transform:translateY(-50%);
       font-family:var(--font-d);font-weight:800;font-size:clamp(7rem,15vw,13rem);line-height:.9;
       letter-spacing:-.04em;color:rgba(10,99,255,.14);z-index:0;pointer-events:none;user-select:none}
-    .psl-row-0 .psl-big,.psl-row-2 .psl-big{right:4%}
-    .psl-row-1 .psl-big{left:4%}
+    .psl-row-0 .psl-big,.psl-row-2 .psl-big{right:8%}
+    .psl-row-1 .psl-big{left:8%}
   }
   /* ── MOBILE : carrousel horizontal (swipe) au lieu du serpentin ── */
   @media(max-width:899px){

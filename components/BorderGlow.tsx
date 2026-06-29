@@ -160,6 +160,12 @@ const CSS = `
     0 0 50px 2px var(--glow-color-10);
 }
 
+/* tactile : pas de curseur → le halo externe ne s'active jamais.
+   On le retire pour éviter un débordement horizontal invisible (~18px/côté). */
+@media (hover: none) {
+  .border-glow-card > .edge-light { display: none; }
+}
+
 .border-glow-inner {
   display: flex;
   flex-direction: column;

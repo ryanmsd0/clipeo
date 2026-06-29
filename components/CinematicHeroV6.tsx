@@ -96,7 +96,7 @@ function PlatformLogo({ name, className }: { name: "tiktok" | "youtube" | "insta
 
 const INJECTED_STYLES = `
   .ch-root{
-    position:relative;width:100vw;height:100vh;overflow:hidden;
+    position:relative;width:100%;height:100vh;height:100svh;overflow:hidden;
     display:flex;align-items:center;justify-content:center;
     background:#ffffff;color:${C.ink};
     font-family:var(--font-montserrat),'Montserrat',sans-serif;
@@ -134,7 +134,7 @@ const INJECTED_STYLES = `
   .ch-hero-wrap{
     position:absolute;z-index:10;display:flex;flex-direction:column;
     align-items:center;justify-content:center;text-align:center;
-    width:100vw;padding:0 16px;will-change:transform;transform-style:preserve-3d;
+    width:100%;padding:0 16px;will-change:transform;transform-style:preserve-3d;
   }
   .ch-tag1{
     font-size:clamp(2.6rem,8vw,6rem);font-weight:800;letter-spacing:-.02em;margin-bottom:.25rem;

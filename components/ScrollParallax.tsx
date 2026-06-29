@@ -17,7 +17,10 @@ export default function ScrollParallax({ children }: { children: React.ReactNode
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      // Parallax = effet de profondeur desktop uniquement. Sous 901px les heros
+      // passent en 1 colonne : le décalage ferait chevaucher le téléphone/badges
+      // sur le texte → on le désactive, les éléments restent fixes.
+      mm.add("(min-width: 901px) and (prefers-reduced-motion: no-preference)", () => {
         gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((el) => {
           const speed = parseFloat(el.dataset.parallax || "0.25");
           gsap.to(el, {

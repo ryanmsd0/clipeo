@@ -14,6 +14,7 @@ export type PostMeta = {
   author: string;
   readingTime: string;
   keywords?: string;
+  takeaways?: string[]; // « À retenir » — points clés en tête d'article
 };
 
 function blogDir(locale: string): string {
