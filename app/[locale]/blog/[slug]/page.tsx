@@ -118,7 +118,10 @@ export default async function BlogPost({ params }: { params: Promise<{ locale: s
           <h1>{meta.title}</h1>
           <p className="art-deck">{meta.excerpt}</p>
           <div className="art-meta">
-            <span className="art-av" aria-hidden="true">C</span>
+            <span className="art-av" aria-hidden="true">
+              {/* eslint-disable-next-line @next/next/no-img-element -- petit logo-mark (œil Clipeo) décoratif */}
+              <img src="/img/logo-mark-white.png" alt="" />
+            </span>
             <span>
               <b>{meta.author}</b>
               <i>{dateFmt} · {meta.readingTime}</i>

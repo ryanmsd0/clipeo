@@ -842,6 +842,15 @@ section{position:relative}
     linear-gradient(158deg,#141082 0%,#0c0760 46%,#080151 100%);
 }
 .pal-live .cta2-btn .a{background:rgba(85,164,209,.18)}
+/* Mêmes panneaux bleus → couleur1 : « Notre conviction » (/à-propos) +
+   « Ce qu'on optimise » (/services). Défaut = ancien bleu royal, réversible. */
+.pal-live .ap-manifesto{
+  background:
+    radial-gradient(900px 520px at 86% -15%, rgba(85,164,209,.40), transparent 60%),
+    radial-gradient(720px 600px at 0% 122%, rgba(8,1,81,.6), transparent 55%),
+    linear-gradient(158deg,#141082 0%,#0c0760 46%,#080151 100%);
+}
+.pal-live .sx-panel{background:linear-gradient(168deg,#141082 0%,#0c0760 48%,#080151 100%)}
 
 /* ═══════════════════════════════════════════════════════════════════
    PAGE ARTICLE BLOG — expérience de lecture premium (barre de progression,
@@ -865,6 +874,7 @@ html{scroll-behavior:smooth}
 .art-meta{display:inline-flex;align-items:center;gap:13px;text-align:left}
 .art-av{width:42px;height:42px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;
   font-family:var(--font-d);font-weight:800;font-size:1.05rem;color:#fff;background:linear-gradient(150deg,var(--sky),#080151)}
+.art-av img{width:24px;height:24px;object-fit:contain}
 .art-meta b{font-family:var(--font-d);font-weight:700;font-size:.92rem;color:var(--ink);display:block;line-height:1.2}
 .art-meta i{font-family:var(--font-m);font-size:.68rem;letter-spacing:.5px;color:var(--w40);font-style:normal}
 
