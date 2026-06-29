@@ -94,6 +94,8 @@ const CSS = `
     background:#fff;border:1px solid var(--w14);color:var(--w40);transition:.35s}
   .sxt-tab .ic svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
   .sxt-tab.on .ic{background:linear-gradient(180deg,var(--sky),var(--sky-bright));color:#fff;border-color:transparent}
+  /* Couleur1 : éviter le bandeau sky clair trop tranché en haut → dégradé navy doux */
+  .pal-live .sxt-tab.on .ic{background:linear-gradient(155deg,#3a63b5,#080151)}
   .sxt-tab .tt{font-family:var(--font-d);font-weight:700;font-size:.98rem;color:var(--ink);line-height:1.18;letter-spacing:-.01em}
 
   .sxt-card{position:relative;overflow:hidden;border-radius:22px;border:1px solid var(--w14);
