@@ -7,12 +7,14 @@ import { Check, ArrowR } from "@/components/Icons";
 import { PlatformTile } from "@/components/BrandLogo";
 import { getCampaignTypes, type CampaignType as CT, type Locale } from "@/lib/campaigns";
 import { getCase } from "@/lib/cases";
+import { UNIVERS_EXAMPLES, coverPath, coverLabel } from "@/lib/univers";
 
 const COPY = {
   fr: {
     bookAudit: "Réserver un audit gratuit",
     seeCases: "Voir les études de cas",
     mechLabel: "Le mécanisme",
+    clientsLabel: "Ils nous font confiance",
     flowLabel: "Le déroulé",
     flowTitle: <>De l&apos;audit à la <span className="grad">croissance.</span></>,
     faqTitle: "Questions fréquentes.",
@@ -26,6 +28,7 @@ const COPY = {
     bookAudit: "Book a free audit",
     seeCases: "See the case studies",
     mechLabel: "The mechanism",
+    clientsLabel: "They trust us",
     flowLabel: "The process",
     flowTitle: <>From audit to <span className="grad">growth.</span></>,
     faqTitle: "Frequent questions.",
@@ -139,6 +142,18 @@ const STYLES = `
     .ct-proof{grid-template-columns:1fr;gap:24px;text-align:left}
   }
   @media(max-width:520px){.ct-flow{grid-template-columns:1fr}.ct-chip{display:none}}
+
+  /* Clients de l'univers (covers de campagne) — bandeau défilant (≥4) ou rangée centrée */
+  .uc-label{display:block;text-align:center;margin-bottom:26px}
+  .uc-marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+  .uc-track{display:inline-flex;animation:ucScroll 64s linear infinite}
+  .uc-marquee:hover .uc-track{animation-play-state:paused}
+  @keyframes ucScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  .uc-row{display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+  .uc-card{flex:none;display:block;width:300px;aspect-ratio:16/9;object-fit:cover;border-radius:16px;border:1px solid var(--w14);background:var(--navy-850);box-shadow:0 22px 46px -28px rgba(10,40,120,.42)}
+  .uc-track .uc-card{margin:0 9px}
+  @media(prefers-reduced-motion:reduce){.uc-track{animation:none}}
+  @media(max-width:680px){.uc-card{width:230px;border-radius:13px}}
 `;
 
 /* icône + accroche courte par univers (section « On adresse aussi… ») */
@@ -176,6 +191,9 @@ export default async function CampaignType({ data }: { data: CT }) {
   const others = getCampaignTypes(locale).filter((c) => c.slug !== data.slug).slice(0, 4);
   const hs = data.heroStat;
   const pp = getCase(data.caseSlug)?.img; // photo de profil = créateur de l'étude de cas liée
+  // Clients réels de cet univers (covers de campagne). Défilant si ≥ 4, sinon rangée centrée.
+  const covers = UNIVERS_EXAMPLES[data.slug]?.covers ?? [];
+  const scrollCovers = covers.length >= 4;
 
   return (
     <ScrollParallax>
@@ -198,18 +216,19 @@ export default async function CampaignType({ data }: { data: CT }) {
                 </div>
               </div>
               <div className="ct-visual" aria-hidden="true">
-                <div className="ct-phone" data-parallax="0.12">
+                {/* Téléphone + badges STATIQUES (pas de parallax) → ne bougent pas au scroll */}
+                <div className="ct-phone">
                   <div className="ct-phone-screen"><div className="play" /></div>
                   <img className="ct-phone-img" src="/img/apple-iphone-15-pro-max-2023-medium_copy.png" alt="" />
                 </div>
-                <div className="ct-stat" data-parallax="0.34">
+                <div className="ct-stat">
                   <div className="v" {...(hs.count != null ? { "data-count": String(hs.count), "data-dec": String(hs.dec ?? 0), "data-prefix": hs.prefix ?? "", "data-suffix": hs.suffix ?? "" } : {})}>
                     {hs.count != null ? `${hs.prefix ?? ""}0${hs.suffix ?? ""}` : hs.v}
                   </div>
                   <div className="k">{hs.k}</div>
                 </div>
                 {data.floats.slice(0, 2).map((f, i) => (
-                  <div className={`ct-chip f${i + 1}`} key={f.label} data-parallax={i === 0 ? "0.5" : "0.26"}>
+                  <div className={`ct-chip f${i + 1}`} key={f.label}>
                     <PlatformTile p={f.label} size={22} />{f.label}
                   </div>
                 ))}
@@ -217,6 +236,34 @@ export default async function CampaignType({ data }: { data: CT }) {
             </div>
           </div>
         </section>
+
+        {/* CLIENTS DE L'UNIVERS — covers réelles. Défilant si ≥4, sinon rangée centrée. */}
+        {covers.length > 0 && (
+          <section className="sec uc-sec" style={{ paddingTop: 8 }}>
+            <div className="container">
+              <span className="mono-label uc-label">{t.clientsLabel}</span>
+            </div>
+            {scrollCovers ? (
+              <div className="uc-marquee" aria-hidden="true">
+                <div className="uc-track">
+                  {[...covers, ...covers].map((c, i) => (
+                    // eslint-disable-next-line @next/next/no-img-element -- cover décorative, chemin avec espaces
+                    <img className="uc-card" key={i} src={coverPath(c)} alt="" loading="lazy" width={320} height={180} />
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="container">
+                <div className="uc-row">
+                  {covers.map((c) => (
+                    // eslint-disable-next-line @next/next/no-img-element -- cover, chemin avec espaces
+                    <img className="uc-card" key={c} src={coverPath(c)} alt={coverLabel(c)} loading="lazy" width={320} height={180} />
+                  ))}
+                </div>
+              </div>
+            )}
+          </section>
+        )}
 
         {/* MÉCANISME */}
         <section className="sec" style={{ paddingTop: 20 }}>

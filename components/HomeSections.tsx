@@ -10,6 +10,7 @@ import ProcessSticky from "@/components/ProcessSticky";
 import BorderGlow from "@/components/BorderGlow";
 import ClaimHero from "@/components/ClaimHero";
 import { BrandLogo } from "@/components/BrandLogo";
+import { UNIVERS_EXAMPLES as WHO_EXAMPLES, coverPath } from "@/lib/univers";
 import { TRUST_BAR } from "@/lib/site";
 
 const COPY = {
@@ -235,22 +236,8 @@ const COPY = {
   },
 } as const;
 
-/* Par univers : la liste des covers (clients réels) qui DÉFILENT au survol
-   (seule l'image bouge) + le TOTAL vues/clips de la catégorie, affiché FIXE.
-   `views`/`clips` = SOMME RÉELLE des stats de tous les clients de la catégorie
-   (chiffres dashboard Clipeo, cf. [[stats-reelles-clipeo]] ; budgets € = internes,
-   jamais affichés). Catégories à 1 cover : pas de défilement. */
-const WHO_EXAMPLES: Record<string, { covers: string[]; views: string; clips: string }> = {
-  // 17 créateurs YouTube — covers triées par vues décroissantes ; total = somme réelle
-  createurs: { covers: ["Charles_et_Melanie", "Antoine", "La_Compagnie", "Joyca", "Mister_V", "Michou", "FastGoodCuisine", "Inoxtag", "Daetienne", "ImSolal", "Flamby", "Max_Laulom", "Ben_Nevert", "Misha_et_Alex", "Cossi", "Simon_Puech", "Le_Corbz"], views: "+491,6 M", clips: "5 404" },
-  // Marine Nationale comptée ×2 (consigne Ryan) + LEGO
-  marques: { covers: ["La_Marine_Nationale", "RAAPACE_x_Le_Portrait_LEGO"], views: "+7,5 M", clips: "245" },
-  podcasts: { covers: ["Kyan_Khojandi"], views: "+23,1 M", clips: "144" },
-  cinema: { covers: ["Film_Plus_Fort_que_Moi"], views: "+44 M", clips: "358" },
-  twitch: { covers: ["Zebro_et_Leow"], views: "+20,2 M", clips: "210" },
-  evenements: { covers: ["Crunch_Creator"], views: "+39 M", clips: "292" },
-};
-const coverPath = (c: string) => `/img/Clipeo%20covers%20campagnes/${c}.png`;
+/* Covers + totaux par univers : déplacés dans @/lib/univers (source partagée
+   avec les pages /campagnes). WHO_EXAMPLES = alias de UNIVERS_EXAMPLES. */
 
 export default function HomeSections() {
   const locale = useLocale() as "fr" | "en";
