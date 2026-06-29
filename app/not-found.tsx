@@ -10,8 +10,12 @@ export default function GlobalNotFound() {
       <body style={{ margin: 0, background: "linear-gradient(180deg,#eef3fc,#fff)", color: "#0a1240", fontFamily: "system-ui,-apple-system,Segoe UI,Roboto,sans-serif" }}>
         <main style={{ minHeight: "100svh", display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "40px" }}>
           <div style={{ maxWidth: 460 }}>
-            {/* eslint-disable-next-line @next/next/no-img-element -- œil Clipeo, page autonome */}
-            <img src="/img/logo-mark-navy.png" alt="Clipeo" width={48} height={48} style={{ marginBottom: 26 }} />
+            {/* Logo complet (œil + clipeo), centré */}
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 28 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element -- œil Clipeo, page autonome */}
+              <img src="/img/logo-mark-navy.png" alt="Clipeo" width={33} height={34} />
+              <span style={{ fontFamily: "system-ui,-apple-system,Segoe UI,Roboto,sans-serif", fontWeight: 800, fontSize: "1.7rem", letterSpacing: "-.5px", color: "#0a1240" }}>clipeo</span>
+            </div>
             <div style={{ fontSize: "5rem", fontWeight: 800, lineHeight: 1, letterSpacing: "-.04em", background: "linear-gradient(96deg,#080151,#55a4d1)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent", marginBottom: 14 }}>
               404
             </div>
