@@ -21,7 +21,6 @@ const COPY = {
     coverAlt: (client: string) => `Campagne de clipping ${client}`,
     bookAudit: "Réserver un audit gratuit",
     allCases: "Toutes les études de cas",
-    statsLabel: "Le résultat en bref",
     viewsTitleA: "Où les vues",
     viewsTitleB: "ont été générées.",
     viewsLead: "Diffusion multi-comptes, calée sur les fenêtres algo de chaque réseau.",
@@ -43,7 +42,6 @@ const COPY = {
     coverAlt: (client: string) => `${client} clipping campaign`,
     bookAudit: "Book a free audit",
     allCases: "See all case studies",
-    statsLabel: "The result at a glance",
     viewsTitleA: "Where the views",
     viewsTitleB: "came from.",
     viewsLead: "Multi-account distribution, timed to each platform's algorithm windows.",
@@ -75,42 +73,36 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 const STYLES = `
-  /* ── HERO ── */
+  /* ── HERO BENTO ── */
   .cd-hero-sec{position:relative;overflow:hidden}
-  .cd-orb{position:absolute;width:660px;height:660px;border-radius:50%;filter:blur(98px);opacity:.5;pointer-events:none;z-index:0;
-    top:-280px;right:-160px;background:radial-gradient(circle,rgba(85,164,209,.3),transparent 70%)}
-  .cd-orb.b{top:auto;bottom:-360px;left:-240px;right:auto;width:560px;height:560px;opacity:.38;background:radial-gradient(circle,rgba(8,1,81,.13),transparent 68%)}
+  .cd-orb{position:absolute;width:680px;height:680px;border-radius:50%;filter:blur(100px);opacity:.5;pointer-events:none;z-index:0;
+    top:-300px;right:-180px;background:radial-gradient(circle,rgba(85,164,209,.28),transparent 70%)}
   .cd-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:.66rem;letter-spacing:1.5px;text-transform:uppercase;
-    color:var(--w40);margin-bottom:26px;transition:color .25s}
+    color:var(--w40);margin-bottom:24px;transition:color .25s;position:relative;z-index:1}
   .cd-back:hover{color:var(--sky-bright)} .cd-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
-  .cd-hero{position:relative;z-index:1;display:grid;grid-template-columns:.86fr 1.14fr;gap:64px;align-items:center}
-  .cd-cover-wrap{position:relative}
-  .cd-cover{position:relative;border-radius:26px;overflow:hidden;aspect-ratio:1/1;
-    background:linear-gradient(180deg,#0b2a8c,var(--ink));box-shadow:0 54px 110px -48px rgba(10,40,120,.62);border:1px solid rgba(255,255,255,.55)}
-  .cd-cover img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
-  .cd-float{position:absolute;right:-24px;bottom:-24px;background:#fff;border:1px solid var(--w08);border-radius:20px;padding:20px 26px;
-    box-shadow:0 34px 70px -26px rgba(10,40,120,.55)}
-  .cd-float .v{font-family:var(--font-d);font-weight:800;font-size:clamp(2rem,3vw,2.6rem);line-height:1;letter-spacing:-.02em;
-    background:linear-gradient(96deg,var(--sky-bright),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .cd-float .k{font-family:var(--font-m);font-size:.58rem;letter-spacing:1.4px;text-transform:uppercase;color:var(--w40);margin-top:8px}
-  .cd-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border-radius:50px;background:var(--glass);border:1px solid var(--w14);
-    font-family:var(--font-m);font-size:.6rem;letter-spacing:1.8px;text-transform:uppercase;color:var(--sky);margin-bottom:22px}
+  .cd-bento{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;grid-template-rows:auto auto;gap:16px}
+  .cd-tile{border:1px solid var(--w14);border-radius:26px;background:linear-gradient(180deg,var(--glass-2),var(--glass));box-shadow:0 30px 64px -46px rgba(10,40,120,.4)}
+  .cd-cover-tile{grid-column:1;grid-row:1 / 3;position:relative;overflow:hidden;min-height:520px;
+    border:1px solid rgba(255,255,255,.5);background:linear-gradient(180deg,#0b2a8c,var(--ink));box-shadow:0 50px 100px -48px rgba(10,40,120,.55)}
+  .cd-cover-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+  .cd-intro-tile{grid-column:2;grid-row:1;padding:clamp(30px,3vw,44px);display:flex;flex-direction:column;justify-content:center}
+  .cd-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border-radius:50px;background:var(--glass);border:1px solid var(--w14);
+    font-family:var(--font-m);font-size:.58rem;letter-spacing:1.7px;text-transform:uppercase;color:var(--sky);margin-bottom:20px;align-self:flex-start}
   .cd-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--sky)}
-  .cd-info h1{font-family:var(--font-d);font-weight:800;font-size:clamp(2.6rem,5vw,3.8rem);line-height:1;letter-spacing:-.03em;color:var(--ink);margin-bottom:20px}
-  .cd-pitch{font-size:1.1rem;color:var(--w55);line-height:1.62;max-width:520px;margin-bottom:28px}
-  .cd-obj{padding:15px 20px;border-left:3px solid var(--sky);background:var(--glass);border-radius:0 14px 14px 0;margin-bottom:30px;font-size:.95rem;color:var(--w70);line-height:1.5;max-width:480px}
-  .cd-obj b{color:var(--ink)} .cd-obj .up{color:var(--sky-bright);font-weight:700}
-  .cd-cta{display:flex;gap:12px;flex-wrap:wrap}
-
-  /* ── BANDE KPI ── */
-  .cd-kpi-head{text-align:center;margin-bottom:26px}
-  .cd-kpi{display:grid;grid-template-columns:repeat(3,1fr);background:linear-gradient(180deg,var(--glass-2),var(--glass));
-    border:1px solid var(--w14);border-radius:22px;overflow:hidden;box-shadow:0 30px 64px -46px rgba(10,40,120,.42)}
-  .cd-kpi > div{padding:38px 26px;text-align:center;border-left:1px solid var(--w08)}
-  .cd-kpi > div:first-child{border-left:none}
-  .cd-kpi .v{font-family:var(--font-d);font-weight:800;font-size:clamp(2rem,3vw,2.7rem);letter-spacing:-.02em;line-height:1;
+  .cd-intro-tile h1{font-family:var(--font-d);font-weight:800;font-size:clamp(2.1rem,3.4vw,3rem);line-height:1.02;letter-spacing:-.03em;color:var(--ink);margin-bottom:16px}
+  .cd-intro-tile .pitch{font-size:1.02rem;color:var(--w55);line-height:1.6;margin-bottom:24px}
+  .cd-cta{display:flex;gap:11px;flex-wrap:wrap}
+  .cd-result-tile{grid-column:2;grid-row:2;padding:clamp(30px,3vw,44px);display:flex;flex-direction:column;justify-content:center;
+    background:linear-gradient(180deg,#fff,#eef4fe)}
+  .cd-result-tile .num{font-family:var(--font-d);font-weight:800;font-size:clamp(3.6rem,6.4vw,5.4rem);line-height:.86;letter-spacing:-.035em;
     background:linear-gradient(96deg,var(--sky-bright),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .cd-kpi .k{font-family:var(--font-m);font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--w40);margin-top:13px;line-height:1.4}
+  .cd-result-tile .cap{font-family:var(--font-m);font-size:.64rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--w40);margin-top:12px}
+  .cd-result-tile .obj{margin-top:18px;padding-top:18px;border-top:1px solid var(--w08);font-size:.92rem;color:var(--w70);line-height:1.5}
+  .cd-result-tile .obj b{color:var(--ink)} .cd-result-tile .obj .up{color:var(--sky-bright);font-weight:700}
+  .cd-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--w08)}
+  .cd-mini > div{text-align:left}
+  .cd-mini .v{font-family:var(--font-d);font-weight:800;font-size:1.4rem;letter-spacing:-.02em;line-height:1;color:var(--ink)}
+  .cd-mini .k{font-family:var(--font-m);font-size:.52rem;letter-spacing:1px;text-transform:uppercase;color:var(--w40);margin-top:7px;line-height:1.35}
 
   /* ── HISTOIRE (étapes) ── */
   .cd-narr{max-width:820px;margin:0 auto;display:grid;gap:18px}
@@ -133,12 +125,11 @@ const STYLES = `
   .cd-bar{height:11px;border-radius:7px;background:var(--w08);overflow:hidden}
   .cd-bar span{display:block;height:100%;border-radius:7px;box-shadow:0 4px 12px -4px rgba(10,40,120,.4)}
 
-  @media(max-width:860px){
-    .cd-hero{grid-template-columns:1fr;gap:46px}
-    .cd-cover{max-width:340px}
-    .cd-float{right:14px;bottom:-20px;padding:16px 20px}
-    .cd-kpi{grid-template-columns:1fr}
-    .cd-kpi > div{border-left:none;border-top:1px solid var(--w08)} .cd-kpi > div:first-child{border-top:none}
+  @media(max-width:900px){
+    .cd-bento{grid-template-columns:1fr;grid-template-rows:none}
+    /* reset des placements desktop → les tuiles suivent l'ordre du DOM (cover, intro, résultat) */
+    .cd-cover-tile,.cd-intro-tile,.cd-result-tile{grid-column:1;grid-row:auto}
+    .cd-cover-tile{min-height:0;aspect-ratio:16/11}
     .cd-block{padding:28px 26px}.cd-block .num{position:static;margin-bottom:16px}
   }
 `;
@@ -186,47 +177,42 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <style dangerouslySetInnerHTML={{ __html: STYLES }} />
 
-      {/* HERO — cover + badge résultat flottant */}
-      <section className="page-hero cd-hero-sec" style={{ paddingBottom: 40 }}>
+      {/* HERO BENTO */}
+      <section className="page-hero cd-hero-sec" style={{ paddingBottom: 44 }}>
         <span className="cd-orb" aria-hidden="true" />
-        <span className="cd-orb b" aria-hidden="true" />
         <div className="container">
           <Link href="/etudes-de-cas" className="cd-back"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>{t.backCases}</Link>
-          <div className="cd-hero">
-            <div className="cd-cover-wrap reveal">
-              <div className="cd-cover"><Image src={c.img} alt={t.coverAlt(c.client)} fill sizes="(max-width:860px) 340px, 32vw" style={{ objectFit: "cover", objectPosition: "center top" }} priority /></div>
-              <div className="cd-float"><div className="v">{c.bigNum}</div><div className="k">{c.cap}</div></div>
-            </div>
-            <div className="cd-info reveal">
+          <div className="cd-bento">
+            <div className="cd-cover-tile cd-tile reveal"><Image src={c.img} alt={t.coverAlt(c.client)} fill sizes="(max-width:900px) 100vw, 50vw" style={{ objectFit: "cover", objectPosition: "center top" }} priority /></div>
+
+            <div className="cd-intro-tile cd-tile reveal">
               <span className="cd-eyebrow"><span className="dot" />{c.category} · {t.eyebrow}</span>
               <h1>{c.client}</h1>
-              <p className="cd-pitch">{c.excerpt}</p>
-              {c.objective && (
-                <div className="cd-obj"><b>{c.objective.line}</b> <span className="up">{c.objective.up}</span></div>
-              )}
+              <p className="pitch">{c.excerpt}</p>
               <div className="cd-cta">
                 <Link href="/contact" className="btn btn-primary"><span>{t.bookAudit}</span><ArrowR /></Link>
                 <Link href="/etudes-de-cas" className="btn"><span>{t.allCases}</span></Link>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* SNAPSHOT KPI */}
-      <section className="sec" style={{ paddingTop: 14 }}>
-        <div className="container">
-          <span className="mono-label cd-kpi-head reveal" style={{ display: "block" }}>{t.statsLabel}</span>
-          <div className="cd-kpi reveal">
-            {c.metrics.map((m) => (
-              <div key={m.k}><div className="v">{m.v}</div><div className="k">{m.k}</div></div>
-            ))}
+            <div className="cd-result-tile cd-tile reveal">
+              <div className="num">{c.bigNum}</div>
+              <div className="cap">{c.cap}</div>
+              <div className="cd-mini">
+                {c.metrics.map((m) => (
+                  <div key={m.k}><div className="v">{m.v}</div><div className="k">{m.k}</div></div>
+                ))}
+              </div>
+              {c.objective && (
+                <div className="obj"><b>{c.objective.line}</b> <span className="up">{c.objective.up}</span></div>
+              )}
+            </div>
           </div>
         </div>
       </section>
 
       {/* HISTOIRE — défi / approche / résultats */}
-      <section className="sec" style={{ paddingTop: 8 }}>
+      <section className="sec" style={{ paddingTop: 18 }}>
         <div className="container">
           <div className="sec-head reveal"><span className="mono-label" style={{ display: "block", marginBottom: 16 }}>{t.storyLabel}</span></div>
           <div className="cd-narr">
