@@ -15,6 +15,7 @@ const COPY = {
     seeCases: "Voir les études de cas",
     mechLabel: "Le mécanisme",
     clientsLabel: "Ils nous font confiance",
+    statTotalLabel: "Vues générées, tous clients réunis",
     flowLabel: "Le déroulé",
     flowTitle: <>De l&apos;audit à la <span className="grad">croissance.</span></>,
     faqTitle: "Questions fréquentes.",
@@ -29,6 +30,7 @@ const COPY = {
     seeCases: "See the case studies",
     mechLabel: "The mechanism",
     clientsLabel: "They trust us",
+    statTotalLabel: "Views generated, all clients combined",
     flowLabel: "The process",
     flowTitle: <>From audit to <span className="grad">growth.</span></>,
     faqTitle: "Frequent questions.",
@@ -194,6 +196,14 @@ export default async function CampaignType({ data }: { data: CT }) {
   // Clients réels de cet univers (covers de campagne). Défilant si ≥ 4, sinon rangée centrée.
   const covers = UNIVERS_EXAMPLES[data.slug]?.covers ?? [];
   const scrollCovers = covers.length >= 4;
+  // Badge du hero = TOTAL des vues de l'univers (tous clients/campagnes réunis),
+  // pas le chiffre de l'étude de cas. Parse "+491,6 M" → count-up animé.
+  const totalViews = UNIVERS_EXAMPLES[data.slug]?.views ?? hs.v ?? "";
+  const tvNum = totalViews.replace("+", "").replace("M", "").replace(/\s/g, "").replace(",", ".");
+  const tvCount = parseFloat(tvNum) || 0;
+  const tvDec = tvNum.includes(".") ? (tvNum.split(".")[1]?.length ?? 0) : 0;
+  const tvPrefix = totalViews.trim().startsWith("+") ? "+" : "";
+  const tvSuffix = totalViews.includes("M") ? " M" : "";
 
   return (
     <ScrollParallax>
@@ -222,10 +232,10 @@ export default async function CampaignType({ data }: { data: CT }) {
                   <img className="ct-phone-img" src="/img/apple-iphone-15-pro-max-2023-medium_copy.png" alt="" />
                 </div>
                 <div className="ct-stat">
-                  <div className="v" {...(hs.count != null ? { "data-count": String(hs.count), "data-dec": String(hs.dec ?? 0), "data-prefix": hs.prefix ?? "", "data-suffix": hs.suffix ?? "" } : {})}>
-                    {hs.count != null ? `${hs.prefix ?? ""}0${hs.suffix ?? ""}` : hs.v}
+                  <div className="v" data-count={String(tvCount)} data-dec={String(tvDec)} data-prefix={tvPrefix} data-suffix={tvSuffix}>
+                    {tvPrefix}0{tvSuffix}
                   </div>
-                  <div className="k">{hs.k}</div>
+                  <div className="k">{t.statTotalLabel}</div>
                 </div>
                 {data.floats.slice(0, 2).map((f, i) => (
                   <div className={`ct-chip f${i + 1}`} key={f.label}>
