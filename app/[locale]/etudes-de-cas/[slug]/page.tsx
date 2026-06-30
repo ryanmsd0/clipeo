@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { getLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { notFound } from "next/navigation";
@@ -24,7 +23,6 @@ const COPY = {
     viewsTitleA: "Où les vues",
     viewsTitleB: "ont été générées.",
     viewsLead: "Diffusion multi-comptes, calée sur les fenêtres algo de chaque réseau.",
-    storyLabel: "L'histoire",
     challengeTitle: "Le défi",
     approachTitle: "Notre approche",
     resultsTitle: "Les résultats",
@@ -45,7 +43,6 @@ const COPY = {
     viewsTitleA: "Where the views",
     viewsTitleB: "came from.",
     viewsLead: "Multi-account distribution, timed to each platform's algorithm windows.",
-    storyLabel: "The story",
     challengeTitle: "The challenge",
     approachTitle: "Our approach",
     resultsTitle: "The results",
@@ -73,47 +70,44 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 }
 
 const STYLES = `
-  /* ── HERO BENTO ── */
-  .cd-hero-sec{position:relative;overflow:hidden}
-  .cd-orb{position:absolute;width:680px;height:680px;border-radius:50%;filter:blur(100px);opacity:.5;pointer-events:none;z-index:0;
-    top:-300px;right:-180px;background:radial-gradient(circle,rgba(85,164,209,.28),transparent 70%)}
+  /* ── HERO ── */
   .cd-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:.66rem;letter-spacing:1.5px;text-transform:uppercase;
-    color:var(--w40);margin-bottom:24px;transition:color .25s;position:relative;z-index:1}
+    color:var(--w40);margin-bottom:30px;transition:color .25s}
   .cd-back:hover{color:var(--sky-bright)} .cd-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
-  .cd-bento{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr .9fr;grid-template-rows:auto auto;gap:16px}
-  .cd-tile{border:1px solid var(--w14);border-radius:26px;background:linear-gradient(180deg,var(--glass-2),var(--glass));box-shadow:0 30px 64px -46px rgba(10,40,120,.4)}
-  .cd-cover-tile{grid-column:1;grid-row:1 / 3;position:relative;overflow:hidden;min-height:520px;
-    border:1px solid rgba(255,255,255,.5);background:linear-gradient(180deg,#0b2a8c,var(--ink));box-shadow:0 50px 100px -48px rgba(10,40,120,.55)}
-  .cd-cover-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
-  .cd-intro-tile{grid-column:2;grid-row:1;padding:clamp(30px,3vw,44px);display:flex;flex-direction:column;justify-content:center}
-  .cd-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border-radius:50px;background:var(--glass);border:1px solid var(--w14);
-    font-family:var(--font-m);font-size:.58rem;letter-spacing:1.7px;text-transform:uppercase;color:var(--sky);margin-bottom:20px;align-self:flex-start}
+  .cd-head{max-width:780px;margin-bottom:46px}
+  .cd-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border-radius:50px;background:var(--glass);border:1px solid var(--w14);
+    font-family:var(--font-m);font-size:.6rem;letter-spacing:1.8px;text-transform:uppercase;color:var(--sky);margin-bottom:24px}
   .cd-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--sky)}
-  .cd-intro-tile h1{font-family:var(--font-d);font-weight:800;font-size:clamp(2.1rem,3.4vw,3rem);line-height:1.02;letter-spacing:-.03em;color:var(--ink);margin-bottom:16px}
-  .cd-intro-tile .pitch{font-size:1.02rem;color:var(--w55);line-height:1.6;margin-bottom:24px}
-  .cd-cta{display:flex;gap:11px;flex-wrap:wrap}
-  .cd-result-tile{grid-column:2;grid-row:2;padding:clamp(30px,3vw,44px);display:flex;flex-direction:column;justify-content:center;
-    background:linear-gradient(180deg,#fff,#eef4fe)}
-  .cd-result-tile .num{font-family:var(--font-d);font-weight:800;font-size:clamp(3.6rem,6.4vw,5.4rem);line-height:.86;letter-spacing:-.035em;
-    background:linear-gradient(96deg,var(--sky-bright),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .cd-result-tile .cap{font-family:var(--font-m);font-size:.64rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--w40);margin-top:12px}
-  .cd-result-tile .obj{margin-top:18px;padding-top:18px;border-top:1px solid var(--w08);font-size:.92rem;color:var(--w70);line-height:1.5}
-  .cd-result-tile .obj b{color:var(--ink)} .cd-result-tile .obj .up{color:var(--sky-bright);font-weight:700}
-  .cd-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--w08)}
-  .cd-mini > div{text-align:left}
-  .cd-mini .v{font-family:var(--font-d);font-weight:800;font-size:1.4rem;letter-spacing:-.02em;line-height:1;color:var(--ink)}
-  .cd-mini .k{font-family:var(--font-m);font-size:.52rem;letter-spacing:1px;text-transform:uppercase;color:var(--w40);margin-top:7px;line-height:1.35}
+  .cd-head h1{font-family:var(--font-d);font-weight:800;font-size:clamp(2.7rem,6vw,4.6rem);line-height:1;letter-spacing:-.035em;color:var(--ink);margin-bottom:22px}
+  .cd-head .pitch{font-size:clamp(1.06rem,1.7vw,1.24rem);color:var(--w55);line-height:1.58;max-width:660px;margin-bottom:30px}
+  .cd-cta{display:flex;gap:12px;flex-wrap:wrap}
 
-  /* ── HISTOIRE (étapes) ── */
-  .cd-narr{max-width:820px;margin:0 auto;display:grid;gap:18px}
-  .cd-block{position:relative;background:linear-gradient(180deg,var(--glass-2),var(--glass));border:1px solid var(--w14);border-radius:20px;padding:34px 38px 34px 98px}
-  .cd-block .num{position:absolute;left:30px;top:34px;width:50px;height:50px;border-radius:15px;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(155deg,#3a63b5,#080151);color:#fff;font-family:var(--font-d);font-weight:800;font-size:1.05rem;box-shadow:0 14px 28px -12px rgba(8,1,81,.6)}
-  .cd-block h2{font-family:var(--font-d);font-weight:800;font-size:1.5rem;letter-spacing:-.02em;color:var(--ink);margin-bottom:13px}
-  .cd-block p{color:var(--w70);font-size:1.05rem;line-height:1.7}
-  .cd-block ul{list-style:none;display:flex;flex-direction:column;gap:14px}
-  .cd-block li{position:relative;padding-left:28px;color:var(--w70);font-size:1.03rem;line-height:1.55}
-  .cd-block li svg{position:absolute;left:0;top:3px;width:17px;height:17px;stroke:var(--sky);fill:none;stroke-width:2.6}
+  /* Bandeau cover + barre de résultats flottante */
+  .cd-banner-wrap{position:relative;margin-bottom:78px}
+  .cd-banner{position:relative;border-radius:30px;overflow:hidden;aspect-ratio:16/9;
+    border:1px solid var(--w14);box-shadow:0 56px 120px -54px rgba(10,40,120,.6)}
+  .cd-banner img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+  .cd-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(8,1,81,.28));pointer-events:none}
+  .cd-statbar{position:absolute;left:50%;bottom:-52px;transform:translateX(-50%);width:min(94%,860px);z-index:2;
+    display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;background:#fff;border:1px solid var(--w08);border-radius:22px;
+    box-shadow:0 40px 90px -40px rgba(10,40,120,.5);overflow:hidden}
+  .cd-statbar > div{padding:24px 22px;text-align:center;border-left:1px solid var(--w08)}
+  .cd-statbar > div:first-child{border-left:none}
+  .cd-statbar b{display:block;font-family:var(--font-d);font-weight:800;font-size:clamp(1.6rem,2.4vw,2.2rem);letter-spacing:-.02em;line-height:1;
+    background:linear-gradient(96deg,var(--sky-bright),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .cd-statbar i{display:block;font-family:var(--font-m);font-size:.56rem;letter-spacing:1.3px;text-transform:uppercase;color:var(--w40);margin-top:9px;font-style:normal;line-height:1.35}
+
+  /* ── HISTOIRE (éditorial 2 colonnes) ── */
+  .cd-story{max-width:980px;margin:0 auto}
+  .cd-row{display:grid;grid-template-columns:.34fr .66fr;gap:48px;padding:42px 0;border-top:1px solid var(--w08)}
+  .cd-row:first-child{border-top:none}
+  .cd-row-l{display:flex;flex-direction:column;gap:14px}
+  .cd-row-l .step{font-family:var(--font-m);font-size:.72rem;letter-spacing:2px;color:var(--sky)}
+  .cd-row-l h2{font-family:var(--font-d);font-weight:800;font-size:clamp(1.5rem,2.4vw,1.9rem);letter-spacing:-.02em;color:var(--ink);line-height:1.1}
+  .cd-row-r p{color:var(--w70);font-size:1.1rem;line-height:1.72}
+  .cd-row-r ul{list-style:none;display:flex;flex-direction:column;gap:15px}
+  .cd-row-r li{position:relative;padding-left:30px;color:var(--w70);font-size:1.06rem;line-height:1.55}
+  .cd-row-r li svg{position:absolute;left:0;top:3px;width:18px;height:18px;stroke:var(--sky);fill:none;stroke-width:2.6}
 
   /* ── RÉPARTITION DES VUES ── */
   .cd-plats{max-width:720px;margin:0 auto}
@@ -125,12 +119,13 @@ const STYLES = `
   .cd-bar{height:11px;border-radius:7px;background:var(--w08);overflow:hidden}
   .cd-bar span{display:block;height:100%;border-radius:7px;box-shadow:0 4px 12px -4px rgba(10,40,120,.4)}
 
-  @media(max-width:900px){
-    .cd-bento{grid-template-columns:1fr;grid-template-rows:none}
-    /* reset des placements desktop → les tuiles suivent l'ordre du DOM (cover, intro, résultat) */
-    .cd-cover-tile,.cd-intro-tile,.cd-result-tile{grid-column:1;grid-row:auto}
-    .cd-cover-tile{min-height:0;aspect-ratio:16/11}
-    .cd-block{padding:28px 26px}.cd-block .num{position:static;margin-bottom:16px}
+  @media(max-width:860px){
+    .cd-banner{aspect-ratio:16/11}
+    .cd-banner-wrap{margin-bottom:30px}
+    .cd-statbar{position:static;transform:none;width:100%;grid-template-columns:1fr 1fr;margin-top:16px}
+    .cd-statbar > div{border-left:none;border-top:1px solid var(--w08)} .cd-statbar > div:first-child,.cd-statbar > div:nth-child(2){border-top:none}
+    .cd-statbar > div:nth-child(odd){border-right:1px solid var(--w08)}
+    .cd-row{grid-template-columns:1fr;gap:16px;padding:32px 0}
   }
 `;
 
@@ -138,6 +133,8 @@ function pct(value: string, max: number) {
   const n = parseFloat(value.replace(/[^\d,.]/g, "").replace(",", ".")) || 0;
   return Math.max(8, Math.round((n / max) * 100));
 }
+
+const campaignCover = (img: string) => `/img/Clipeo%20covers%20campagnes/${img.split("/").pop()}`;
 
 export default async function CaseDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -177,59 +174,49 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <style dangerouslySetInnerHTML={{ __html: STYLES }} />
 
-      {/* HERO BENTO */}
-      <section className="page-hero cd-hero-sec" style={{ paddingBottom: 44 }}>
-        <span className="cd-orb" aria-hidden="true" />
+      {/* HERO — titre + bandeau cover + barre de résultats */}
+      <section className="page-hero" style={{ paddingBottom: 20 }}>
         <div className="container">
           <Link href="/etudes-de-cas" className="cd-back"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>{t.backCases}</Link>
-          <div className="cd-bento">
-            <div className="cd-cover-tile cd-tile reveal"><Image src={c.img} alt={t.coverAlt(c.client)} fill sizes="(max-width:900px) 100vw, 50vw" style={{ objectFit: "cover", objectPosition: "center top" }} priority /></div>
-
-            <div className="cd-intro-tile cd-tile reveal">
-              <span className="cd-eyebrow"><span className="dot" />{c.category} · {t.eyebrow}</span>
-              <h1>{c.client}</h1>
-              <p className="pitch">{c.excerpt}</p>
-              <div className="cd-cta">
-                <Link href="/contact" className="btn btn-primary"><span>{t.bookAudit}</span><ArrowR /></Link>
-                <Link href="/etudes-de-cas" className="btn"><span>{t.allCases}</span></Link>
-              </div>
+          <div className="cd-head reveal">
+            <span className="cd-eyebrow"><span className="dot" />{c.category} · {t.eyebrow}</span>
+            <h1>{c.client}</h1>
+            <p className="pitch">{c.excerpt}</p>
+            <div className="cd-cta">
+              <Link href="/contact" className="btn btn-primary"><span>{t.bookAudit}</span><ArrowR /></Link>
+              <Link href="/etudes-de-cas" className="btn"><span>{t.allCases}</span></Link>
             </div>
-
-            <div className="cd-result-tile cd-tile reveal">
-              <div className="num">{c.bigNum}</div>
-              <div className="cap">{c.cap}</div>
-              <div className="cd-mini">
-                {c.metrics.map((m) => (
-                  <div key={m.k}><div className="v">{m.v}</div><div className="k">{m.k}</div></div>
-                ))}
-              </div>
-              {c.objective && (
-                <div className="obj"><b>{c.objective.line}</b> <span className="up">{c.objective.up}</span></div>
-              )}
+          </div>
+          <div className="cd-banner-wrap reveal">
+            <div className="cd-banner">
+              {/* eslint-disable-next-line @next/next/no-img-element -- cover de campagne (chemin avec espaces) */}
+              <img src={campaignCover(c.img)} alt={t.coverAlt(c.client)} width={1600} height={900} />
+            </div>
+            <div className="cd-statbar">
+              <div><b>{c.bigNum}</b><i>{c.cap}</i></div>
+              {c.metrics.map((m) => (
+                <div key={m.k}><b>{m.v}</b><i>{m.k}</i></div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* HISTOIRE — défi / approche / résultats */}
-      <section className="sec" style={{ paddingTop: 18 }}>
+      {/* HISTOIRE — défi / approche / résultats (éditorial) */}
+      <section className="sec" style={{ paddingTop: 8 }}>
         <div className="container">
-          <div className="sec-head reveal"><span className="mono-label" style={{ display: "block", marginBottom: 16 }}>{t.storyLabel}</span></div>
-          <div className="cd-narr">
-            <div className="cd-block reveal">
-              <span className="num">01</span>
-              <h2>{t.challengeTitle}</h2>
-              <p>{c.challenge}</p>
+          <div className="cd-story">
+            <div className="cd-row reveal">
+              <div className="cd-row-l"><span className="step">01</span><h2>{t.challengeTitle}</h2></div>
+              <div className="cd-row-r"><p>{c.challenge}</p></div>
             </div>
-            <div className="cd-block reveal">
-              <span className="num">02</span>
-              <h2>{t.approachTitle}</h2>
-              <ul>{c.approach.map((a, i) => <li key={i}><Check />{a}</li>)}</ul>
+            <div className="cd-row reveal">
+              <div className="cd-row-l"><span className="step">02</span><h2>{t.approachTitle}</h2></div>
+              <div className="cd-row-r"><ul>{c.approach.map((a, i) => <li key={i}><Check />{a}</li>)}</ul></div>
             </div>
-            <div className="cd-block reveal">
-              <span className="num">03</span>
-              <h2>{t.resultsTitle}</h2>
-              <p>{c.results}</p>
+            <div className="cd-row reveal">
+              <div className="cd-row-l"><span className="step">03</span><h2>{t.resultsTitle}</h2></div>
+              <div className="cd-row-r"><p>{c.results}</p></div>
             </div>
           </div>
         </div>
