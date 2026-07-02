@@ -23,6 +23,7 @@ const COPY = {
     viewsTitleA: "Où les vues",
     viewsTitleB: "ont été générées.",
     viewsLead: "Diffusion multi-comptes, calée sur les fenêtres algo de chaque réseau.",
+    ofViews: "des vues",
     challengeTitle: "Le défi",
     approachTitle: "Notre approche",
     resultsTitle: "Les résultats",
@@ -43,6 +44,7 @@ const COPY = {
     viewsTitleA: "Where the views",
     viewsTitleB: "came from.",
     viewsLead: "Multi-account distribution, timed to each platform's algorithm windows.",
+    ofViews: "of views",
     challengeTitle: "The challenge",
     approachTitle: "Our approach",
     resultsTitle: "The results",
@@ -74,13 +76,13 @@ const STYLES = `
   .cd-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-m);font-size:.66rem;letter-spacing:1.5px;text-transform:uppercase;
     color:var(--w40);margin-bottom:30px;transition:color .25s}
   .cd-back:hover{color:var(--sky-bright)} .cd-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}
-  .cd-head{max-width:780px;margin-bottom:46px}
+  .cd-head{max-width:820px;margin:0 auto 46px;text-align:center}
   .cd-eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 16px;border-radius:50px;background:var(--glass);border:1px solid var(--w14);
     font-family:var(--font-m);font-size:.6rem;letter-spacing:1.8px;text-transform:uppercase;color:var(--sky);margin-bottom:24px}
   .cd-eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--sky)}
   .cd-head h1{font-family:var(--font-d);font-weight:800;font-size:clamp(2.7rem,6vw,4.6rem);line-height:1;letter-spacing:-.035em;color:var(--ink);margin-bottom:22px}
-  .cd-head .pitch{font-size:clamp(1.06rem,1.7vw,1.24rem);color:var(--w55);line-height:1.58;max-width:660px;margin-bottom:30px}
-  .cd-cta{display:flex;gap:12px;flex-wrap:wrap}
+  .cd-head .pitch{font-size:clamp(1.06rem,1.7vw,1.24rem);color:var(--w55);line-height:1.58;max-width:620px;margin:0 auto 30px}
+  .cd-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 
   /* Bandeau cover + barre de résultats flottante */
   .cd-banner-wrap{position:relative;margin-bottom:78px}
@@ -109,15 +111,19 @@ const STYLES = `
   .cd-row-r li{position:relative;padding-left:30px;color:var(--w70);font-size:1.06rem;line-height:1.55}
   .cd-row-r li svg{position:absolute;left:0;top:3px;width:18px;height:18px;stroke:var(--sky);fill:none;stroke-width:2.6}
 
-  /* ── RÉPARTITION DES VUES ── */
-  .cd-plats{max-width:720px;margin:0 auto}
-  .cd-plat{margin-bottom:22px}
-  .cd-plat-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-  .cd-plat-l{display:flex;align-items:center;gap:12px}
-  .cd-plat-name{font-family:var(--font-d);font-weight:600;font-size:1rem;color:var(--ink)}
-  .cd-plat-v{font-family:var(--font-d);font-weight:800;font-size:1.05rem;color:var(--ink)}
-  .cd-bar{height:11px;border-radius:7px;background:var(--w08);overflow:hidden}
-  .cd-bar span{display:block;height:100%;border-radius:7px;box-shadow:0 4px 12px -4px rgba(10,40,120,.4)}
+  /* ── RÉPARTITION DES VUES (cartes par plateforme) ── */
+  .cd-pcards{display:grid;gap:18px;max-width:860px;margin:0 auto}
+  .cd-pcard{position:relative;overflow:hidden;background:linear-gradient(180deg,var(--glass-2),var(--glass));border:1px solid var(--w14);border-radius:20px;
+    padding:30px 30px 28px;box-shadow:0 26px 56px -46px rgba(10,40,120,.42);transition:transform .35s cubic-bezier(.32,.72,0,1),box-shadow .35s,border-color .35s}
+  .cd-pcard:hover{transform:translateY(-5px);border-color:var(--w22);box-shadow:0 34px 64px -40px rgba(10,40,120,.5)}
+  .cd-pcard-bar{position:absolute;top:0;left:0;right:0;height:4px}
+  .cd-pcard-top{display:flex;align-items:center;gap:12px;margin:6px 0 24px}
+  .cd-pcard-name{font-family:var(--font-d);font-weight:700;font-size:1rem;color:var(--ink)}
+  .cd-pcard .val{font-family:var(--font-d);font-weight:800;font-size:clamp(2.1rem,3.2vw,2.8rem);letter-spacing:-.025em;line-height:1;color:var(--ink)}
+  .cd-pcard .pct{font-family:var(--font-m);font-size:.6rem;letter-spacing:1.2px;text-transform:uppercase;color:var(--w40);margin-top:10px}
+  .cd-pcard .mini{margin-top:20px;height:8px;border-radius:5px;background:var(--w08);overflow:hidden}
+  .cd-pcard .mini span{display:block;height:100%;border-radius:5px;box-shadow:0 3px 10px -3px rgba(10,40,120,.4)}
+  @media(max-width:680px){.cd-pcards{grid-template-columns:1fr !important}}
 
   @media(max-width:860px){
     .cd-banner{aspect-ratio:16/11}
@@ -129,10 +135,7 @@ const STYLES = `
   }
 `;
 
-function pct(value: string, max: number) {
-  const n = parseFloat(value.replace(/[^\d,.]/g, "").replace(",", ".")) || 0;
-  return Math.max(8, Math.round((n / max) * 100));
-}
+const parseNum = (value: string) => parseFloat(value.replace(/[^\d,.]/g, "").replace(",", ".")) || 0;
 
 const campaignCover = (img: string) => `/img/Clipeo%20covers%20campagnes/${img.split("/").pop()}`;
 
@@ -165,9 +168,7 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
     },
   ];
 
-  const platMax = c.platforms
-    ? Math.max(...c.platforms.map((p) => parseFloat(p.value.replace(/[^\d,.]/g, "").replace(",", ".")) || 0))
-    : 1;
+  const platTotal = c.platforms ? c.platforms.reduce((s, p) => s + parseNum(p.value), 0) || 1 : 1;
 
   return (
     <main>
@@ -222,24 +223,27 @@ export default async function CaseDetail({ params }: { params: Promise<{ slug: s
         </div>
       </section>
 
-      {/* PREUVE — répartition des vues */}
+      {/* PREUVE — répartition des vues (barre proportionnelle + légende) */}
       {c.platforms && (
         <section className="sec" style={{ paddingTop: 8 }}>
           <div className="container">
             <div className="sec-head reveal"><h2>{t.viewsTitleA}<br />{t.viewsTitleB}</h2><p>{t.viewsLead}</p></div>
-            <div className="cd-plats reveal">
-              {c.platforms.map((p) => (
-                <div className="cd-plat" key={p.abbr}>
-                  <div className="cd-plat-head">
-                    <div className="cd-plat-l">
-                      <PlatformTile p={p.name} size={32} />
-                      <span className="cd-plat-name">{p.name}</span>
+            <div className="cd-pcards reveal stagger" style={{ gridTemplateColumns: `repeat(${c.platforms.length}, 1fr)` }}>
+              {c.platforms.map((p) => {
+                const share = Math.round((parseNum(p.value) / platTotal) * 100);
+                return (
+                  <div className="cd-pcard" key={p.abbr}>
+                    <span className="cd-pcard-bar" style={{ background: p.color }} />
+                    <div className="cd-pcard-top">
+                      <PlatformTile p={p.name} size={34} />
+                      <span className="cd-pcard-name">{p.name}</span>
                     </div>
-                    <span className="cd-plat-v">{p.value}</span>
+                    <div className="val">{p.value}</div>
+                    <div className="pct">{share}% {t.ofViews}</div>
+                    <div className="mini"><span style={{ width: `${Math.max(4, share)}%`, background: p.color }} /></div>
                   </div>
-                  <div className="cd-bar"><span style={{ width: `${pct(p.value, platMax)}%`, background: p.color }} /></div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </section>
