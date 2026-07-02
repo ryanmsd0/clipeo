@@ -184,6 +184,9 @@ const CSS = `
     .psl-big{display:block;position:absolute;top:0;transform:translateY(-50%);
       font-family:var(--font-d);font-weight:800;font-size:clamp(7rem,15vw,13rem);line-height:.9;
       letter-spacing:-.04em;color:rgba(10,99,255,.14);z-index:0;pointer-events:none;user-select:none}
+    /* Couleurs qui suivent la palette (bleu par défaut, navy/sky sous .pal-live) */
+    .psl-g1{stop-color:var(--sky)} .psl-g2{stop-color:var(--sky-bright)}
+    .pal-live .psl-big{color:rgba(8,1,81,.12)}
     .psl-row-0 .psl-big,.psl-row-2 .psl-big{right:8%}
     .psl-row-1 .psl-big{left:8%}
   }
@@ -286,8 +289,9 @@ export default function ProcessSticky({ labelMode = false, images = true, steps 
         <svg viewBox="0 0 1200 1380" preserveAspectRatio="none" fill="none">
           <defs>
             <linearGradient id="pslGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#0a63ff" />
-              <stop offset="100%" stopColor="#0055fe" />
+              {/* couleurs via tokens → suivent la palette (bleu par défaut, navy/sky sous .pal-live) */}
+              <stop className="psl-g1" offset="0%" />
+              <stop className="psl-g2" offset="100%" />
             </linearGradient>
           </defs>
           {/* viewBox 1:1 avec la hauteur du wrap (1080) */}
